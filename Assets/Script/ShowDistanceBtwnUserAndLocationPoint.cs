@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShowLocSpawnOptionMenu : MonoBehaviour
+public class ShowDistanceBtwnUserAndLocationPoint : MonoBehaviour
 {
     private LocationPointInformation locationInfo;
     private void Start() {
