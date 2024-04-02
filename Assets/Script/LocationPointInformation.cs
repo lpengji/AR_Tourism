@@ -21,7 +21,7 @@ public class LocationPointInformation : MonoBehaviour
     }
 
     public double getDistanceBetweenPlayerAndLocation(){
-        LocationStatus playerLocation = GameObject.Find("Canvas").GetComponent<LocationStatus>();
+        LocationStatus playerLocation = GameObject.Find("LocationCoordinatesCanvas").GetComponent<LocationStatus>();
         GeoCoordinate currentPlayerLocation = new GeoCoordinate(playerLocation.getLatitude(),playerLocation.getLongitude());
         GeoCoordinate currentLocationPointLocation = new GeoCoordinate(actualCoordinate[0],actualCoordinate[1]);
 
