@@ -32,7 +32,7 @@
 			for (int i = 0; i < _locationCoordinate.Length; i++)
 			{
 				var locationString = _locationCoordinate[i];
-				_locations[i] = Conversions.StringToLatLon(locationString);	// pasa de formato string a Vector2D
+				_locations[i] = Conversions.StringToLatLon(locationString);	// pasa de formato string a Vector2D latitud longitud
 				var instance = Instantiate(_markerPrefab);
 
 				instance.GetComponent<LocationPointInformation>().setActualCoordinate(_locations[i]);

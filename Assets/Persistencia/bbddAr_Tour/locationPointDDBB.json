@@ -1,0 +1,28 @@
+{
+  "locationPoints": [
+    {
+      "id": 1,
+      "latitud": 40.7128,
+      "longitud": -74.006,
+      "altitud": 10,
+      "createdByUserID": 3,
+      "informationId": 1
+    },
+    {
+      "id": 2,
+      "latitud": 34.0522,
+      "longitud": -118.2437,
+      "altitud": 20,
+      "createdByUserID": 3,
+      "informationId": null
+    },
+    {
+      "id": 3,
+      "latitud": 51.5074,
+      "longitud": -0.1278,
+      "altitud": 15,
+      "createdByUserID": 3,
+      "informationId": 3
+    }
+  ]
+}
