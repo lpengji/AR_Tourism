@@ -33,7 +33,7 @@ public class databaseManager : MonoBehaviour
 
         foreach (var point in locationPoints)
         {
-            Debug.Log("ID: " + point.id + ", Latitud-Longitud: " + point.ConcatenarLatitudLongitud() + ", Altitud: " + point.altitud + ", Creado por Usuario ID: " + point.createdByUserID + ", ID de Información: " + point.informationId);
+            Debug.Log("ID: " + point.Id + ", Latitud-Longitud: " + point.ConcatenarLatitudLongitud() + ", Altitud: " + point.Altitud + ", Creado por Usuario ID: " + point.CreatedByUserID + ", ID de Información: " + point.InformationId);
         }
     }
 

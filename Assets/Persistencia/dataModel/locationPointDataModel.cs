@@ -21,6 +21,42 @@ public class LocationPoint
         this.informationId = informationId;
     }
 
+    public int Id
+    {
+        get { return id; }
+        set { id = value; }
+    }
+
+    public float Latitud
+    {
+        get { return latitud; }
+        set { latitud = value; }
+    }
+
+    public float Longitud
+    {
+        get { return longitud; }
+        set { longitud = value; }
+    }
+
+    public float Altitud
+    {
+        get { return altitud; }
+        set { altitud = value; }
+    }
+
+    public int CreatedByUserID
+    {
+        get { return createdByUserID; }
+        set { createdByUserID = value; }
+    }
+
+    public int? InformationId
+    {
+        get { return informationId; }
+        set { informationId = value; }
+    }
+
     public string ConcatenarLatitudLongitud()
     {
         string resultado = string.Format("{0}, {1}", this.latitud, this.longitud);
