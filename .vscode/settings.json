@@ -4,5 +4,6 @@
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "FSharp.suggestGitignore": false
+  "FSharp.suggestGitignore": false,
+  "dotnet.defaultSolution": "AR_Tourism.sln"
 }
