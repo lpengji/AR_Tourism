@@ -137,6 +137,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f36b12b8213bf041b5e0c8604610081, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actualCoordinate:
-    x: 0
-    y: 0

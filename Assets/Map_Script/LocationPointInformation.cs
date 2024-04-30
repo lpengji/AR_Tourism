@@ -9,15 +9,40 @@ using UnityEngine;
 
 public class LocationPointInformation : MonoBehaviour
 {
-    [SerializeField]
     private Vector2d actualCoordinate;
+    private int id;
+    private float altitud;
+    private int createdByUserID;
+    private int informationId;
 
-    public void setActualCoordinate(Vector2d actualCoordinate){
-        this.actualCoordinate = actualCoordinate;
+    public Vector2d ActualCoordinate
+    {
+        get { return actualCoordinate; }
+        set { actualCoordinate = value; }
     }
 
-    public Vector2d getActualCoordinate(){
-        return this.actualCoordinate;
+    public int Id
+    {
+        get { return id; }
+        set { id = value; }
+    }
+
+    public float Altitud
+    {
+        get { return altitud; }
+        set { altitud = value; }
+    }
+
+    public int CreatedByUserID
+    {
+        get { return createdByUserID; }
+        set { createdByUserID = value; }
+    }
+
+    public int InformationId
+    {
+        get { return informationId; }
+        set { informationId = value; }
     }
 
     public double getDistanceBetweenPlayerAndLocation(){

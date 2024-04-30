@@ -8,10 +8,10 @@ public class LocationPoint
     public float longitud;
     public float altitud;
     public int createdByUserID;
-    public int? informationId; // Usa int? para permitir valores nulos
+    public int informationId; // Usa int? para permitir valores nulos
 
     // Constructor opcional para inicializar los valores
-    public LocationPoint(int id, float latitud, float longitud, float altitud, int createdByUserID, int? informationId)
+    public LocationPoint(int id, float latitud, float longitud, float altitud, int createdByUserID, int informationId)
     {
         this.id = id;
         this.latitud = latitud;
@@ -51,7 +51,7 @@ public class LocationPoint
         set { createdByUserID = value; }
     }
 
-    public int? InformationId
+    public int InformationId
     {
         get { return informationId; }
         set { informationId = value; }
@@ -59,8 +59,7 @@ public class LocationPoint
 
     public string ConcatenarLatitudLongitud()
     {
-        string resultado = string.Format("{0}, {1}", this.latitud, this.longitud);
-        return resultado;
+        return string.Format(System.Globalization.CultureInfo.InvariantCulture, "{0},{1}", this.latitud, this.longitud);
     }
 
 }

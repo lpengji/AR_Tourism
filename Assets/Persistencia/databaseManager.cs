@@ -18,6 +18,15 @@ public class databaseManager : MonoBehaviour
 
     void Start()
     {
+        this.InitializeLocationPoints();
+    }
+
+    void Update()
+    {
+
+    }
+
+    private void InitializeLocationPoints(){
         // Cargar el contenido del archivo JSON
         string locationPointsInformation = File.ReadAllText(locationPointsURL);
 
@@ -33,12 +42,9 @@ public class databaseManager : MonoBehaviour
 
         foreach (var point in locationPoints)
         {
-            Debug.Log("ID: " + point.Id + ", Latitud-Longitud: " + point.ConcatenarLatitudLongitud() + ", Altitud: " + point.Altitud + ", Creado por Usuario ID: " + point.CreatedByUserID + ", ID de Información: " + point.InformationId);
+            Debug.Log("EN DATABASE "+"ID: " + point.Id + ", Latitud-Longitud: " + point.ConcatenarLatitudLongitud() + ", Altitud: " + point.Altitud + ", Creado por Usuario ID: " + point.CreatedByUserID + ", ID de Información: " + point.InformationId);
+
+            this.spawnOnMap.InstantiateLocationPointOnMap(point);
         }
-    }
-
-    void Update()
-    {
-
     }
 }
