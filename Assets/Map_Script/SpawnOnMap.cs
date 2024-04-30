@@ -12,15 +12,15 @@ namespace Mapbox.Examples
 	{
 		[SerializeField]
 		private AbstractMap _map;
-		private List<Vector2d>  _locations = new List<Vector2d>();	// nuevo vector para almacenar las informaciones de _locationCoordinate
+		private List<Vector2d> _locations = new List<Vector2d>();   // nuevo vector para almacenar las informaciones de _locationCoordinate
 
 		[SerializeField]
 		private float _spawnScale = 3f;
 
 		[SerializeField]
-		private GameObject _markerPrefab;	// icono de spawn de locationPoint
+		private GameObject _markerPrefab;   // icono de spawn de locationPoint
 
-		private List<GameObject> _spawnedObjects = new List<GameObject>();	// lista para guardar los locations instanciados
+		private List<GameObject> _spawnedObjects = new List<GameObject>();  // lista para guardar los locations instanciados
 
 		void Start()
 		{
@@ -39,20 +39,20 @@ namespace Mapbox.Examples
 		}
 
 		public void InstantiateLocationPointOnMap(LocationPoint point)
-        {
-            Debug.Log("EN MAP "+"ID: " + point.Id + ", Latitud-Longitud: " + point.ConcatenarLatitudLongitud() + ", Altitud: " + point.Altitud + ", Creado por Usuario ID: " + point.CreatedByUserID + ", ID de Información: " + point.InformationId);
+		{
+			Debug.Log("EN MAP " + "ID: " + point.Id + ", Latitud-Longitud: " + point.ConcatenarLatitudLongitud() + ", Altitud: " + point.Altitud + ", Creado por Usuario ID: " + point.CreatedByUserID + ", ID de Información: " + point.InformationId);
 
 			// guardar la coordenada
-            Vector2d locationIn2D = Conversions.StringToLatLon(point.ConcatenarLatitudLongitud());
-            this._locations.Add(locationIn2D);
+			Vector2d locationIn2D = Conversions.StringToLatLon(point.ConcatenarLatitudLongitud());
+			this._locations.Add(locationIn2D);
 
 			// instanciar el gameobject
-            var instance = Instantiate(_markerPrefab);
-			
-            this.InitializeGameObject(instance,point);
+			var instance = Instantiate(_markerPrefab);
 
-            _spawnedObjects.Add(instance);
-        }
+			this.InitializeGameObject(instance, point);
+
+			_spawnedObjects.Add(instance);
+		}
 
 		private void InitializeGameObject(GameObject locationObject, LocationPoint point)
 		{

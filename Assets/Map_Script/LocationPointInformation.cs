@@ -45,14 +45,15 @@ public class LocationPointInformation : MonoBehaviour
         set { informationId = value; }
     }
 
-    public double getDistanceBetweenPlayerAndLocation(){
+    public double getDistanceBetweenPlayerAndLocation()
+    {
         LocationStatus playerLocation = GameObject.Find("LocationCoordinatesCanvas").GetComponent<LocationStatus>();
-        GeoCoordinate currentPlayerLocation = new GeoCoordinate(playerLocation.getLatitude(),playerLocation.getLongitude());
-        GeoCoordinate currentLocationPointLocation = new GeoCoordinate(actualCoordinate[0],actualCoordinate[1]);
+        GeoCoordinate currentPlayerLocation = new GeoCoordinate(playerLocation.getLatitude(), playerLocation.getLongitude());
+        GeoCoordinate currentLocationPointLocation = new GeoCoordinate(actualCoordinate[0], actualCoordinate[1]);
 
         double distance = currentPlayerLocation.GetDistanceTo(currentLocationPointLocation);
         return distance;
     }
 
-    
+
 }

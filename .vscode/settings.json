@@ -5,5 +5,8 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "FSharp.suggestGitignore": false,
-  "dotnet.defaultSolution": "AR_Tourism.sln"
+  "dotnet.defaultSolution": "AR_Tourism.sln",
+  "[csharp]": {
+    "editor.defaultFormatter": "ms-dotnettools.csharp"
+  }
 }

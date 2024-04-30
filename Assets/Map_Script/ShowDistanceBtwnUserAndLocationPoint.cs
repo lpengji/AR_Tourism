@@ -6,7 +6,8 @@ using UnityEngine;
 public class ShowDistanceBtwnUserAndLocationPoint : MonoBehaviour
 {
     private LocationPointInformation locationInfo;
-    private void Start() {
+    private void Start()
+    {
         locationInfo = GetComponent<LocationPointInformation>();
     }
 
@@ -14,12 +15,13 @@ public class ShowDistanceBtwnUserAndLocationPoint : MonoBehaviour
     //     Debug.Log("Distancia restante: "+locationInfo.getDistanceBetweenPlayerAndLocation().ToString("0.00")+" m");
     // }
 
-    private void OnMouseDown() {
-    Debug.Log("DATOS LOCATION POINT: " +
-        "ID: " + locationInfo.Id + 
-        ", Latitud-Longitud: " + locationInfo.ActualCoordinate + 
-        ", Altitud: " + locationInfo.Altitud + 
-        ", Creado por Usuario ID: " + locationInfo.CreatedByUserID + 
-        ", ID de Información: " + locationInfo.InformationId);
+    private void OnMouseDown()
+    {
+        Debug.Log("DATOS LOCATION POINT: " +
+            "ID: " + locationInfo.Id +
+            ", Latitud-Longitud: " + locationInfo.ActualCoordinate +
+            ", Altitud: " + locationInfo.Altitud +
+            ", Creado por Usuario ID: " + locationInfo.CreatedByUserID +
+            ", ID de Información: " + locationInfo.InformationId);
     }
 }
