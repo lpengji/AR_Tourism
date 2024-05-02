@@ -45,7 +45,7 @@ public class databaseManager : MonoBehaviour
         {
             Debug.Log("EN DATABASE " + "ID: " + point.Id + ", Latitud-Longitud: " + point.ConcatenarLatitudLongitud() + ", Altitud: " + point.Altitud + ", Creado por Usuario ID: " + point.CreatedByUserID + ", ID de Información: " + point.InformationId);
 
-            this.spawnOnMap.InstantiateLocationPointOnMap(point);
+            this.spawnOnMap.InstantiateNormalLocationPointOnMap(point);
         }
     }
 }

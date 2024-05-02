@@ -396,10 +396,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _map: {fileID: 843921209}
-  _locationCoordinate:
-  - 42.3204700602381, -71.9603257607071
   _spawnScale: 3
-  _markerPrefab: {fileID: 4798139171204069228, guid: 422ac559a60f4064ba44ea848e2b285e, type: 3}
+  _normalLocationPrefab: {fileID: 4798139171204069228, guid: 422ac559a60f4064ba44ea848e2b285e, type: 3}
+  _likedLocationPrefab: {fileID: 292561541339491536, guid: 9c9129e4ff0d88a43beca3e453900aa2, type: 3}
+  _myLocationPrefab: {fileID: 5082404634382251692, guid: d82a8e07592b1814481f2e64b98c84c3, type: 3}
 --- !u!4 &540342461
 Transform:
   m_ObjectHideFlags: 0
