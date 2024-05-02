@@ -101,9 +101,6 @@ namespace Mapbox.Examples
 			locationInfo.Altitud = point.Altitud;
 			locationInfo.CreatedByUserID = point.CreatedByUserID;
 			locationInfo.InformationId = point.InformationId;
-
-			locationObject.transform.localPosition = _map.GeoToWorldPosition(actualCoordinate, true);
-			locationObject.transform.localScale = new Vector3(_spawnScale, _spawnScale, _spawnScale);
 		}
 	}
 }
