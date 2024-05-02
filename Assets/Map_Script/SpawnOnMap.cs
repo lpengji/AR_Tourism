@@ -35,18 +35,13 @@ namespace Mapbox.Examples
 
 		private void Update()
 		{
-			for (int i = 0; i < _normalLocationPrefabList.Count; i++)
-			{
-				var spawnedObject = _normalLocationPrefabList[i];
-				var location = _locations[i];
-				spawnedObject.transform.localPosition = _map.GeoToWorldPosition(location, true);
-				spawnedObject.transform.localScale = new Vector3(_spawnScale, _spawnScale, _spawnScale);
-			}
+			this.InstantiatePrefabOnMap(this._normalLocationPrefabList);
 		}
 
+		// crea el GameObject de la locationPoint normal
 		public void InstantiateNormalLocationPointOnMap(LocationPoint point)
 		{
-			Debug.Log("EN MAP NORMAL" + "ID: " + point.Id + ", Latitud-Longitud: " + point.ConcatenarLatitudLongitud() + ", Altitud: " + point.Altitud + ", Creado por Usuario ID: " + point.CreatedByUserID + ", ID de Información: " + point.InformationId);
+			Debug.Log("EN MAP NORMAL -> " + "ID: " + point.Id + ", Latitud-Longitud: " + point.ConcatenarLatitudLongitud() + ", Altitud: " + point.Altitud + ", Creado por Usuario ID: " + point.CreatedByUserID + ", ID de Información: " + point.InformationId);
 
 			// guardar la coordenada
 			Vector2d locationIn2D = Conversions.StringToLatLon(point.ConcatenarLatitudLongitud());
@@ -61,7 +56,7 @@ namespace Mapbox.Examples
 		}
 		public void InstantiateLikedLocationPointOnMap(LocationPoint point)
 		{
-			Debug.Log("EN MAP LIKED" + "ID: " + point.Id + ", Latitud-Longitud: " + point.ConcatenarLatitudLongitud() + ", Altitud: " + point.Altitud + ", Creado por Usuario ID: " + point.CreatedByUserID + ", ID de Información: " + point.InformationId);
+			Debug.Log("EN MAP LIKED -> " + "ID: " + point.Id + ", Latitud-Longitud: " + point.ConcatenarLatitudLongitud() + ", Altitud: " + point.Altitud + ", Creado por Usuario ID: " + point.CreatedByUserID + ", ID de Información: " + point.InformationId);
 
 			// guardar la coordenada
 			Vector2d locationIn2D = Conversions.StringToLatLon(point.ConcatenarLatitudLongitud());
@@ -76,7 +71,7 @@ namespace Mapbox.Examples
 		}
 		public void InstantiateMyLocationPointOnMap(LocationPoint point)
 		{
-			Debug.Log("EN MAP MY" + "ID: " + point.Id + ", Latitud-Longitud: " + point.ConcatenarLatitudLongitud() + ", Altitud: " + point.Altitud + ", Creado por Usuario ID: " + point.CreatedByUserID + ", ID de Información: " + point.InformationId);
+			Debug.Log("EN MAP MY -> " + "ID: " + point.Id + ", Latitud-Longitud: " + point.ConcatenarLatitudLongitud() + ", Altitud: " + point.Altitud + ", Creado por Usuario ID: " + point.CreatedByUserID + ", ID de Información: " + point.InformationId);
 
 			// guardar la coordenada
 			Vector2d locationIn2D = Conversions.StringToLatLon(point.ConcatenarLatitudLongitud());
@@ -90,7 +85,7 @@ namespace Mapbox.Examples
 			_myLocationPrefabList.Add(instance);
 		}
 
-		// 
+		// settea la información al gameObject
 		private void InitializeGameObject(GameObject locationObject, LocationPoint point)
 		{
 			LocationPointInformation locationInfo = locationObject.GetComponent<LocationPointInformation>();
@@ -101,6 +96,18 @@ namespace Mapbox.Examples
 			locationInfo.Altitud = point.Altitud;
 			locationInfo.CreatedByUserID = point.CreatedByUserID;
 			locationInfo.InformationId = point.InformationId;
+		}
+
+		// situa los gameObject prefabs en el mapa
+		private void InstantiatePrefabOnMap(List<GameObject> locationPrefabList)
+		{
+			for (int i = 0; i < locationPrefabList.Count; i++)
+			{
+				var spawnedObject = locationPrefabList[i];
+				var location = _locations[i];
+				spawnedObject.transform.localPosition = _map.GeoToWorldPosition(location, true);
+				spawnedObject.transform.localScale = new Vector3(_spawnScale, _spawnScale, _spawnScale);
+			}
 		}
 	}
 }
