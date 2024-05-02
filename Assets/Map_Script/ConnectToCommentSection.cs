@@ -2,10 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class ShowDistanceBtwnUserAndLocationPoint : MonoBehaviour
+public class ConnectToCommentSection : MonoBehaviour
 {
     private LocationPointInformation locationInfo;
+    private string nextSceneName = "Menu_Scene";
     private void Start()
     {
         locationInfo = GetComponent<LocationPointInformation>();
@@ -17,6 +19,10 @@ public class ShowDistanceBtwnUserAndLocationPoint : MonoBehaviour
 
     private void OnMouseDown()
     {
+        // pasar el id del tablon de informacion a la siguiente escena y cargar la escena nueva
+        PlayerPrefs.SetString("locationInfo", locationInfo.InformationId.ToString());
+        SceneManager.LoadScene(nextSceneName);
+
         Debug.Log("DATOS LOCATION POINT: " +
             "ID: " + locationInfo.Id +
             ", Latitud-Longitud: " + locationInfo.ActualCoordinate +
