@@ -1,3 +1,4 @@
+using System.Dynamic;
 using System.Collections.Generic;
 
 public class User
@@ -7,4 +8,5 @@ public class User
     public string UserPassword { get; set; }
     public string Rol { get; set; }
     public List<int> LikedLocations { get; set; }
+    public List<int> CreatedLocations { get; set; }
 }
