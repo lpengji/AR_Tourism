@@ -41,7 +41,7 @@ namespace Mapbox.Examples
 		// crea el GameObject de la locationPoint normal
 		public void InstantiateNormalLocationPointOnMap(LocationPoint point)
 		{
-			Debug.Log("EN MAP NORMAL -> " + "ID: " + point.Id + ", Latitud-Longitud: " + point.ConcatenarLatitudLongitud() + ", Altitud: " + point.Altitud + ", Creado por Usuario ID: " + point.CreatedByUserID + ", ID de Información: " + point.InformationId);
+			// Debug.Log("EN MAP NORMAL -> " + "ID: " + point.Id + ", Latitud-Longitud: " + point.ConcatenarLatitudLongitud() + ", Altitud: " + point.Altitud + ", Creado por Usuario ID: " + point.CreatedByUserID + ", ID de Información: " + point.InformationId);
 
 			// guardar la coordenada
 			Vector2d locationIn2D = Conversions.StringToLatLon(point.ConcatenarLatitudLongitud());
@@ -56,7 +56,7 @@ namespace Mapbox.Examples
 		}
 		public void InstantiateLikedLocationPointOnMap(LocationPoint point)
 		{
-			Debug.Log("EN MAP LIKED -> " + "ID: " + point.Id + ", Latitud-Longitud: " + point.ConcatenarLatitudLongitud() + ", Altitud: " + point.Altitud + ", Creado por Usuario ID: " + point.CreatedByUserID + ", ID de Información: " + point.InformationId);
+			// Debug.Log("EN MAP LIKED -> " + "ID: " + point.Id + ", Latitud-Longitud: " + point.ConcatenarLatitudLongitud() + ", Altitud: " + point.Altitud + ", Creado por Usuario ID: " + point.CreatedByUserID + ", ID de Información: " + point.InformationId);
 
 			// guardar la coordenada
 			Vector2d locationIn2D = Conversions.StringToLatLon(point.ConcatenarLatitudLongitud());
@@ -71,7 +71,7 @@ namespace Mapbox.Examples
 		}
 		public void InstantiateMyLocationPointOnMap(LocationPoint point)
 		{
-			Debug.Log("EN MAP MY -> " + "ID: " + point.Id + ", Latitud-Longitud: " + point.ConcatenarLatitudLongitud() + ", Altitud: " + point.Altitud + ", Creado por Usuario ID: " + point.CreatedByUserID + ", ID de Información: " + point.InformationId);
+			// Debug.Log("EN MAP MY -> " + "ID: " + point.Id + ", Latitud-Longitud: " + point.ConcatenarLatitudLongitud() + ", Altitud: " + point.Altitud + ", Creado por Usuario ID: " + point.CreatedByUserID + ", ID de Información: " + point.InformationId);
 
 			// guardar la coordenada
 			Vector2d locationIn2D = Conversions.StringToLatLon(point.ConcatenarLatitudLongitud());

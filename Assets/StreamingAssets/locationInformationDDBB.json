@@ -1,5 +1,5 @@
 {
-  "information": [
+  "informations": [
     {
       "id": 1,
       "imageURL": "https://ejemplo.com/imagen1.jpg",
@@ -9,23 +9,13 @@
           "id": 1,
           "contenidoComment": "¡Gran producto, lo recomiendo totalmente!",
           "rating": 5,
-          "createdBy": {
-            "userID": 1,
-            "userName": "usuario1",
-            "userPassword": "password123",
-            "rol": "normal"
-          }
+          "createdByUserID": 1
         },
         {
           "id": 2,
           "contenidoComment": "Buen artículo, pero podría mejorar en algunos aspectos.",
           "rating": 3,
-          "createdBy": {
-            "userID": 2,
-            "userName": "usuario2",
-            "userPassword": "qwerty456",
-            "rol": "normal"
-          }
+          "createdByUserID": 2
         }
       ]
     },
@@ -44,12 +34,7 @@
           "id": 3,
           "contenidoComment": "No estoy satisfecho con el servicio, esperaba más.",
           "rating": 2,
-          "createdBy": {
-            "userID": 3,
-            "userName": "usuario3",
-            "userPassword": "abc123",
-            "rol": "admin"
-          }
+          "createdByUserID": 3
         }
       ]
     }

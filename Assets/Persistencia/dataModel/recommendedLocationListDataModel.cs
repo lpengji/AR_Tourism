@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 
+[System.Serializable]
 public class RecommendedLocationList
 {
     public int ListID { get; set; }

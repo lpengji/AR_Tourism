@@ -12,14 +12,14 @@ public class databaseManager : MonoBehaviour
     private SpawnOnMap spawnOnMap;
 
     // Nombre del archivo JSON en StreamingAssets
-    private string locationPointsFileName = "locationPointDDBB.json";
+    private string locationPointsPersistenceFileName = "locationPointDDBB.json";
 
     private List<LocationPoint> locationPoints;
 
     IEnumerator Start()
     {
         // Construir la ruta completa al archivo JSON en StreamingAssets
-        string locationPointsURL = Path.Combine(Application.streamingAssetsPath, locationPointsFileName);
+        string locationPointsURL = Path.Combine(Application.streamingAssetsPath, locationPointsPersistenceFileName);
 
         // Verificar si la plataforma es Android
         if (Application.platform == RuntimePlatform.Android)
@@ -49,9 +49,6 @@ public class databaseManager : MonoBehaviour
                 // Iterar sobre los puntos no creados y crear objetos en el mapa
                 foreach (var point in nonCreatedLocationPoints)
                 {
-                    Debug.Log("EN DATABASE " + "ID: " + point.Id + ", Latitud-Longitud: " + point.ConcatenarLatitudLongitud() + ", Altitud: " + point.Altitud +
-                    ", Creado por Usuario ID: " + point.CreatedByUserID + ", ID de Información: " + point.InformationId + "is Created: " + point.isCreated);
-
                     spawnOnMap.InstantiateNormalLocationPointOnMap(point);
                 }
             }
@@ -70,9 +67,6 @@ public class databaseManager : MonoBehaviour
             // Iterar sobre los puntos no creados y crear objetos en el mapa
             foreach (var point in nonCreatedLocationPoints)
             {
-                Debug.Log("EN DATABASE " + "ID: " + point.Id + ", Latitud-Longitud: " + point.ConcatenarLatitudLongitud() + ", Altitud: " + point.Altitud +
-                ", Creado por Usuario ID: " + point.CreatedByUserID + ", ID de Información: " + point.InformationId + "is Created: " + point.isCreated);
-
                 spawnOnMap.InstantiateNormalLocationPointOnMap(point);
             }
         }

@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -20,7 +17,7 @@ public class ConnectToCommentSection : MonoBehaviour
     private void OnMouseDown()
     {
         // pasar el id del tablon de informacion a la siguiente escena y cargar la escena nueva
-        PlayerPrefs.SetString("locationInfo", locationInfo.InformationId.ToString());
+        PlayerPrefs.SetInt("locationInfo", locationInfo.InformationId);
         SceneManager.LoadScene(nextSceneName);
 
         Debug.Log("DATOS LOCATION POINT: " +
