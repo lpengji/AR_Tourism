@@ -1,62 +1,74 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using Mapbox.Examples;
 using UnityEngine;
+using UnityEngine.Networking;
+using Mapbox.Examples;
 using System.Linq;
+using System.IO;
 
 public class databaseManager : MonoBehaviour
 {
-    // conexión con otras funcionalidades del app
     [SerializeField]
     private SpawnOnMap spawnOnMap;
 
-    // Ruta al archivo JSON
-    private string locationPointsURL = "Assets/Persistencia/bbddAr_Tour/locationPointDDBB.json";
+    // Nombre del archivo JSON en StreamingAssets
+    private string locationPointsPersistenceFileName = "locationPointDDBB.json";
 
-    // Variables para almacenar los objetos LocationPoint deserializados del JSON
     private List<LocationPoint> locationPoints;
 
-    void Start()
+    IEnumerator Start()
     {
-        this.InitializeNormalAndLikedLocationPoints();
+        // Construir la ruta completa al archivo JSON en StreamingAssets
+        string locationPointsURL = Path.Combine(Application.streamingAssetsPath, locationPointsPersistenceFileName);
 
-        // this.InitializeMyLocationPoints();
-    }
-
-    void Update()
-    {
-
-    }
-
-    private void InitializeNormalAndLikedLocationPoints()
-    {
-        // Cargar el contenido del archivo JSON
-        string locationPointsInformation = File.ReadAllText(locationPointsURL);
-
-        // Deserializar el JSON a una lista de objetos LocationPoint
-        this.locationPoints = JsonUtility.FromJson<LocationPointsWrapper>(locationPointsInformation).locationPoints;
-
-        // Verificar si la deserialización fue exitosa
-        if (this.locationPoints == null)
+        // Verificar si la plataforma es Android
+        if (Application.platform == RuntimePlatform.Android)
         {
-            Debug.LogError("Error al deserializar el JSON.");
-            return;
+            // Si es Android, cargar el archivo usando UnityWebRequest
+            UnityWebRequest www = UnityWebRequest.Get(locationPointsURL);
+
+            // Esperar a que se complete la descarga
+            yield return www.SendWebRequest();
+
+            // Verificar si hubo algún error
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("Error al cargar el archivo: " + www.error);
+            }
+            else
+            {
+                // Obtener el contenido del archivo JSON
+                string locationPointsInformation = www.downloadHandler.text;
+
+                // Deserializar el JSON a una lista de objetos LocationPoint
+                locationPoints = JsonUtility.FromJson<LocationPointsWrapper>(locationPointsInformation).locationPoints;
+
+                // Filtrar los puntos no creados por el usuario
+                var nonCreatedLocationPoints = locationPoints.Where(point => !point.isCreated);
+
+                // Iterar sobre los puntos no creados y crear objetos en el mapa
+                foreach (var point in nonCreatedLocationPoints)
+                {
+                    spawnOnMap.InstantiateNormalLocationPointOnMap(point);
+                }
+            }
         }
-
-        // sacar los puntos creados por el usuario
-        var nonCreatedLocationPoints = locationPoints.Where(point => !point.isCreated);
-    TODO:
-        // cuando tengamos la parte de usuarios, podemos sacar la lista de nonCreatedLocationPoints. crear una funcion que compare los id de la "lista de gustado" del usuario con 
-        // la lista nonCreatedLocationPoints, y los que coincidan, sacarlos de locationPoints y meterlos en una lista nueva
-        // mas o menos asi likedLocations = removeLikedPoints(nonCreatedLocationPoints), y después esta lista los pasamos a spanOnMap.InstantiateLikedLocationPointOnMap()
-
-        foreach (var point in nonCreatedLocationPoints)
+        else
         {
-            Debug.Log("EN DATABASE " + "ID: " + point.Id + ", Latitud-Longitud: " + point.ConcatenarLatitudLongitud() + ", Altitud: " + point.Altitud +
-            ", Creado por Usuario ID: " + point.CreatedByUserID + ", ID de Información: " + point.InformationId + "is Created: " + point.isCreated);
+            // Si no es Android, cargar el archivo directamente desde el sistema de archivos
+            string locationPointsInformation = File.ReadAllText(locationPointsURL);
 
-            this.spawnOnMap.InstantiateNormalLocationPointOnMap(point);
+            // Deserializar el JSON a una lista de objetos LocationPoint
+            locationPoints = JsonUtility.FromJson<LocationPointsWrapper>(locationPointsInformation).locationPoints;
+
+            // Filtrar los puntos no creados por el usuario
+            var nonCreatedLocationPoints = locationPoints.Where(point => !point.isCreated);
+
+            // Iterar sobre los puntos no creados y crear objetos en el mapa
+            foreach (var point in nonCreatedLocationPoints)
+            {
+                spawnOnMap.InstantiateNormalLocationPointOnMap(point);
+            }
         }
     }
 }

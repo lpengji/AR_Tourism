@@ -1,6 +1,7 @@
 using System.Dynamic;
 using System.Collections.Generic;
 
+[System.Serializable]
 public class User
 {
     public int UserID { get; set; }
