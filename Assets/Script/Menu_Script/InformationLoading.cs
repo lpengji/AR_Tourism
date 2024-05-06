@@ -116,10 +116,6 @@ public class InformationLoading : MonoBehaviour
         // Establecer el texto
         textMeshPro.text = text;
 
-        // // Restablecer la posición y rotación del componente duplicado
-        // textMeshPro.rectTransform.localPosition = Vector3.zero;
-        // textMeshPro.rectTransform.localRotation = Quaternion.identity;
-
         return textObject; // Devolver el GameObject creado
     }
 
