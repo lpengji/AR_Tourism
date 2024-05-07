@@ -6,7 +6,7 @@
       "userPassword": "password123",
       "rol": "normal",
       "likedLocations": [1, 3],
-      "createdLotations": []
+      "createdLocations": []
     },
     {
       "userID": 2,
@@ -14,7 +14,7 @@
       "userPassword": "qwerty456",
       "rol": "normal",
       "likedLocations": [1],
-      "createdLotations": []
+      "createdLocations": []
     },
     {
       "userID": 3,
@@ -22,7 +22,7 @@
       "userPassword": "abc123",
       "rol": "admin",
       "likedLocations": [3],
-      "createdLotations": [4]
+      "createdLocations": [4]
     }
   ]
 }

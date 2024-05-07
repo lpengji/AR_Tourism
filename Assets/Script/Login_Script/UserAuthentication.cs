@@ -8,11 +8,14 @@ using System;
 
 public class UserAuthentication : MonoBehaviour
 {
-    public User user; // Variable para almacenar la información del usuario
-    private string usersPersistenceFileName = "usersDDBB.json"; // Nombre del archivo que contiene la información de los usuarios
+    private string usersPersistenceFileName = "userDDBB.json"; // Nombre del archivo que contiene la información de los usuarios
     private List<User> allUsersList; // Lista para almacenar la información de todos los usuarios
     public bool usersLoaded = false; // Variable para indicar si se han cargado los usuarios correctamente
 
+    void Start()
+    {
+        LoadUsers();
+    }
     public void LoadUsers()
     {
         // Cargar y leer el archivo JSON que contiene la información de los usuarios
@@ -42,7 +45,7 @@ public class UserAuthentication : MonoBehaviour
         // Verificar si hubo algún error
         if (www.result != UnityWebRequest.Result.Success)
         {
-            Debug.LogError("Error al cargar el archivo de usuarios: " + www.error);
+            Debug.LogError("Error al cargar el archivo de usuarios en Android: " + www.error);
         }
         else
         {
@@ -59,9 +62,10 @@ public class UserAuthentication : MonoBehaviour
 
     void LoadFile(string filePath)
     {
+        Debug.Log("filepath" + filePath);
         // Cargar el archivo directamente desde el sistema de archivos
         string usersInformation = File.ReadAllText(filePath);
-
+        Debug.Log("usersInformation" + usersInformation);
         // Deserializar el JSON a una lista de objetos User
         allUsersList = JsonUtility.FromJson<UserWrapper>(usersInformation).users;
 
@@ -75,7 +79,7 @@ public class UserAuthentication : MonoBehaviour
         // Verificar si los usuarios se han cargado correctamente
         if (!usersLoaded)
         {
-            Debug.LogError("Error: Los usuarios no se han cargado correctamente.");
+            Debug.Log("Error: Los usuarios no se han cargado correctamente.");
             return null; // Devolver null si los usuarios no se han cargado correctamente
         }
 
@@ -85,8 +89,6 @@ public class UserAuthentication : MonoBehaviour
         // Si se encuentra un usuario con las credenciales proporcionadas, se considera autenticado
         if (authenticatedUser != null)
         {
-            // Almacenar la información del usuario autenticado
-            user = authenticatedUser;
             return authenticatedUser; // Devolver el usuario autenticado
         }
         else

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 [System.Serializable]
 public class User
 {
-    public int id;
+    public int userID;
     public string userName;
     public string userPassword;
     public string rol;
@@ -11,9 +11,9 @@ public class User
     public List<int> createdLocations;
 
     // Constructor
-    public User(int id, string userName, string userPassword, string rol, List<int> likedLocations, List<int> createdLocations)
+    public User(int userID, string userName, string userPassword, string rol, List<int> likedLocations, List<int> createdLocations)
     {
-        this.id = id;
+        this.userID = userID;
         this.userName = userName;
         this.userPassword = userPassword;
         this.rol = rol;
@@ -21,10 +21,10 @@ public class User
         this.createdLocations = createdLocations;
     }
 
-    public int Id
+    public int UserId
     {
-        get { return id; }
-        set { id = value; }
+        get { return userID; }
+        set { userID = value; }
     }
 
     public string UserName
