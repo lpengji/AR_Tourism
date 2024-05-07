@@ -18,8 +18,8 @@
     },
     {
       "userID": 3,
-      "userName": "usuario3",
-      "userPassword": "abc123",
+      "userName": "admin",
+      "userPassword": "admin",
       "rol": "admin",
       "likedLocations": [3],
       "createdLocations": [4]
