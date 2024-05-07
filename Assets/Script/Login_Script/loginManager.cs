@@ -23,7 +23,9 @@ public class loginManager : MonoBehaviour
         //Debug.Log("usuario extraido" + authenticatedUser);
         if (authenticatedUser != null)
         {
-            Debug.Log("Inicio de sesión exitoso para el usuario: " + authenticatedUser.userName);
+            // Guardar la información del usuario en PlayerPrefs
+            string userJson = JsonUtility.ToJson(authenticatedUser);
+            PlayerPrefs.SetString("AuthenticatedUser", userJson);
             SceneManager.LoadScene(nextSceneName);
         }
         else

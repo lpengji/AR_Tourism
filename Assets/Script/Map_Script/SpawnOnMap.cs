@@ -27,10 +27,12 @@ namespace Mapbox.Examples
 		private List<GameObject> _normalLocationPrefabList = new List<GameObject>();  // lista para guardar los locations instanciados
 		private List<GameObject> _likedLocationPrefabList = new List<GameObject>();  // lista para guardar los locations gustado instanciados
 		private List<GameObject> _myLocationPrefabList = new List<GameObject>();  // lista para guardar los locations añadidos instanciados
+		private User authenticatedUser;
 
 		void Start()
 		{
-
+			string userJson = PlayerPrefs.GetString("AuthenticatedUser");
+			authenticatedUser = JsonUtility.FromJson<User>(userJson);
 		}
 
 		private void Update()
