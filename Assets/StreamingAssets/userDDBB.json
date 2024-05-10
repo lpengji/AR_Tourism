@@ -10,8 +10,8 @@
     },
     {
       "userID": 2,
-      "userName": "usuario2",
-      "userPassword": "qwerty456",
+      "userName": "normal",
+      "userPassword": "normal",
       "rol": "normal",
       "likedLocations": [1],
       "createdLocations": []

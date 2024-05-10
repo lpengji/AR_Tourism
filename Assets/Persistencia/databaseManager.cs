@@ -15,9 +15,15 @@ public class databaseManager : MonoBehaviour
     private string locationPointsPersistenceFileName = "locationPointDDBB.json";
 
     private List<LocationPoint> locationPoints;
-
+    private User loggedUser;
     IEnumerator Start()
     {
+        // Obtener la información del usuario almacenada en PlayerPrefs
+        string userJson = PlayerPrefs.GetString("AuthenticatedUser");
+        this.loggedUser = JsonUtility.FromJson<User>(userJson);
+
+        Debug.Log("loggedUser: " + loggedUser.userID + " , " + loggedUser.userName);
+
         // Construir la ruta completa al archivo JSON en StreamingAssets
         string locationPointsURL = Path.Combine(Application.streamingAssetsPath, locationPointsPersistenceFileName);
 
@@ -63,11 +69,26 @@ public class databaseManager : MonoBehaviour
 
             // Filtrar los puntos no creados por el usuario
             var nonCreatedLocationPoints = locationPoints.Where(point => !point.isCreated);
-
+            var createdLocationPoints = locationPoints.Where(point => point.isCreated);
             // Iterar sobre los puntos no creados y crear objetos en el mapa
             foreach (var point in nonCreatedLocationPoints)
             {
-                spawnOnMap.InstantiateNormalLocationPointOnMap(point);
+                if (loggedUser.likedLocations.Contains(point.Id))
+                {
+                    spawnOnMap.InstantiateLikedLocationPointOnMap(point);
+                }
+                else
+                {
+                    spawnOnMap.InstantiateNormalLocationPointOnMap(point);
+                }
+
+            }
+            foreach (var point in createdLocationPoints)
+            {
+                if (loggedUser.createdLocations.Contains(point.Id))
+                {
+                    spawnOnMap.InstantiateMyLocationPointOnMap(point);
+                }
             }
         }
     }
