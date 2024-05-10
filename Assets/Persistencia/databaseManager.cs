@@ -51,11 +51,26 @@ public class databaseManager : MonoBehaviour
 
                 // Filtrar los puntos no creados por el usuario
                 var nonCreatedLocationPoints = locationPoints.Where(point => !point.isCreated);
-
+                var createdLocationPoints = locationPoints.Where(point => point.isCreated);
                 // Iterar sobre los puntos no creados y crear objetos en el mapa
                 foreach (var point in nonCreatedLocationPoints)
                 {
-                    spawnOnMap.InstantiateNormalLocationPointOnMap(point);
+                    if (loggedUser.likedLocations.Contains(point.Id))
+                    {
+                        spawnOnMap.InstantiateLikedLocationPointOnMap(point);
+                    }
+                    else
+                    {
+                        spawnOnMap.InstantiateNormalLocationPointOnMap(point);
+                    }
+
+                }
+                foreach (var point in createdLocationPoints)
+                {
+                    if (loggedUser.createdLocations.Contains(point.Id))
+                    {
+                        spawnOnMap.InstantiateMyLocationPointOnMap(point);
+                    }
                 }
             }
         }
