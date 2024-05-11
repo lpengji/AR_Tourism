@@ -12,13 +12,6 @@ public class MenuButtonController : MonoBehaviour
     {
         previousScene = "Map_Scene";
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void BackToMapScene()
     {
         PlayerPrefs.DeleteKey("locationInfo");
