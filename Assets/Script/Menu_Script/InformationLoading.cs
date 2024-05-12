@@ -21,12 +21,19 @@ public class InformationLoading : MonoBehaviour
     private Graphic textObjetcTemplate;
     [SerializeField]
     private TextMeshProUGUI ratingBox;
+    private User loggedUser;
 
+    [SerializeField]
+    private GameObject buttonPrefab;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        // Obtener la información del usuario almacenada en PlayerPrefs
+        string userJson = PlayerPrefs.GetString("AuthenticatedUser");
+        this.loggedUser = JsonUtility.FromJson<User>(userJson);
+
         // Cargar la información desde la base de datos
         getInformationFromDDBB.LoadInformation();
 
@@ -111,7 +118,8 @@ public class InformationLoading : MonoBehaviour
                 // Si hay información del usuario, agregarla al texto del comentario
                 if (!string.IsNullOrEmpty(comment.userName))
                 {
-                    commentText += comment.userName + ":\n";
+                    // Agregar el nombre de usuario en negrita y subrayado
+                    commentText += "<b><u>" + comment.userName + ":</u></b>\n\n";
                 }
 
                 commentText += comment.contenidoComment;
@@ -121,9 +129,24 @@ public class InformationLoading : MonoBehaviour
 
                 // Asignar el ID del comentario al objeto creado
                 commentObject.name = comment.id.ToString();
+
+                if (comment.id == loggedUser.userID)
+                {
+                    GenerateEditDeleteButton(commentObject);
+                }
+
             }
         }
     }
+
+    void GenerateEditDeleteButton(GameObject commentObject)
+    {
+        // Instanciar el prefab del botón
+        GameObject buttonPrefabInstance = Instantiate(buttonPrefab, commentObject.transform);
+        buttonPrefabInstance.SetActive(true);
+    }
+
+
 
     void GenerateInformationField(Information information)
     {
