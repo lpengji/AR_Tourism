@@ -9,13 +9,15 @@
           "id": 1,
           "contenidoComment": "¡Gran producto, lo recomiendo totalmente!",
           "rating": 5,
-          "createdByUserID": 1
+          "createdByUserID": 1,
+          "userName": "usuario1"
         },
         {
           "id": 2,
           "contenidoComment": "Buen artículo, pero podría mejorar en algunos aspectos.",
           "rating": 3,
-          "createdByUserID": 2
+          "createdByUserID": 2,
+          "userName": "normal"
         }
       ]
     },
@@ -34,7 +36,8 @@
           "id": 3,
           "contenidoComment": "No estoy satisfecho con el servicio, esperaba más.",
           "rating": 2,
-          "createdByUserID": 3
+          "createdByUserID": 3,
+          "userName": "admin"
         }
       ]
     }

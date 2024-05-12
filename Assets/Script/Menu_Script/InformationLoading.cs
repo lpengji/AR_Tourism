@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -17,7 +18,10 @@ public class InformationLoading : MonoBehaviour
     private VerticalLayoutGroup commentContentBox;
 
     [SerializeField]
-    private TextMeshProUGUI textMeshProTemplate;
+    private Graphic textObjetcTemplate;
+    [SerializeField]
+    private TextMeshProUGUI ratingBox;
+
 
 
     // Start is called before the first frame update
@@ -46,13 +50,52 @@ public class InformationLoading : MonoBehaviour
     {
         Information information = getInformationFromDDBB.information;
 
-        GenerateCommentField(information);
-        GenerateInformationField(information);
+        if (information != null) // Comprobar si existe información
+        {
+            GenerateInformationField(information);
+
+            if (information.comments != null && information.comments.Count > 0)
+            {
+                SetAverageRating(information);
+                GenerateCommentField(information);
+            }
+        }
+        else
+        {
+            Debug.LogError("No se ha cargado ninguna información desde la base de datos.");
+        }
+    }
+
+
+    void SetAverageRating(Information information)
+    {
+
+        float totalRating = 0f;
+        int commentCount = 0;
+
+        // Calcular la suma de todos los ratings y contar el número de comentarios
+        foreach (var comment in information.comments)
+        {
+            totalRating += comment.rating;
+            commentCount++;
+        }
+
+        // Calcular el rating medio
+        float averageRating = commentCount > 0 ? totalRating / commentCount : 0f;
+
+        // Asignar el rating medio al ratingBox
+        if (ratingBox != null)
+        {
+            ratingBox.text = "Valoración media: " + averageRating.ToString("F2") + " / 5";
+        }
+        else
+        {
+            Debug.LogError("El ratingBox no está asignado en el Inspector.");
+        }
     }
 
     void GenerateCommentField(Information information)
     {
-        // Limpiar cualquier objeto hijo existente en commentContentBox
         foreach (Transform child in commentContentBox.transform)
         {
             Destroy(child.gameObject);
@@ -62,34 +105,40 @@ public class InformationLoading : MonoBehaviour
         {
             if (!string.IsNullOrEmpty(comment.contenidoComment))
             {
-                GameObject commentObject = CreateTextMeshPro(comment.contenidoComment, commentContentBox.transform);
+                // Crear el texto del comentario con el nombre de usuario al principio y un salto de línea
+                string commentText = "";
 
-                // Obtener el componente TextMeshProUGUI del objeto creado
-                TextMeshProUGUI textMeshPro = commentObject.GetComponent<TextMeshProUGUI>();
+                // Si hay información del usuario, agregarla al texto del comentario
+                if (!string.IsNullOrEmpty(comment.userName))
+                {
+                    commentText += comment.userName + ":\n";
+                }
+
+                commentText += comment.contenidoComment;
+
+                // Crear el objeto de comentario
+                GameObject commentObject = CreateTextMeshPro(commentText, commentContentBox.transform);
 
                 // Asignar el ID del comentario al objeto creado
-                textMeshPro.gameObject.name = comment.id.ToString();
+                commentObject.name = comment.id.ToString();
             }
         }
     }
 
     void GenerateInformationField(Information information)
     {
-        // Limpiar cualquier objeto hijo existente en informationContentBox
-        foreach (Transform child in informationContentBox.transform)
-        {
-            Destroy(child.gameObject);
-        }
-
+        // Limpiar cualquier objeto hijo existente en informationContentBox solo si hay información
         if (!string.IsNullOrEmpty(information.defaultInfo))
         {
+            foreach (Transform child in informationContentBox.transform)
+            {
+                Destroy(child.gameObject);
+            }
+
             GameObject infoObject = CreateTextMeshPro(information.defaultInfo, informationContentBox.transform);
 
-            // Obtener el componente TextMeshProUGUI del objeto creado
-            TextMeshProUGUI textMeshPro = infoObject.GetComponent<TextMeshProUGUI>();
-
             // Asignar el ID de la información al objeto creado
-            textMeshPro.gameObject.name = information.id.ToString();
+            infoObject.name = information.id.ToString();
         }
         else
         {
@@ -97,19 +146,18 @@ public class InformationLoading : MonoBehaviour
         }
     }
 
-
     GameObject CreateTextMeshPro(string text, Transform parent)
     {
         // Duplicar el GameObject original que contiene el componente TextMeshProUGUI
-        GameObject textObject = Instantiate(textMeshProTemplate.gameObject, parent);
+        GameObject textObject = Instantiate(textObjetcTemplate.gameObject, parent);
 
         // Obtener el componente TextMeshProUGUI del objeto duplicado
-        TextMeshProUGUI textMeshPro = textObject.GetComponent<TextMeshProUGUI>();
+        TextMeshProUGUI textMeshPro = textObject.GetComponentInChildren<TextMeshProUGUI>();
 
         // Verificar si la duplicación fue exitosa
         if (textMeshPro == null)
         {
-            Debug.LogError("Error al duplicar el componente TextMeshProUGUI.");
+            Debug.LogError("Error al obtener el componente TextMeshProUGUI en el objeto duplicado.");
             return null; // Devolver null si la duplicación falló
         }
 
@@ -118,6 +166,7 @@ public class InformationLoading : MonoBehaviour
 
         return textObject; // Devolver el GameObject creado
     }
+
 
 
 

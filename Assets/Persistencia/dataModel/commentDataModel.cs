@@ -7,14 +7,16 @@ public class Comment
     public string contenidoComment;
     public int rating;
     public int createdByUserID;
+    public string userName;
 
     // Constructor
-    public Comment(int id, string contenidoComment, int rating, int createdByUserID)
+    public Comment(int id, string contenidoComment, int rating, int createdByUserID, string userName)
     {
         this.id = id;
         this.contenidoComment = contenidoComment;
         this.rating = rating;
         this.createdByUserID = createdByUserID;
+        this.userName = userName;
     }
 
     public int Id
@@ -39,5 +41,11 @@ public class Comment
     {
         get { return createdByUserID; }
         set { createdByUserID = value; }
+    }
+
+    public string Username
+    {
+        get { return userName; }
+        set { userName = value; }
     }
 }
