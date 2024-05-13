@@ -160,6 +160,10 @@ public class InformationLoading : MonoBehaviour
                 // Agregar el listener de clic para editar
                 button.onClick.AddListener(() => menuButtonController.MoveToEditField(comment));
             }
+            if (button.name == "deleteButton")
+            {
+                button.onClick.AddListener(() => menuButtonController.DeleteCommenet(comment.id));
+            }
         }
     }
 

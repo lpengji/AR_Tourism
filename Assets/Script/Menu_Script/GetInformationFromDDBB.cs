@@ -96,7 +96,7 @@ public class GetInformationFromDDBB : MonoBehaviour
         {
             // Actualizar el contenido del comentario
             commentToEdit.contenidoComment = editedComment.contenidoComment;
-            Debug.Log("Comentario editado exitosamente.");
+            UpdateAllInformationList(information);
 
             // Llamar a GenerateCommentField para regenerar los comentarios
             informationLoading.GenerateCommentField(information);
@@ -107,5 +107,44 @@ public class GetInformationFromDDBB : MonoBehaviour
         }
     }
 
+    void UpdateAllInformationList(Information updatedInformation)
+    {
+        // Buscar el índice de la información actualizada dentro de la lista
+        int index = allInformationList.FindIndex(info => info.id == updatedInformation.id);
+        if (index != -1)
+        {
+            // Reemplazar la información antigua con la información actualizada
+            allInformationList[index] = updatedInformation;
 
+            // Llamar a GenerateCommentField para regenerar los comentarios
+            informationLoading.GenerateCommentField(updatedInformation);
+            this.SaveInformationToFile();
+        }
+        else
+        {
+            Debug.LogError("No se encontró la información actualizada en la lista.");
+        }
+    }
+
+    void SaveInformationToFile()
+    {
+        // Convertir la lista de información actualizada a JSON
+        string json = JsonUtility.ToJson(new InformationWrapper(allInformationList));
+
+        // Obtener la ruta del archivo JSON
+        string filePath;
+
+#if UNITY_ANDROID && !UNITY_EDITOR
+        // Si es Android, usar la ruta persistente en el sistema de archivos específica de Android
+        filePath = Path.Combine(Application.persistentDataPath, locationInformationPersistenceFileName);
+#else
+        // Si no es Android, usar la ruta en la carpeta de streamingAssets
+        filePath = Path.Combine(Application.streamingAssetsPath, locationInformationPersistenceFileName);
+#endif
+
+        // Escribir el JSON en el archivo
+        File.WriteAllText(filePath, json);
+
+        Debug.Log("Información actualizada guardada en el archivo JSON.");
+    }
 }

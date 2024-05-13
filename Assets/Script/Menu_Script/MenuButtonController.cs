@@ -53,4 +53,9 @@ public class MenuButtonController : MonoBehaviour
         editSceneObject.SetActive(false);
         menuSceneObject.SetActive(true);
     }
+
+    public void DeleteCommenet(int commentId)
+    {
+        Debug.Log("delete comment:" + commentId);
+    }
 }

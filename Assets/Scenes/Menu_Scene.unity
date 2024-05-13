@@ -1330,7 +1330,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 509931423}
+      - m_Target: {fileID: 1561322755}
         m_TargetAssemblyTypeName: MenuButtonController, Assembly-CSharp
         m_MethodName: AceptEdit
         m_Mode: 1
@@ -1802,53 +1802,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 509640825}
   m_CullTransparentMesh: 1
---- !u!1 &509931422
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 509931424}
-  - component: {fileID: 509931423}
-  m_Layer: 0
-  m_Name: MenuButtonController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &509931423
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 509931422}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cda89a7680fb8aa498f651940d6f1f0f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  editSceneObject: {fileID: 2017138569}
-  menuSceneObject: {fileID: 1515574181}
-  editInformationField: {fileID: 983821589}
---- !u!4 &509931424
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 509931422}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 539.1534, y: 1244.5239, z: 607.6221}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 10
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &549883440
 GameObject:
   m_ObjectHideFlags: 0
@@ -3757,7 +3710,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 057ddbc02ff7f3b42a029f14aedf32f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  menuButtonController: {fileID: 509931423}
+  menuButtonController: {fileID: 1561322755}
   getInformationFromDDBB: {fileID: 1459510527}
   informationContentBox: {fileID: 291505432}
   commentContentBox: {fileID: 580135690}
@@ -3796,6 +3749,7 @@ MonoBehaviour:
     imageURL: 
     defaultInfo: 
     comments: []
+  informationLoading: {fileID: 1459510525}
   informationLoaded: 0
 --- !u!1 &1468529866
 GameObject:
@@ -4142,9 +4096,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cda89a7680fb8aa498f651940d6f1f0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  editSceneObject: {fileID: 0}
-  menuSceneObject: {fileID: 0}
-  editInformationField: {fileID: 0}
+  editSceneObject: {fileID: 2017138569}
+  menuSceneObject: {fileID: 1515574181}
+  editInformationField: {fileID: 983821589}
+  getInformationFromDDBB: {fileID: 1459510527}
 --- !u!4 &1561322756
 Transform:
   m_ObjectHideFlags: 0
@@ -5997,7 +5952,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 509931423}
+      - m_Target: {fileID: 1561322755}
         m_TargetAssemblyTypeName: MenuButtonController, Assembly-CSharp
         m_MethodName: CancelEdit
         m_Mode: 1
