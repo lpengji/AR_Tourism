@@ -9,6 +9,7 @@ using System;
 public class GetInformationFromDDBB : MonoBehaviour
 {
     public Information information;
+    public InformationLoading informationLoading;
     private string locationInformationPersistenceFileName = "locationInformationDDBB.json";
     private int informationId;
     private List<Information> allInformationList;
@@ -77,4 +78,34 @@ public class GetInformationFromDDBB : MonoBehaviour
 
         informationLoaded = true;
     }
+
+    public void editComment(Comment editedComment)
+    {
+        // Verificar si la información se ha cargado correctamente
+        if (!informationLoaded)
+        {
+            Debug.LogError("No se puede editar el comentario porque la información no se ha cargado correctamente.");
+            return;
+        }
+
+        // Buscar el comentario a editar dentro de la lista de comentarios de la información actual
+        Comment commentToEdit = information.comments.Find(comment => comment.id == editedComment.id);
+
+        // Verificar si se encontró el comentario
+        if (commentToEdit != null)
+        {
+            // Actualizar el contenido del comentario
+            commentToEdit.contenidoComment = editedComment.contenidoComment;
+            Debug.Log("Comentario editado exitosamente.");
+
+            // Llamar a GenerateCommentField para regenerar los comentarios
+            informationLoading.GenerateCommentField(information);
+        }
+        else
+        {
+            Debug.LogError("No se pudo encontrar el comentario a editar.");
+        }
+    }
+
+
 }

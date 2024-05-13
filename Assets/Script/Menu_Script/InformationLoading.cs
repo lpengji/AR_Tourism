@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 public class InformationLoading : MonoBehaviour
 {
+    public MenuButtonController menuButtonController;
     [SerializeField]
     private GetInformationFromDDBB getInformationFromDDBB;
 
@@ -101,7 +102,7 @@ public class InformationLoading : MonoBehaviour
         }
     }
 
-    void GenerateCommentField(Information information)
+    public void GenerateCommentField(Information information)
     {
         foreach (Transform child in commentContentBox.transform)
         {
@@ -119,7 +120,8 @@ public class InformationLoading : MonoBehaviour
                 if (!string.IsNullOrEmpty(comment.userName))
                 {
                     // Agregar el nombre de usuario en negrita y subrayado
-                    commentText += "<b><u>" + comment.userName + ":</u></b>\n\n";
+                    commentText += "usuario: <b><u>" + comment.userName + "</u></b>\n";
+                    commentText += "valoración: <b>" + comment.rating + "</b>\n\n";
                 }
 
                 commentText += comment.contenidoComment;
@@ -132,18 +134,33 @@ public class InformationLoading : MonoBehaviour
 
                 if (comment.id == loggedUser.userID)
                 {
-                    GenerateEditDeleteButton(commentObject);
+                    GenerateEditDeleteButton(commentObject, comment);
                 }
 
             }
         }
     }
 
-    void GenerateEditDeleteButton(GameObject commentObject)
+    void GenerateEditDeleteButton(GameObject commentObject, Comment comment)
     {
         // Instanciar el prefab del botón
         GameObject buttonPrefabInstance = Instantiate(buttonPrefab, commentObject.transform);
+
+        // Activar el botón
         buttonPrefabInstance.SetActive(true);
+
+        // Obtener los botones hijos del botón instanciado
+        Button[] buttons = buttonPrefabInstance.GetComponentsInChildren<Button>();
+
+        // Iterar sobre los botones y asignarles sus métodos respectivos
+        foreach (Button button in buttons)
+        {
+            if (button.name == "editButton") // Nombre del botón de editar
+            {
+                // Agregar el listener de clic para editar
+                button.onClick.AddListener(() => menuButtonController.MoveToEditField(comment));
+            }
+        }
     }
 
 
@@ -189,10 +206,4 @@ public class InformationLoading : MonoBehaviour
 
         return textObject; // Devolver el GameObject creado
     }
-
-
-
-
-
-
 }
