@@ -14,7 +14,14 @@ public class MenuButtonController : MonoBehaviour
     private GameObject menuSceneObject;
     [SerializeField]
     private TMP_InputField editInformationField;
+    [SerializeField]
+    private TMP_Dropdown editRatingField;
+    [SerializeField]
+    private GameObject editRatingSprite;
     private Comment comment;
+    private Information information;
+    private bool newComment;
+    private User loggedUser;
     [SerializeField]
     private GetInformationFromDDBB getInformationFromDDBB;
 
@@ -31,31 +38,93 @@ public class MenuButtonController : MonoBehaviour
 
     public void MoveToEditField(Comment comment)
     {
+        this.editRatingField.gameObject.SetActive(true);
         this.comment = comment;
         // Establece el contenido del campo de entrada de texto
         editInformationField.text = comment.contenidoComment;
+        editRatingField.value = comment.rating - 1;
 
         editSceneObject.SetActive(true);
         menuSceneObject.SetActive(false);
     }
 
+    public void MoveToEditField(Information information)
+    {
+        this.editRatingField.gameObject.SetActive(false);
+        this.information = information;
+        // Establece el contenido del campo de entrada de texto
+        editInformationField.text = information.defaultInfo;
+
+        editSceneObject.SetActive(true);
+        menuSceneObject.SetActive(false);
+    }
+
+    public void MoveToEditField(bool newComment, User currentUser)
+    {
+        this.editRatingField.gameObject.SetActive(true);
+        this.newComment = newComment;
+        this.loggedUser = currentUser;
+
+        editSceneObject.SetActive(true);
+        menuSceneObject.SetActive(false);
+    }
     public void AceptEdit()
     {
-        this.comment.contenidoComment = editInformationField.text;
-        getInformationFromDDBB.editComment(this.comment);
+        //editando comentario (contenido + rating)
+        if (comment != null)
+        {
+            this.comment.contenidoComment = editInformationField.text;
+            this.comment.rating = editRatingField.value + 1;
+            getInformationFromDDBB.editComment(this.comment);
+        }
+        // editando informacion 
+        if (information != null)
+        {
+            this.information.defaultInfo = editInformationField.text; ;
+            getInformationFromDDBB.editInformation(this.information);
+        }
+        // alta nuevo locationInformation
+        if (newComment)
+        {
+            getInformationFromDDBB.AddNewComment(editInformationField.text, editRatingField.value + 1, loggedUser.userID, loggedUser.userName);
+        }
+        CleanInputFields();
         editSceneObject.SetActive(false);
         menuSceneObject.SetActive(true);
     }
 
     public void CancelEdit()
     {
-        editInformationField.text = "";
+        CleanInputFields();
+        if (comment != null)
+        {
+            comment = null;
+        }
+        if (information != null)
+        {
+            information = null;
+        }
+        if (newComment)
+        {
+            newComment = false;
+        }
         editSceneObject.SetActive(false);
         menuSceneObject.SetActive(true);
+    }
+
+    private void CleanInputFields()
+    {
+        editInformationField.text = "";
+        editRatingField.value = 0;
     }
 
     public void DeleteCommenet(int commentId)
     {
         Debug.Log("delete comment:" + commentId);
+    }
+
+    public void DeleteInformation(int informationId)
+    {
+        Debug.Log("delete information:" + informationId);
     }
 }

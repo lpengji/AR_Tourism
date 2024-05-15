@@ -100,11 +100,73 @@ public class GetInformationFromDDBB : MonoBehaviour
 
             // Llamar a GenerateCommentField para regenerar los comentarios
             informationLoading.GenerateCommentField(information);
+            informationLoading.SetAverageRating(information);
         }
         else
         {
             Debug.LogError("No se pudo encontrar el comentario a editar.");
         }
+    }
+    public void editInformation(Information newInformation)
+    {
+        // Verificar si la información se ha cargado correctamente
+        if (!informationLoaded)
+        {
+            Debug.LogError("No se puede editar el comentario porque la información no se ha cargado correctamente.");
+            return;
+        }
+
+        this.information = newInformation;
+
+        // Verificar si se encontró el comentario
+        if (information != null)
+        {
+            UpdateAllInformationList(information);
+
+            // Llamar a GenerateCommentField para regenerar los comentarios
+            informationLoading.GenerateInformationField(information);
+        }
+        else
+        {
+            Debug.LogError("No se pudo encontrar el comentario a editar.");
+        }
+    }
+
+    public void AddNewComment(string contenidoComment, int rating, int createdByUserID, string userName)
+    {
+        // Verificar si la información actual es válida
+        if (information == null)
+        {
+            Debug.LogError("No hay información actual para agregar un comentario.");
+            return;
+        }
+
+        // Crear un nuevo comentario con un ID único
+        int newCommentId = GenerateUniqueCommentId();
+        Comment newComment = new Comment(newCommentId, contenidoComment, rating, createdByUserID, userName);
+
+        // Agregar el nuevo comentario a la lista de comentarios de la información actual
+        information.comments.Add(newComment);
+
+        informationLoading.GenerateCommentField(information);
+        informationLoading.SetAverageRating(information);
+        UpdateAllInformationList(information);
+    }
+
+    private int GenerateUniqueCommentId()
+    {
+        // Obtener el último ID de comentario existente
+        int lastCommentId = 0;
+        foreach (Comment comment in information.comments)
+        {
+            if (comment.Id > lastCommentId)
+            {
+                lastCommentId = comment.Id;
+            }
+        }
+
+        // Incrementar el último ID de comentario para obtener un ID único
+        return lastCommentId + 1;
     }
 
     void UpdateAllInformationList(Information updatedInformation)

@@ -26,7 +26,11 @@ public class InformationLoading : MonoBehaviour
 
     [SerializeField]
     private GameObject buttonPrefab;
-
+    [SerializeField]
+    private Button addInformationButton;
+    [SerializeField]
+    private Button addCommentButton;
+    private Information information;
 
     // Start is called before the first frame update
     void Start()
@@ -40,6 +44,18 @@ public class InformationLoading : MonoBehaviour
 
         // Esperar un pequeño tiempo para asegurarse de que la información se haya cargado completamente
         StartCoroutine(WaitForInformationLoad());
+    }
+
+    void Update()
+    {
+        if (information.defaultInfo != "")
+        {
+            addInformationButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            addInformationButton.gameObject.SetActive(true);
+        }
     }
 
     IEnumerator WaitForInformationLoad()
@@ -57,25 +73,29 @@ public class InformationLoading : MonoBehaviour
     void GenerateTextMeshPro()
     {
         Information information = getInformationFromDDBB.information;
+        this.information = information;
+        Debug.Log("information" + information.id + " " + information.imageURL + " " + information.defaultInfo);
 
-        if (information != null) // Comprobar si existe información
+        if (information.defaultInfo != "")
         {
             GenerateInformationField(information);
-
-            if (information.comments != null && information.comments.Count > 0)
-            {
-                SetAverageRating(information);
-                GenerateCommentField(information);
-            }
         }
         else
         {
-            Debug.LogError("No se ha cargado ninguna información desde la base de datos.");
+            addInformationButton.onClick.AddListener(() => menuButtonController.MoveToEditField(information));
         }
+
+        if (information.comments != null && information.comments.Count > 0)
+        {
+            SetAverageRating(information);
+            GenerateCommentField(information);
+        }
+        addCommentButton.onClick.AddListener(() => menuButtonController.MoveToEditField(true, loggedUser));
+
     }
 
 
-    void SetAverageRating(Information information)
+    public void SetAverageRating(Information information)
     {
 
         float totalRating = 0f;
@@ -169,7 +189,7 @@ public class InformationLoading : MonoBehaviour
 
 
 
-    void GenerateInformationField(Information information)
+    public void GenerateInformationField(Information information)
     {
         // Limpiar cualquier objeto hijo existente en informationContentBox solo si hay información
         if (!string.IsNullOrEmpty(information.defaultInfo))
@@ -178,17 +198,58 @@ public class InformationLoading : MonoBehaviour
             {
                 Destroy(child.gameObject);
             }
+            string infoString = "";
 
-            GameObject infoObject = CreateTextMeshPro(information.defaultInfo, informationContentBox.transform);
+            if (loggedUser.rol == "admin")
+            {
+                infoString = "Información:\n\n";
+            }
+            infoString += information.defaultInfo;
+            GameObject infoObject = CreateTextMeshPro(infoString, informationContentBox.transform);
 
             // Asignar el ID de la información al objeto creado
             infoObject.name = information.id.ToString();
+            if (loggedUser.rol == "admin")
+            {
+                GenerateEditDeleteButton(infoObject, information);
+            }
+
         }
         else
         {
             CreateTextMeshPro("Sin información disponible", informationContentBox.transform);
         }
     }
+
+    void GenerateEditDeleteButton(GameObject infoObject, Information information)
+    {
+        // Instanciar el prefab del botón
+        GameObject buttonPrefabInstance = Instantiate(buttonPrefab, infoObject.transform);
+
+        // Activar el botón
+        buttonPrefabInstance.SetActive(true);
+
+        // Obtener los botones hijos del botón instanciado
+        Button[] buttons = buttonPrefabInstance.GetComponentsInChildren<Button>();
+
+        // Iterar sobre los botones y asignarles sus métodos respectivos
+        foreach (Button button in buttons)
+        {
+            button.transform.position
+            = new Vector3(button.transform.position.x, button.transform.position.y - 135f, button.transform.position.z);
+
+            if (button.name == "editButton") // Nombre del botón de editar
+            {
+                // Agregar el listener de clic para editar
+                button.onClick.AddListener(() => menuButtonController.MoveToEditField(information));
+            }
+            if (button.name == "deleteButton")
+            {
+                button.onClick.AddListener(() => menuButtonController.DeleteInformation(information.id));
+            }
+        }
+    }
+
 
     GameObject CreateTextMeshPro(string text, Transform parent)
     {
