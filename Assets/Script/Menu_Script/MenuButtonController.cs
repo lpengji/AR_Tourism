@@ -71,20 +71,20 @@ public class MenuButtonController : MonoBehaviour
     public void AceptEdit()
     {
         //editando comentario (contenido + rating)
-        if (comment != null)
+        if (comment != null && editInformationField.text != "")
         {
             this.comment.contenidoComment = editInformationField.text;
             this.comment.rating = editRatingField.value + 1;
             getInformationFromDDBB.editComment(this.comment);
         }
         // editando informacion 
-        if (information != null)
+        if (information != null && editInformationField.text != "")
         {
             this.information.defaultInfo = editInformationField.text; ;
             getInformationFromDDBB.editInformation(this.information);
         }
         // alta nuevo locationInformation
-        if (newComment)
+        if (newComment && editInformationField.text != "")
         {
             getInformationFromDDBB.AddNewComment(editInformationField.text, editRatingField.value + 1, loggedUser.userID, loggedUser.userName);
         }
