@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MenuButtonController : MonoBehaviour
 {
@@ -24,11 +25,19 @@ public class MenuButtonController : MonoBehaviour
     private User loggedUser;
     [SerializeField]
     private GetInformationFromDDBB getInformationFromDDBB;
+    [SerializeField]
+    private GameObject DeleteWarning;
+    [SerializeField]
+    private Button AceptDeleteButton;
+    private TextMeshProUGUI warningText;
+
 
     // Start is called before the first frame update
     void Start()
     {
+        warningText = DeleteWarning.transform.Find("Background/TextBackground/WarningText").GetComponent<TextMeshProUGUI>();
         previousScene = "Map_Scene";
+        Debug.Log(warningText.text);
     }
     public void BackToMapScene()
     {
@@ -120,14 +129,38 @@ public class MenuButtonController : MonoBehaviour
 
     public void DeleteCommenet(int commentId)
     {
-        Debug.Log("delete comment:" + commentId);
+        this.warningText.text = "Estás seguro de quere eliminar el comentario seleccionado ?";
+        this.DeleteWarning.SetActive(true);
+        AceptDeleteButton.onClick.RemoveAllListeners();
+        AceptDeleteButton.onClick.AddListener(() => AceptDeleteCommenet(commentId));
+    }
+    public void AceptDeleteCommenet(int commentId)
+    {
         getInformationFromDDBB.DeleteComment(commentId);
+        this.DeleteWarning.SetActive(false);
     }
 
     public void DeleteInformation()
     {
-        Debug.Log("delete information:");
-        getInformationFromDDBB.DeleteInformation();
+        this.warningText.text = "Estás seguro de quere eliminar la información seleccionada ?";
+        this.DeleteWarning.SetActive(true);
+        AceptDeleteButton.onClick.RemoveAllListeners();
+        AceptDeleteButton.onClick.AddListener(() => AceptDeleteInformation());
     }
 
+    public void AceptDeleteInformation()
+    {
+        getInformationFromDDBB.DeleteInformation();
+        this.DeleteWarning.SetActive(false);
+    }
+
+    public void CancelDelete()
+    {
+        this.DeleteWarning.SetActive(false);
+    }
+
+}
+
+internal class SerializableFieldAttribute : Attribute
+{
 }
