@@ -163,6 +163,55 @@ public class GetInformationFromDDBB : MonoBehaviour
         UpdateAllInformationList(information);
     }
 
+    public void DeleteComment(int commentId)
+    {
+        // Verificar si la información se ha cargado correctamente
+        if (!informationLoaded)
+        {
+            Debug.LogError("No se puede eliminar el comentario porque la información no se ha cargado correctamente.");
+            return;
+        }
+
+        // Buscar el comentario a eliminar dentro de la lista de comentarios de la información actual
+        Comment commentToDelete = information.comments.Find(comment => comment.id == commentId);
+
+        // Verificar si se encontró el comentario
+        if (commentToDelete != null)
+        {
+            // Eliminar el comentario de la lista
+            information.comments.Remove(commentToDelete);
+            UpdateAllInformationList(information);
+
+            // Llamar a GenerateCommentField para regenerar los comentarios
+            informationLoading.GenerateCommentField(information);
+            informationLoading.SetAverageRating(information);
+        }
+        else
+        {
+            Debug.LogError("No se pudo encontrar el comentario a eliminar.");
+        }
+    }
+
+    public void DeleteInformation()
+    {
+        // Verificar si la información se ha cargado correctamente
+        if (!informationLoaded)
+        {
+            Debug.LogError("No se puede eliminar la información porque no se ha cargado correctamente.");
+            return;
+        }
+
+        // Setear el defaultInfo a una cadena vacía
+        this.information.defaultInfo = "";
+
+        UpdateAllInformationList(information);
+
+        // Actualizar la vista después de editar la información
+        informationLoading.GenerateInformationField(this.information);
+    }
+
+
+    // generar id para los nuevos comentarios 
     private int GenerateUniqueCommentId()
     {
         // Obtener el último ID de comentario existente
@@ -179,6 +228,7 @@ public class GetInformationFromDDBB : MonoBehaviour
         return lastCommentId + 1;
     }
 
+    // actualizar la información en la lista de informaciones
     void UpdateAllInformationList(Information updatedInformation)
     {
         // Buscar el índice de la información actualizada dentro de la lista
@@ -198,6 +248,7 @@ public class GetInformationFromDDBB : MonoBehaviour
         }
     }
 
+    // guardar los cambios en la bbdd
     void SaveInformationToFile()
     {
         // Convertir la lista de información actualizada a JSON

@@ -121,10 +121,13 @@ public class MenuButtonController : MonoBehaviour
     public void DeleteCommenet(int commentId)
     {
         Debug.Log("delete comment:" + commentId);
+        getInformationFromDDBB.DeleteComment(commentId);
     }
 
-    public void DeleteInformation(int informationId)
+    public void DeleteInformation()
     {
-        Debug.Log("delete information:" + informationId);
+        Debug.Log("delete information:");
+        getInformationFromDDBB.DeleteInformation();
     }
+
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class InformationLoading : MonoBehaviour
@@ -156,7 +157,10 @@ public class InformationLoading : MonoBehaviour
                 {
                     GenerateEditDeleteButton(commentObject, comment);
                 }
-
+            }
+            else
+            {
+                ReloadPageOrShowNoInfo();
             }
         }
     }
@@ -213,11 +217,10 @@ public class InformationLoading : MonoBehaviour
             {
                 GenerateEditDeleteButton(infoObject, information);
             }
-
         }
         else
         {
-            CreateTextMeshPro("Sin información disponible", informationContentBox.transform);
+            ReloadPageOrShowNoInfo();
         }
     }
 
@@ -245,7 +248,7 @@ public class InformationLoading : MonoBehaviour
             }
             if (button.name == "deleteButton")
             {
-                button.onClick.AddListener(() => menuButtonController.DeleteInformation(information.id));
+                button.onClick.AddListener(() => menuButtonController.DeleteInformation());
             }
         }
     }
@@ -270,5 +273,19 @@ public class InformationLoading : MonoBehaviour
         textMeshPro.text = text;
 
         return textObject; // Devolver el GameObject creado
+    }
+
+    private void ReloadPageOrShowNoInfo()
+    {
+        // Ejemplo de recargar la escena actual
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(currentScene.name);
+
+        // Alternativamente, mostrar un mensaje en la UI
+        foreach (Transform child in informationContentBox.transform)
+        {
+            Destroy(child.gameObject);
+        }
+        CreateTextMeshPro("Sin información disponible", informationContentBox.transform);
     }
 }
