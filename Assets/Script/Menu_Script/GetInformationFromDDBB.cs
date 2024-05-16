@@ -19,19 +19,31 @@ public class GetInformationFromDDBB : MonoBehaviour
     {
         // Obtener el ID de la información del PlayerPrefs
         informationId = PlayerPrefs.GetInt("locationInfo", -1);
-        Debug.Log(informationId);
+        Debug.Log("Información ID: " + informationId);
 
-        // Cargar y leer el archivo JSON
-        string filePath = Path.Combine(Application.streamingAssetsPath, locationInformationPersistenceFileName);
+        // Obtener la ruta del archivo JSON
+        string filePath;
 
-        // Verificar si la plataforma es Android
-        if (Application.platform == RuntimePlatform.Android)
+#if UNITY_ANDROID && !UNITY_EDITOR
+    // Si es Android, usar la ruta persistente en el sistema de archivos específica de Android
+    filePath = Path.Combine(Application.persistentDataPath, locationInformationPersistenceFileName);
+#else
+        // Si no es Android, usar la ruta en la carpeta de streamingAssets
+        filePath = Path.Combine(Application.streamingAssetsPath, locationInformationPersistenceFileName);
+#endif
+
+        Debug.Log("File path: " + filePath);
+
+        // Verificar si la plataforma es Android y si el archivo existe
+        if (Application.platform == RuntimePlatform.Android && File.Exists(filePath))
         {
-            // Si es Android, cargar el archivo usando UnityWebRequest
-            UnityWebRequest www = UnityWebRequest.Get(filePath);
-
-            // Esperar a que se complete la descarga
-            StartCoroutine(DownloadFile(www));
+            // Si es Android y el archivo existe, cargar el archivo directamente desde el sistema de archivos
+            LoadFile(filePath);
+        }
+        else if (Application.platform == RuntimePlatform.Android)
+        {
+            // Si es Android y el archivo no existe en persistentDataPath, intentar cargar desde streamingAssets
+            StartCoroutine(LoadFileFromStreamingAssets(filePath));
         }
         else
         {
@@ -40,36 +52,30 @@ public class GetInformationFromDDBB : MonoBehaviour
         }
     }
 
-    IEnumerator DownloadFile(UnityWebRequest www)
+    IEnumerator LoadFileFromStreamingAssets(string filePath)
     {
-        // Esperar a que se complete la descarga
+        UnityWebRequest www = UnityWebRequest.Get(filePath);
         yield return www.SendWebRequest();
 
-        // Verificar si hubo algún error
         if (www.result != UnityWebRequest.Result.Success)
         {
             Debug.LogError("Error al cargar el archivo: " + www.error);
         }
         else
         {
-            // Obtener el contenido del archivo JSON
             string locationInformation = www.downloadHandler.text;
-
-            // Deserializar el JSON a una lista de objetos LocationPoint
-            allInformationList = JsonUtility.FromJson<InformationWrapper>(locationInformation).informations;
-
-            // Filtrar las informaciones hasta encontrar el id correcto
-            information = allInformationList.Find(info => info.id == informationId);
-
-            informationLoaded = true;
+            ProcessInformation(locationInformation);
         }
     }
 
     void LoadFile(string filePath)
     {
-        // Cargar el archivo directamente desde el sistema de archivos
         string locationInformation = File.ReadAllText(filePath);
+        ProcessInformation(locationInformation);
+    }
 
+    void ProcessInformation(string locationInformation)
+    {
         // Deserializar el JSON a una lista de objetos Information
         allInformationList = JsonUtility.FromJson<InformationWrapper>(locationInformation).informations;
 
@@ -77,6 +83,10 @@ public class GetInformationFromDDBB : MonoBehaviour
         information = allInformationList.Find(info => info.id == informationId);
 
         informationLoaded = true;
+
+        // Actualizar la vista después de cargar la información
+        informationLoading.GenerateCommentField(information);
+        informationLoading.SetAverageRating(information);
     }
 
     public void editComment(Comment editedComment)
@@ -197,16 +207,34 @@ public class GetInformationFromDDBB : MonoBehaviour
         string filePath;
 
 #if UNITY_ANDROID && !UNITY_EDITOR
-        // Si es Android, usar la ruta persistente en el sistema de archivos específica de Android
-        filePath = Path.Combine(Application.persistentDataPath, locationInformationPersistenceFileName);
+    // Si es Android, usar la ruta persistente en el sistema de archivos específica de Android
+    filePath = Path.Combine(Application.persistentDataPath, locationInformationPersistenceFileName);
 #else
         // Si no es Android, usar la ruta en la carpeta de streamingAssets
         filePath = Path.Combine(Application.streamingAssetsPath, locationInformationPersistenceFileName);
 #endif
 
-        // Escribir el JSON en el archivo
-        File.WriteAllText(filePath, json);
+        Debug.Log("File path: " + filePath);
 
-        Debug.Log("Información actualizada guardada en el archivo JSON.");
+        try
+        {
+            // Ensure the directory exists
+            string directoryPath = Path.GetDirectoryName(filePath);
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+
+            // Escribir el JSON en el archivo
+            File.WriteAllText(filePath, json);
+            Debug.Log("Información actualizada guardada en el archivo JSON.");
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError("Error al guardar el archivo: " + ex.Message);
+        }
     }
+
+
+
 }
