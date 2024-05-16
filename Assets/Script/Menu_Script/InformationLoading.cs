@@ -153,7 +153,7 @@ public class InformationLoading : MonoBehaviour
                 // Asignar el ID del comentario al objeto creado
                 commentObject.name = comment.id.ToString();
 
-                if (comment.id == loggedUser.userID)
+                if (comment.createdByUserID == loggedUser.userID)
                 {
                     GenerateEditDeleteButton(commentObject, comment);
                 }
@@ -167,14 +167,8 @@ public class InformationLoading : MonoBehaviour
 
     void GenerateEditDeleteButton(GameObject commentObject, Comment comment)
     {
-        // Instanciar el prefab del botón
-        GameObject buttonPrefabInstance = Instantiate(buttonPrefab, commentObject.transform);
-
-        // Activar el botón
-        buttonPrefabInstance.SetActive(true);
-
         // Obtener los botones hijos del botón instanciado
-        Button[] buttons = buttonPrefabInstance.GetComponentsInChildren<Button>();
+        Button[] buttons = commentObject.GetComponentsInChildren<Button>();
 
         // Iterar sobre los botones y asignarles sus métodos respectivos
         foreach (Button button in buttons)
@@ -226,21 +220,12 @@ public class InformationLoading : MonoBehaviour
 
     void GenerateEditDeleteButton(GameObject infoObject, Information information)
     {
-        // Instanciar el prefab del botón
-        GameObject buttonPrefabInstance = Instantiate(buttonPrefab, infoObject.transform);
-
-        // Activar el botón
-        buttonPrefabInstance.SetActive(true);
-
         // Obtener los botones hijos del botón instanciado
-        Button[] buttons = buttonPrefabInstance.GetComponentsInChildren<Button>();
+        Button[] buttons = infoObject.GetComponentsInChildren<Button>();
 
         // Iterar sobre los botones y asignarles sus métodos respectivos
         foreach (Button button in buttons)
         {
-            button.transform.position
-            = new Vector3(button.transform.position.x, button.transform.position.y - 135f, button.transform.position.z);
-
             if (button.name == "editButton") // Nombre del botón de editar
             {
                 // Agregar el listener de clic para editar
