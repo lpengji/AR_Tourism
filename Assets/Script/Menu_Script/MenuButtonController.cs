@@ -49,6 +49,7 @@ public class MenuButtonController : MonoBehaviour
     {
         this.editRatingField.gameObject.SetActive(true);
         this.comment = comment;
+        this.newComment = false;
         // Establece el contenido del campo de entrada de texto
         editInformationField.text = comment.contenidoComment;
         editRatingField.value = comment.rating - 1;
