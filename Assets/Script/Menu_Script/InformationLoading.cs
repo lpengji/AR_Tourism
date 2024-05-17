@@ -98,7 +98,7 @@ public class InformationLoading : MonoBehaviour
         UpdateLikeUnlikeText();
     }
 
-    private void UpdateLikeUnlikeText()
+    public void UpdateLikeUnlikeText()
     {
         if (!loggedUser.createdLocations.Contains(information.id))
         {
@@ -110,6 +110,7 @@ public class InformationLoading : MonoBehaviour
             {
                 likeUnlikeButton.GetComponentInChildren<TextMeshProUGUI>().text = "Añadir a Favoritos";
             }
+            likeUnlikeButton.onClick.AddListener(() => menuButtonController.LikeUnlikeTextManager(information.id, loggedUser, likeUnlikeButton));
             likeUnlikeButton.gameObject.SetActive(true);
         }
         else

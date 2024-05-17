@@ -31,6 +31,9 @@ public class MenuButtonController : MonoBehaviour
     private Button AceptDeleteButton;
     private TextMeshProUGUI warningText;
 
+    [SerializeField]
+    private UserAuthentication userAuthentication;
+
 
     // Start is called before the first frame update
     void Start()
@@ -158,6 +161,27 @@ public class MenuButtonController : MonoBehaviour
     public void CancelDelete()
     {
         this.DeleteWarning.SetActive(false);
+    }
+
+    public void LikeUnlikeTextManager(int InfoDefaultInfo, User user, Button likeUnlikeButton)
+    {
+        // Verificar si la información ya está en la lista de favoritos del usuario
+        if (user.likedLocations.Contains(InfoDefaultInfo))
+        {
+            // Si está en la lista, removerla
+            user.likedLocations.Remove(InfoDefaultInfo);
+            likeUnlikeButton.GetComponentInChildren<TextMeshProUGUI>().text = "Añadir a Favoritos";
+        }
+        else
+        {
+            // Si no está en la lista, añadirla
+            user.likedLocations.Add(InfoDefaultInfo);
+            likeUnlikeButton.GetComponentInChildren<TextMeshProUGUI>().text = "Quitar de Favoritos";
+        }
+        userAuthentication.UpdateUser(user);
+        string userJson = JsonUtility.ToJson(user);
+        PlayerPrefs.SetString("AuthenticatedUser", userJson);
+        PlayerPrefs.Save();
     }
 
 }

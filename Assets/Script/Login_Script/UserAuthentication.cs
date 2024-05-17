@@ -103,6 +103,26 @@ public class UserAuthentication : MonoBehaviour
         }
     }
 
+    public void UpdateUser(User updatedUser)
+    {
+        if (!usersLoaded)
+        {
+            Debug.LogError("Users not loaded, cannot update user.");
+            return;
+        }
+
+        int index = allUsersList.FindIndex(u => u.userName == updatedUser.userName);
+        if (index != -1)
+        {
+            allUsersList[index] = updatedUser;
+            SaveUsersToFile();
+        }
+        else
+        {
+            Debug.LogError("User not found, cannot update.");
+        }
+    }
+
     void SaveUsersToFile()
     {
         // Convert the updated user list to JSON
