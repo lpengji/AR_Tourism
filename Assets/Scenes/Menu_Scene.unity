@@ -296,7 +296,7 @@ GameObject:
   - component: {fileID: 109788802}
   - component: {fileID: 109788801}
   - component: {fileID: 109788800}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: deleteButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -402,7 +402,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 100, y: 166.00003}
+  m_AnchoredPosition: {x: 105.00001, y: -33.000015}
   m_SizeDelta: {x: 40, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &133132069
@@ -2564,7 +2564,7 @@ GameObject:
   - component: {fileID: 509640829}
   - component: {fileID: 509640828}
   - component: {fileID: 509640827}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: TextBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2583,14 +2583,15 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 549883441}
   - {fileID: 1578427861}
   m_Father: {fileID: 969986510}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 400, y: 70.17}
+  m_AnchoredPosition: {x: 0, y: 50}
+  m_SizeDelta: {x: 400, y: 65.14}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &509640827
 MonoBehaviour:
@@ -2646,7 +2647,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.05490196, g: 0.02745098, b: 0.2, a: 0.40392157}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -3247,13 +3248,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 549883441}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: deleteEditButtonField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &549883441
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3261,20 +3262,20 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 549883440}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1252681425}
   - {fileID: 109788803}
-  m_Father: {fileID: 1515574185}
-  m_RootOrder: 2
+  m_Father: {fileID: 509640826}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -77}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 200, y: -0}
+  m_SizeDelta: {x: 100, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &577879849
 GameObject:
@@ -5692,7 +5693,7 @@ GameObject:
   - component: {fileID: 1252681427}
   - component: {fileID: 1252681426}
   - component: {fileID: 1252681428}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: editButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5716,7 +5717,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 160, y: 166}
+  m_AnchoredPosition: {x: 165, y: -34}
   m_SizeDelta: {x: 40, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1252681426
@@ -6818,7 +6819,6 @@ RectTransform:
   m_Children:
   - {fileID: 1797377979}
   - {fileID: 82843169}
-  - {fileID: 549883441}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7078,7 +7078,7 @@ GameObject:
   - component: {fileID: 1578427861}
   - component: {fileID: 1578427863}
   - component: {fileID: 1578427862}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: TemplateTextMeshPro
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7098,12 +7098,12 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 509640826}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 200, y: -35.085}
-  m_SizeDelta: {x: 400, y: 70.17}
+  m_AnchoredPosition: {x: 200, y: -32.57}
+  m_SizeDelta: {x: 400, y: 65.14}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1578427862
 MonoBehaviour:
