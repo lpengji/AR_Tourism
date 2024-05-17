@@ -32,7 +32,7 @@ public class InformationLoading : MonoBehaviour
     [SerializeField]
     private Button addCommentButton;
     [SerializeField]
-    private TextMeshProUGUI likeUnlikeText;
+    private Button likeUnlikeButton;
     private Information information;
 
     // Start is called before the first frame update
@@ -94,8 +94,30 @@ public class InformationLoading : MonoBehaviour
             GenerateCommentField(information);
         }
         addCommentButton.onClick.AddListener(() => menuButtonController.MoveToEditField(true, loggedUser));
-
+        // Update the like/unlike text
+        UpdateLikeUnlikeText();
     }
+
+    private void UpdateLikeUnlikeText()
+    {
+        if (!loggedUser.createdLocations.Contains(information.id))
+        {
+            if (loggedUser.likedLocations.Contains(information.id))
+            {
+                likeUnlikeButton.GetComponentInChildren<TextMeshProUGUI>().text = "Quitar de Favoritos";
+            }
+            else
+            {
+                likeUnlikeButton.GetComponentInChildren<TextMeshProUGUI>().text = "Añadir a Favoritos";
+            }
+            likeUnlikeButton.gameObject.SetActive(true);
+        }
+        else
+        {
+            likeUnlikeButton.gameObject.SetActive(false);
+        }
+    }
+
 
 
     public void SetAverageRating(Information information)
