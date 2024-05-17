@@ -155,10 +155,9 @@ public class InformationLoading : MonoBehaviour
                 // Asignar el ID del comentario al objeto creado
                 commentObject.name = comment.id.ToString();
 
-                if (comment.createdByUserID == loggedUser.userID)
-                {
-                    GenerateEditDeleteButton(commentObject, comment);
-                }
+
+                GenerateEditDeleteButton(commentObject, comment);
+
             }
             else
             {
@@ -171,18 +170,27 @@ public class InformationLoading : MonoBehaviour
     {
         // Obtener los botones hijos del botón instanciado
         Button[] buttons = commentObject.GetComponentsInChildren<Button>();
-
-        // Iterar sobre los botones y asignarles sus métodos respectivos
-        foreach (Button button in buttons)
+        if (comment.createdByUserID == loggedUser.userID)
         {
-            if (button.name == "editButton") // Nombre del botón de editar
+            // Iterar sobre los botones y asignarles sus métodos respectivos
+            foreach (Button button in buttons)
             {
-                // Agregar el listener de clic para editar
-                button.onClick.AddListener(() => menuButtonController.MoveToEditField(comment));
+                if (button.name == "editButton") // Nombre del botón de editar
+                {
+                    // Agregar el listener de clic para editar
+                    button.onClick.AddListener(() => menuButtonController.MoveToEditField(comment));
+                }
+                if (button.name == "deleteButton")
+                {
+                    button.onClick.AddListener(() => menuButtonController.DeleteCommenet(comment.id));
+                }
             }
-            if (button.name == "deleteButton")
+        }
+        else
+        {
+            foreach (Button button in buttons)
             {
-                button.onClick.AddListener(() => menuButtonController.DeleteCommenet(comment.id));
+                button.gameObject.SetActive(false);
             }
         }
     }
