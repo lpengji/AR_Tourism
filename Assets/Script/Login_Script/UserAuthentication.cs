@@ -8,93 +8,135 @@ using System;
 
 public class UserAuthentication : MonoBehaviour
 {
-    private string usersPersistenceFileName = "userDDBB.json"; // Nombre del archivo que contiene la información de los usuarios
-    private List<User> allUsersList; // Lista para almacenar la información de todos los usuarios
-    public bool usersLoaded = false; // Variable para indicar si se han cargado los usuarios correctamente
+    private string usersPersistenceFileName = "userDDBB.json"; // File name for storing user data
+    private List<User> allUsersList; // List to store all user data
+    public bool usersLoaded = false; // Flag to indicate if users are loaded
+
 
     void Start()
     {
         LoadUsers();
     }
+
     public void LoadUsers()
     {
-        // Cargar y leer el archivo JSON que contiene la información de los usuarios
-        string filePath = Path.Combine(Application.streamingAssetsPath, usersPersistenceFileName);
+        // Get the file path for the user JSON file
+        string filePath;
 
-        // Verificar si la plataforma es Android
-        if (Application.platform == RuntimePlatform.Android)
+#if UNITY_ANDROID && !UNITY_EDITOR
+        // If it's Android, use the persistent data path
+        filePath = Path.Combine(Application.persistentDataPath, usersPersistenceFileName);
+#else
+        // If it's not Android, use the streaming assets path
+        filePath = Path.Combine(Application.streamingAssetsPath, usersPersistenceFileName);
+#endif
+
+        Debug.Log("File path: " + filePath);
+
+        // Check if the platform is Android and if the file exists
+        if (Application.platform == RuntimePlatform.Android && File.Exists(filePath))
         {
-            // Si es Android, cargar el archivo usando UnityWebRequest
-            UnityWebRequest www = UnityWebRequest.Get(filePath);
-
-            // Esperar a que se complete la descarga
-            StartCoroutine(DownloadFile(www));
+            // If it's Android and the file exists, load it directly from the file system
+            LoadFile(filePath);
+        }
+        else if (Application.platform == RuntimePlatform.Android)
+        {
+            // If it's Android and the file doesn't exist in persistentDataPath, load it from streamingAssets
+            StartCoroutine(LoadFileFromStreamingAssets(filePath));
         }
         else
         {
-            // Si no es Android, cargar el archivo directamente desde el sistema de archivos
+            // If it's not Android, load the file directly from the file system
             LoadFile(filePath);
         }
     }
 
-    IEnumerator DownloadFile(UnityWebRequest www)
+    IEnumerator LoadFileFromStreamingAssets(string filePath)
     {
-        // Esperar a que se complete la descarga
+        UnityWebRequest www = UnityWebRequest.Get(filePath);
         yield return www.SendWebRequest();
 
-        // Verificar si hubo algún error
         if (www.result != UnityWebRequest.Result.Success)
         {
-            Debug.LogError("Error al cargar el archivo de usuarios en Android: " + www.error);
+            Debug.LogError("Error loading user file: " + www.error);
         }
         else
         {
-            // Obtener el contenido del archivo JSON
             string usersInformation = www.downloadHandler.text;
-
-            // Deserializar el JSON a una lista de objetos User
-            allUsersList = JsonUtility.FromJson<UserWrapper>(usersInformation).users;
-
-            // Indicar que los usuarios se han cargado correctamente
-            usersLoaded = true;
+            ProcessUserInformation(usersInformation);
         }
     }
 
     void LoadFile(string filePath)
     {
-        Debug.Log("filepath" + filePath);
-        // Cargar el archivo directamente desde el sistema de archivos
         string usersInformation = File.ReadAllText(filePath);
-        Debug.Log("usersInformation" + usersInformation);
-        // Deserializar el JSON a una lista de objetos User
-        allUsersList = JsonUtility.FromJson<UserWrapper>(usersInformation).users;
+        ProcessUserInformation(usersInformation);
+    }
 
-        // Indicar que los usuarios se han cargado correctamente
+    void ProcessUserInformation(string usersInformation)
+    {
+        // Deserialize the JSON to a list of User objects
+        allUsersList = JsonUtility.FromJson<UserWrapper>(usersInformation).users;
         usersLoaded = true;
     }
 
-    // Método para autenticar al usuario
+    // Method to authenticate the user
     public User AuthenticateUser(string username, string password)
     {
-        // Verificar si los usuarios se han cargado correctamente
+        // Check if the users are loaded correctly
         if (!usersLoaded)
         {
-            Debug.Log("Error: Los usuarios no se han cargado correctamente.");
-            return null; // Devolver null si los usuarios no se han cargado correctamente
+            Debug.Log("Error: Users are not loaded correctly.");
+            return null;
         }
 
-        // Buscar el usuario por nombre de usuario y contraseña
+        // Find the user by username and password
         User authenticatedUser = allUsersList.Find(u => u.userName == username && u.userPassword == password);
 
-        // Si se encuentra un usuario con las credenciales proporcionadas, se considera autenticado
         if (authenticatedUser != null)
         {
-            return authenticatedUser; // Devolver el usuario autenticado
+            return authenticatedUser; // Return the authenticated user
         }
         else
         {
-            // Si no se encuentra un usuario con las credenciales proporcionadas, la autenticación falla
-            return null; // Devolver null si la autenticación falla
+            return null; // Return null if authentication fails
+        }
+    }
+
+    void SaveUsersToFile()
+    {
+        // Convert the updated user list to JSON
+        string json = JsonUtility.ToJson(new UserWrapper(allUsersList));
+
+        // Get the file path for the user JSON file
+        string filePath;
+
+#if UNITY_ANDROID && !UNITY_EDITOR
+        // If it's Android, use the persistent data path
+        filePath = Path.Combine(Application.persistentDataPath, usersPersistenceFileName);
+#else
+        // If it's not Android, use the streaming assets path
+        filePath = Path.Combine(Application.streamingAssetsPath, usersPersistenceFileName);
+#endif
+
+        Debug.Log("File path: " + filePath);
+
+        try
+        {
+            // Ensure the directory exists
+            string directoryPath = Path.GetDirectoryName(filePath);
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+
+            // Write the JSON to the file
+            File.WriteAllText(filePath, json);
+            Debug.Log("User data saved to JSON file.");
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError("Error saving user file: " + ex.Message);
         }
     }
 
