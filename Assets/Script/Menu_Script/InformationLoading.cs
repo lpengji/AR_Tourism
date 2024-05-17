@@ -31,6 +31,8 @@ public class InformationLoading : MonoBehaviour
     private Button addInformationButton;
     [SerializeField]
     private Button addCommentButton;
+    [SerializeField]
+    private TextMeshProUGUI likeUnlikeText;
     private Information information;
 
     // Start is called before the first frame update
