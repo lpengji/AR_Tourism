@@ -171,12 +171,14 @@ public class MenuButtonController : MonoBehaviour
             // Si está en la lista, removerla
             user.likedLocations.Remove(InfoDefaultInfo);
             likeUnlikeButton.GetComponentInChildren<TextMeshProUGUI>().text = "Añadir a Favoritos";
+            likeUnlikeButton.image.color = Color.white;
         }
         else
         {
             // Si no está en la lista, añadirla
             user.likedLocations.Add(InfoDefaultInfo);
             likeUnlikeButton.GetComponentInChildren<TextMeshProUGUI>().text = "Quitar de Favoritos";
+            likeUnlikeButton.image.color = Color.red;
         }
         userAuthentication.UpdateUser(user);
         string userJson = JsonUtility.ToJson(user);

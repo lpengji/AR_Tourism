@@ -105,10 +105,12 @@ public class InformationLoading : MonoBehaviour
             if (loggedUser.likedLocations.Contains(information.id))
             {
                 likeUnlikeButton.GetComponentInChildren<TextMeshProUGUI>().text = "Quitar de Favoritos";
+                likeUnlikeButton.image.color = Color.red;
             }
             else
             {
                 likeUnlikeButton.GetComponentInChildren<TextMeshProUGUI>().text = "Añadir a Favoritos";
+                likeUnlikeButton.image.color = Color.white;
             }
             likeUnlikeButton.onClick.AddListener(() => menuButtonController.LikeUnlikeTextManager(information.id, loggedUser, likeUnlikeButton));
             likeUnlikeButton.gameObject.SetActive(true);
