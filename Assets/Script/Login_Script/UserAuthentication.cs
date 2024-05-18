@@ -12,7 +12,6 @@ public class UserAuthentication : MonoBehaviour
     private List<User> allUsersList; // List to store all user data
     public bool usersLoaded = false; // Flag to indicate if users are loaded
 
-
     void Start()
     {
         LoadUsers();
@@ -34,14 +33,8 @@ public class UserAuthentication : MonoBehaviour
         Debug.Log("File path: " + filePath);
 
         // Check if the platform is Android and if the file exists
-        if (Application.platform == RuntimePlatform.Android && File.Exists(filePath))
+        if (Application.platform == RuntimePlatform.Android)
         {
-            // If it's Android and the file exists, load it directly from the file system
-            LoadFile(filePath);
-        }
-        else if (Application.platform == RuntimePlatform.Android)
-        {
-            // If it's Android and the file doesn't exist in persistentDataPath, load it from streamingAssets
             StartCoroutine(LoadFileFromStreamingAssets(filePath));
         }
         else
@@ -53,7 +46,13 @@ public class UserAuthentication : MonoBehaviour
 
     IEnumerator LoadFileFromStreamingAssets(string filePath)
     {
-        UnityWebRequest www = UnityWebRequest.Get(filePath);
+#if UNITY_ANDROID && !UNITY_EDITOR
+        string streamingAssetsPath = Path.Combine(Application.streamingAssetsPath, usersPersistenceFileName);
+        UnityWebRequest www = UnityWebRequest.Get(streamingAssetsPath);
+#else
+        UnityWebRequest www = UnityWebRequest.Get("file://" + filePath);
+#endif
+
         yield return www.SendWebRequest();
 
         if (www.result != UnityWebRequest.Result.Success)
@@ -159,5 +158,4 @@ public class UserAuthentication : MonoBehaviour
             Debug.LogError("Error saving user file: " + ex.Message);
         }
     }
-
 }

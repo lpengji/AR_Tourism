@@ -874,6 +874,7 @@ GameObject:
   - component: {fileID: 395523254}
   - component: {fileID: 395523255}
   - component: {fileID: 395523256}
+  - component: {fileID: 395523257}
   m_Layer: 0
   m_Name: Controller
   m_TagString: Untagged
@@ -910,6 +911,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnOnMap: {fileID: 540342460}
   locationPointInformationDataManagement: {fileID: 395523256}
+  userAuthentication: {fileID: 395523257}
   locationPointsLoaded: 0
 --- !u!114 &395523256
 MonoBehaviour:
@@ -924,6 +926,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   informationLoaded: 0
+--- !u!114 &395523257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 395523252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25de022ae762e144bb85c2403e801af7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  usersLoaded: 0
 --- !u!1 &506008461
 GameObject:
   m_ObjectHideFlags: 0
