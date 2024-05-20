@@ -2,9 +2,10 @@ using System.Collections.Generic;
 
 public class RecommendedLocationWrapper
 {
-    public List<RecommendedLocationList> recommendedLists;
-    public RecommendedLocationWrapper(List<RecommendedLocationList> recommendedLists)
+    public List<RecommendedLocationList> recommendedLocationLists;
+
+    public RecommendedLocationWrapper(List<RecommendedLocationList> recommendedLocationLists)
     {
-        this.recommendedLists = recommendedLists;
+        this.recommendedLocationLists = recommendedLocationLists;
     }
 }

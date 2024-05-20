@@ -11,21 +11,14 @@ public class RecommendedListDataManage : MonoBehaviour
     public List<RecommendedLocationList> allRecommendedLists;
     public bool dataLoaded = false;
 
-    void Start()
-    {
-        LoadData();
-    }
-
     public void LoadData()
     {
         // Get the JSON file path
         string filePath = GetFilePath();
-        Debug.Log("File path: " + filePath);
-
 
         if (Application.platform == RuntimePlatform.Android)
         {
-            StartCoroutine(LoadFileFromStreamingAssets(filePath));
+            StartCoroutine(LoadFileFromStreamingAssets());
         }
         else
         {
@@ -44,13 +37,34 @@ public class RecommendedListDataManage : MonoBehaviour
 
     void LoadFile(string filePath)
     {
-        string jsonData = File.ReadAllText(filePath);
-        ProcessData(jsonData);
+        try
+        {
+            if (File.Exists(filePath))
+            {
+                string jsonData = File.ReadAllText(filePath);
+                ProcessData(jsonData);
+            }
+            else
+            {
+                Debug.LogError("File not found: " + filePath);
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError("Error reading file: " + ex.Message);
+        }
     }
 
-    IEnumerator LoadFileFromStreamingAssets(string filePath)
+    IEnumerator LoadFileFromStreamingAssets()
     {
+        string filePath = Path.Combine(Application.streamingAssetsPath, recommendedLocationFileName);
+
+#if UNITY_ANDROID && !UNITY_EDITOR
         UnityWebRequest www = UnityWebRequest.Get(filePath);
+#else
+        UnityWebRequest www = UnityWebRequest.Get("file://" + filePath);
+#endif
+
         yield return www.SendWebRequest();
 
         if (www.result != UnityWebRequest.Result.Success)
@@ -66,12 +80,20 @@ public class RecommendedListDataManage : MonoBehaviour
 
     void ProcessData(string jsonData)
     {
-        // Deserialize JSON to a list of RecommendedLocationList objects
-        allRecommendedLists = JsonUtility.FromJson<RecommendedLocationWrapper>(jsonData).recommendedLists;
-        dataLoaded = true;
+        try
+        {
+            // Deserialize JSON to a list of RecommendedLocationList objects
+            allRecommendedLists = JsonUtility.FromJson<RecommendedLocationWrapper>(jsonData).recommendedLocationLists;
+            dataLoaded = true;
+
+            // Log the data for debugging purposes
+            Debug.Log("Loaded data: " + JsonUtility.ToJson(new RecommendedLocationWrapper(allRecommendedLists), true));
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError("Error processing data: " + ex.Message);
+        }
     }
-
-
 
     public void SaveData()
     {
@@ -80,7 +102,6 @@ public class RecommendedListDataManage : MonoBehaviour
 
         // Get the JSON file path
         string filePath = GetFilePath();
-        Debug.Log("File path: " + filePath);
 
         try
         {
