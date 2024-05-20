@@ -2,34 +2,40 @@
   "recommendedLocationLists": [
     {
       "listID": 1,
-      "listName": "Lista A",
+      "listName": "Recomendación A",
       "locations": [
         {
           "id": 1,
-          "latitud": 40.7128,
-          "longitud": -74.006,
+          "latitud": 40.29243971169187,
+          "longitud": -3.7832160517160225,
           "altitud": 10,
-          "tipoLocationPoint": "default"
+          "createdByUserID": 3,
+          "informationId": 1,
+          "isCreated": false
         },
         {
           "id": 2,
-          "latitud": 34.0522,
-          "longitud": -118.2437,
+          "latitud": 40.29411729994367,
+          "longitud": -3.785404734235257,
           "altitud": 20,
-          "tipoLocationPoint": "liked"
+          "createdByUserID": 3,
+          "informationId": 2,
+          "isCreated": false
         }
       ]
     },
     {
       "listID": 2,
-      "listName": "Lista B",
+      "listName": "Recomendación B",
       "locations": [
         {
           "id": 3,
-          "latitud": 51.5074,
-          "longitud": -0.1278,
+          "latitud": 40.29461714141148,
+          "longitud": -3.7835261657180683,
           "altitud": 15,
-          "tipoLocationPoint": "miLocation"
+          "createdByUserID": 3,
+          "informationId": 3,
+          "isCreated": false
         }
       ]
     }

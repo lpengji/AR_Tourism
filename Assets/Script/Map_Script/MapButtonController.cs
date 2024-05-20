@@ -15,6 +15,8 @@ public class MapButtonController : MonoBehaviour
     [SerializeField]
     private GameObject adminUserMenuPopUp;
     [SerializeField]
+    private GameObject recommendedListPopUp;
+    [SerializeField]
     private Button menuButton;
     [SerializeField]
     private Button closeMenuButton;
@@ -54,6 +56,20 @@ public class MapButtonController : MonoBehaviour
         }
     }
 
+    public void OpenRecommendedListPopup()
+    {
+        recommendedListPopUp.SetActive(true);
+        if (loggedUser.rol == "normal")
+        {
+            normalUserMenuPopUp.SetActive(false);
+        }
+        else if (loggedUser.rol == "admin")
+        {
+            adminUserMenuPopUp.SetActive(false);
+        }
+        recommendedListPopUp.SetActive(true);
+    }
+
     // Función para cerrar el menú emergente
     public void CloseMenuPopup()
     {
@@ -68,6 +84,20 @@ public class MapButtonController : MonoBehaviour
         else if (loggedUser.rol == "admin")
         {
             adminUserMenuPopUp.SetActive(false);
+        }
+        recommendedListPopUp.SetActive(false);
+    }
+
+    public void CloseRecommendedListPopUp()
+    {
+        recommendedListPopUp.SetActive(false);
+        if (loggedUser.rol == "normal")
+        {
+            normalUserMenuPopUp.SetActive(true);
+        }
+        else if (loggedUser.rol == "admin")
+        {
+            adminUserMenuPopUp.SetActive(true);
         }
     }
 
