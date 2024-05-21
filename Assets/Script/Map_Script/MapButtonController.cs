@@ -24,8 +24,13 @@ public class MapButtonController : MonoBehaviour
     private User loggedUser;
     [SerializeField]
     private databaseManager databaseManager;
-
+    [SerializeField]
+    private RecommendedListInicializator recommendedListInicializator;
     private LocationStatus playerLocation;
+    [SerializeField]
+    private SpawnOnMap spawnOnMap;
+    [SerializeField]
+    private Button finishFollowingButton;
     void Start()
     {
         this.playerLocation = GameObject.Find("LocationCoordinatesCanvas").GetComponent<LocationStatus>();
@@ -68,6 +73,7 @@ public class MapButtonController : MonoBehaviour
             adminUserMenuPopUp.SetActive(false);
         }
         recommendedListPopUp.SetActive(true);
+        // recommendedListInicializator.LoadInformation();
     }
 
     // Función para cerrar el menú emergente
@@ -110,6 +116,25 @@ public class MapButtonController : MonoBehaviour
     public void CreateNewMyLocationPoint()
     {
         databaseManager.AddNewLocationPoint((float)playerLocation.getLatitude(), (float)playerLocation.getLongitude(), 0, this.loggedUser.userID, true);
+        this.CloseMenuPopup();
+    }
+
+    public void displaySelectedRuote(List<LocationPoint> locations)
+    {
+        finishFollowingButton.gameObject.SetActive(true);
+        spawnOnMap.ClearAllLocationPoints();
+        foreach (LocationPoint locationPoint in locations)
+        {
+            spawnOnMap.InstantiateNormalLocationPointOnMap(locationPoint);
+        }
+        this.CloseMenuPopup();
+    }
+
+    public void finishFollowing()
+    {
+        spawnOnMap.ClearAllLocationPoints();
+        finishFollowingButton.gameObject.SetActive(false);
+        databaseManager.LoadLocationPoints();
         this.CloseMenuPopup();
     }
 

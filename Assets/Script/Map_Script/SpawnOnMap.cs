@@ -112,5 +112,32 @@ namespace Mapbox.Examples
 				spawnedObject.transform.localScale = new Vector3(_spawnScale, _spawnScale, _spawnScale);
 			}
 		}
+
+		public void ClearAllLocationPoints()
+		{
+			// Destruir todos los puntos normales
+			foreach (var location in _normalLocationPrefabList)
+			{
+				Destroy(location);
+			}
+			_normalLocationPrefabList.Clear();
+			_normalLocationsCoordinateList.Clear();
+
+			// Destruir todos los puntos gustados
+			foreach (var location in _likedLocationPrefabList)
+			{
+				Destroy(location);
+			}
+			_likedLocationPrefabList.Clear();
+			_likedLocationsCoordinateList.Clear();
+
+			// Destruir todos los puntos añadidos por el usuario
+			foreach (var location in _myLocationPrefabList)
+			{
+				Destroy(location);
+			}
+			_myLocationPrefabList.Clear();
+			_myLocationLocationsCoordinateList.Clear();
+		}
 	}
 }

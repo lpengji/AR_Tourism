@@ -16,7 +16,7 @@ public class RecommendedListInicializator : MonoBehaviour
     private RecommendedListDataManage recommendedListDataManage;
     private List<RecommendedLocationList> allRecommendedLists;
     [SerializeField]
-    private Button showRecommendedLocationsButton;
+    private MapButtonController mapButtonController;
     // Start is called before the first frame update
     void Start()
     {
@@ -70,6 +70,13 @@ public class RecommendedListInicializator : MonoBehaviour
         // Asignar el ID del comentario al objeto creado
         commentObject.name = recommendedLocation.ListID.ToString();
         commentObject.SetActive(true);
+        GenerateFollowButton(commentObject, recommendedLocation);
+    }
+
+    private void GenerateFollowButton(GameObject commentObject, RecommendedLocationList recommendedLocation)
+    {
+        Button followButton = commentObject.GetComponentInChildren<Button>();
+        followButton.onClick.AddListener(() => mapButtonController.displaySelectedRuote(recommendedLocation.locations));
     }
 
     private GameObject CreateTextMeshPro(RecommendedLocationList recommendedLocation, Transform parent)
@@ -89,8 +96,7 @@ public class RecommendedListInicializator : MonoBehaviour
 
         // Establecer el texto
         textMeshPro.text = "ID: " + recommendedLocation.ListID + "\n"
-                         + "Nombre: " + recommendedLocation.ListName;
-        Debug.Log("recommendedLocation.ListID" + recommendedLocation.ListID);
+                         + recommendedLocation.ListName;
 
         return textObject;
     }
