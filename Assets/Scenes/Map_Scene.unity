@@ -1801,12 +1801,12 @@ GameObject:
   - component: {fileID: 744810319}
   - component: {fileID: 744810318}
   m_Layer: 5
-  m_Name: MenuButton
+  m_Name: FinishFollowingButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &744810317
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1825,7 +1825,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 109, y: 439}
+  m_AnchoredPosition: {x: 129, y: 439}
   m_SizeDelta: {x: 130, y: 65}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &744810318
@@ -1874,7 +1874,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 752955839}
         m_TargetAssemblyTypeName: MapButtonController, Assembly-CSharp
-        m_MethodName: OpenMenuPopup
+        m_MethodName: finishFollowing
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1974,6 +1974,7 @@ MonoBehaviour:
   databaseManager: {fileID: 395523255}
   recommendedListInicializator: {fileID: 1506223870}
   spawnOnMap: {fileID: 540342460}
+  finishFollowingButton: {fileID: 744810318}
 --- !u!1001 &773682131
 PrefabInstance:
   m_ObjectHideFlags: 0
