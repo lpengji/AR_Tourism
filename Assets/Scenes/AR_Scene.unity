@@ -154,13 +154,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   earthManager: {fileID: 155331741}
-  aRAnchorManager: {fileID: 1805739832}
-  geospatial0bjects:
+  arAnchorManager: {fileID: 1805739832}
+  geospatialObjects:
   - ObjectPrefab: {fileID: 5082404634382251692, guid: 8ae73b834b511fa47ad1a64a4fcff3c0, type: 3}
     EarthPosition:
-      Latitude: 40.29401268886252
-      Longitude: -3.7839037363429067
-      Altitude: 774.6417
+      Latitude: 40.29369088556573
+      Longitude: -3.784122191109243
+      Altitude: 710
 --- !u!4 &155331740
 Transform:
   m_ObjectHideFlags: 0
@@ -169,7 +169,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 155331738}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.01490812, y: -28.537693, z: -20.068066}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -284,7 +284,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.1
-  far clip plane: 20
+  far clip plane: 1e+17
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -580,4 +580,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 728ad7fae8e460a4ba41265c7308d757, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AnchorPrefab: {fileID: 0}
+  m_AnchorPrefab: {fileID: 5082404634382251692, guid: 8ae73b834b511fa47ad1a64a4fcff3c0, type: 3}

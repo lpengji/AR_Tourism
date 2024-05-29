@@ -5,6 +5,7 @@ using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 using Google.XR.ARCoreExtensions;
 using System;
+using UnityEngine.Android;
 
 public class VPS_Manager : MonoBehaviour
 {
@@ -12,11 +13,11 @@ public class VPS_Manager : MonoBehaviour
     private AREarthManager earthManager;
 
     [Serializable]
-    public struct GeospatialObject{
+    public struct GeospatialObject
+    {
         public GameObject ObjectPrefab;
         public EarthPosition EarthPosition;
     }
-
 
     [Serializable]
     public struct EarthPosition
@@ -27,47 +28,111 @@ public class VPS_Manager : MonoBehaviour
     }
 
     [SerializeField]
-    private ARAnchorManager aRAnchorManager;
+    private ARAnchorManager arAnchorManager;
 
     [SerializeField]
-    private List<GeospatialObject> geospatial0bjects = new List<GeospatialObject>();
-    
+    private List<GeospatialObject> geospatialObjects;
+
     void Start()
     {
-        this.VerifyGeospatialSupport();
+        if (earthManager == null)
+        {
+            earthManager = GetComponent<AREarthManager>();
+        }
+
+        // Ensure location permissions are granted
+        StartCoroutine(CheckLocationPermission());
     }
 
-    private void VerifyGeospatialSupport(){
-        var result = this.earthManager. IsGeospatialModeSupported(GeospatialMode.Enabled);
-        switch (result){
+    private IEnumerator CheckLocationPermission()
+    {
+        if (!Permission.HasUserAuthorizedPermission(Permission.FineLocation))
+        {
+            Permission.RequestUserPermission(Permission.FineLocation);
+            yield return new WaitForSeconds(1f);
+        }
+
+        while (!Permission.HasUserAuthorizedPermission(Permission.FineLocation))
+        {
+            Debug.Log("Waiting for location permissions...");
+            yield return new WaitForSeconds(1f);
+        }
+
+        VerifyGeospatialSupport();
+    }
+
+    private void VerifyGeospatialSupport()
+    {
+        var result = earthManager.IsGeospatialModeSupported(GeospatialMode.Enabled);
+        switch (result)
+        {
             case FeatureSupported.Supported:
                 Debug.Log("Ready to use VPS");
-                this.PlaceObjects();
+                StartCoroutine(CheckARSessionState());
                 break;
             case FeatureSupported.Unknown:
-                Debug.Log("Unknown");
-                Invoke("VerifyGeospatialSupport",5.0f);
+                Debug.Log("Geospatial support status unknown. Retrying...");
+                Invoke("VerifyGeospatialSupport", 5.0f);
                 break;
-            case FeatureSupported. Unsupported:
-                Debug.Log("VPS Unsupported");
+            case FeatureSupported.Unsupported:
+                Debug.Log("VPS Unsupported on this device.");
                 break;
-        }   
+        }
     }
 
-    private void PlaceObjects(){
-        if (this.earthManager.EarthTrackingState == TrackingState.Tracking){
-            var geospatialPose = this.earthManager.CameraGeospatialPose;
+    private IEnumerator CheckARSessionState()
+    {
+        while (ARSession.state != ARSessionState.SessionTracking)
+        {
+            Debug.Log("Waiting for AR session to be ready...");
+            yield return new WaitForSeconds(1f);
+        }
 
-        foreach (var obj in this.geospatial0bjects){
+        Debug.Log("AR session is ready");
+        PlaceObjects();
+    }
+
+    private void PlaceObjects()
+    {
+        Debug.Log("Attempting to place objects.");
+
+        if (earthManager.EarthTrackingState == TrackingState.Tracking)
+        {
+            Debug.Log("Earth tracking is active. Placing objects...");
+
+            // Camera's geospatial pose en WGS84 
+            var geospatialPose = earthManager.CameraGeospatialPose;
+            Debug.Log($"Camera Pose: Lat: {geospatialPose.Latitude}, Lon: {geospatialPose.Longitude}, Alt: {geospatialPose.Altitude}");
+
+            foreach (var obj in geospatialObjects)
+            {
                 var earthPosition = obj.EarthPosition;
-                var objAnchor = ARAnchorManagerExtensions.AddAnchor(this.aRAnchorManager, earthPosition.Latitude, 
-                earthPosition.Longitude, earthPosition.Altitude, Quaternion.identity);
-                Instantiate(obj.ObjectPrefab,objAnchor.transform);
+                // Debug.Log($"Creating anchor at Lat: {earthPosition.Latitude}, Lon: {earthPosition.Longitude}, Alt: {earthPosition.Altitude}");
+
+                var objAnchor = ARAnchorManagerExtensions.AddAnchor(arAnchorManager,
+                    geospatialPose.Latitude, geospatialPose.Longitude, geospatialPose.Altitude, Quaternion.identity);
+
+                Debug.Log("#objAnchor: " + objAnchor);
+
+
+                if (objAnchor != null)
+                {
+                    var instantiatedObject = Instantiate(obj.ObjectPrefab, objAnchor.transform);
+                    Debug.Log("Instantiated object at: " + objAnchor.transform.position + " with local position: " + instantiatedObject.transform.localPosition);
+
+                    instantiatedObject.SetActive(true);
+                }
+                else
+                {
+                    Debug.LogError("Failed to create anchor for object at " +
+                        $"Lat: {earthPosition.Latitude}, Lon: {earthPosition.Longitude}, Alt: {earthPosition.Altitude}");
+                }
             }
         }
-        else if(this.earthManager.EarthTrackingState == TrackingState.None){
-            Invoke("PlaceObjects",5.0f);
+        else
+        {
+            Debug.Log("Earth tracking not active. Retrying...");
+            Invoke("PlaceObjects", 5.0f);
         }
     }
- 
 }
