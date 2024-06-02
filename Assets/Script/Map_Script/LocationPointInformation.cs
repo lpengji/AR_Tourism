@@ -12,6 +12,7 @@ public class LocationPointInformation : MonoBehaviour
     private Vector2d actualCoordinate;
     private int id;
     private float altitud;
+    public int[] arInformationId;
     private int createdByUserID;
     private int informationId;
 
@@ -31,6 +32,11 @@ public class LocationPointInformation : MonoBehaviour
     {
         get { return altitud; }
         set { altitud = value; }
+    }
+    public int[] ArInformationId
+    {
+        get { return arInformationId; }
+        set { arInformationId = value; }
     }
 
     public int CreatedByUserID

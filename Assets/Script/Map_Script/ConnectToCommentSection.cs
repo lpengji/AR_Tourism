@@ -18,6 +18,9 @@ public class ConnectToCommentSection : MonoBehaviour
     {
         // pasar el id del tablon de informacion a la siguiente escena y cargar la escena nueva
         PlayerPrefs.SetInt("locationInfo", locationInfo.InformationId);
+        // Guardar los arInformationIds en PlayerPrefs como una cadena separada por comas
+        PlayerPrefs.SetString("arInformationIds", string.Join(",", locationInfo.ArInformationId));
+
         SceneManager.LoadScene(nextSceneName);
 
         Debug.Log("DATOS LOCATION POINT: " +
@@ -25,6 +28,7 @@ public class ConnectToCommentSection : MonoBehaviour
             ", Latitud-Longitud: " + locationInfo.ActualCoordinate +
             ", Altitud: " + locationInfo.Altitud +
             ", Creado por Usuario ID: " + locationInfo.CreatedByUserID +
-            ", ID de Información: " + locationInfo.InformationId);
+            ", ID de Información: " + locationInfo.InformationId +
+            ", AR locations ids: " + string.Join(",", locationInfo.ArInformationId));
     }
 }

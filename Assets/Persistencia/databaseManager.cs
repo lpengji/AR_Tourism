@@ -134,8 +134,10 @@ public class databaseManager : MonoBehaviour
         int newId = GenerateUniqueId();
         int newInformationId = newId;
 
+        int[] emptyIdList = new int[0];
+
         // Crear un nuevo punto de ubicación con los parámetros proporcionados
-        LocationPoint newPoint = new LocationPoint(newId, latitud, longitud, altitud, createdByUserID, newInformationId, isCreated);
+        LocationPoint newPoint = new LocationPoint(newId, latitud, longitud, createdByUserID, newInformationId, emptyIdList, isCreated);
 
         // Agregar el nuevo punto a la lista de puntos de ubicación
         locationPoints.Add(newPoint);
