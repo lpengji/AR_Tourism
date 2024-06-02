@@ -12,7 +12,6 @@ public class databaseManager : MonoBehaviour
 {
     [SerializeField]
     private SpawnOnMap spawnOnMap;
-
     private string locationPointsPersistenceFileName = "locationPointDDBB.json";
     private List<LocationPoint> locationPoints;
     private User loggedUser;
