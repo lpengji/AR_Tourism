@@ -110,7 +110,7 @@ public class VPS_Manager : MonoBehaviour
                 // Debug.Log($"Creating anchor at Lat: {earthPosition.Latitude}, Lon: {earthPosition.Longitude}, Alt: {earthPosition.Altitude}");
 
                 var objAnchor = ARAnchorManagerExtensions.AddAnchor(arAnchorManager,
-                    geospatialPose.Latitude, geospatialPose.Longitude, geospatialPose.Altitude, Quaternion.identity);
+                    geospatialPose.Latitude, geospatialPose.Longitude, geospatialPose.Altitude + 1, Quaternion.identity);
 
                 Debug.Log("#objAnchor: " + objAnchor);
 
