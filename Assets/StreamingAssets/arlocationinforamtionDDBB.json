@@ -1,0 +1,39 @@
+{
+  "arlocationinformation": [
+    {
+      "id": 1,
+      "latitud": 40.29243971169187,
+      "longitud": -3.7832160517160225,
+      "altitud": 0,
+      "information": "Información asociada con el ID 1"
+    },
+    {
+      "id": 2,
+      "latitud": 40.29411729994367,
+      "longitud": -3.785404734235257,
+      "altitud": 0,
+      "information": "Información asociada con el ID 2"
+    },
+    {
+      "id": 3,
+      "latitud": 40.29461714141148,
+      "longitud": -3.7835261657180683,
+      "altitud": 0,
+      "information": "Información asociada con el ID 3"
+    },
+    {
+      "id": 4,
+      "latitud": 40.29368080796596,
+      "longitud": -3.784067402979771,
+      "altitud": 0,
+      "information": "Información asociada con el ID 4"
+    },
+    {
+      "id": 5,
+      "latitud": 40.295,
+      "longitud": -3.785,
+      "altitud": 0,
+      "information": "Información asociada con el ID 5"
+    }
+  ]
+}
