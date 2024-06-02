@@ -29,6 +29,8 @@ public class MenuButtonController : MonoBehaviour
     private GameObject DeleteWarning;
     [SerializeField]
     private Button AceptDeleteButton;
+    [SerializeField]
+    private Button ARButton;
     private TextMeshProUGUI warningText;
 
     [SerializeField]
@@ -186,8 +188,9 @@ public class MenuButtonController : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-}
+    public void NavigateToARScene()
+    {
+        SceneManager.LoadScene("AR_Scene");
+    }
 
-internal class SerializableFieldAttribute : Attribute
-{
 }
