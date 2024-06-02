@@ -55,7 +55,7 @@ public class InformationLoading : MonoBehaviour
         {
             addInformationButton.gameObject.SetActive(false);
         }
-        else
+        else if (loggedUser.rol == "admin")
         {
             addInformationButton.gameObject.SetActive(true);
         }
