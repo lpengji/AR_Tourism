@@ -29,8 +29,6 @@ public class MenuButtonController : MonoBehaviour
     private GameObject DeleteWarning;
     [SerializeField]
     private Button AceptDeleteButton;
-    [SerializeField]
-    private Button ARButton;
     private TextMeshProUGUI warningText;
 
     [SerializeField]
@@ -65,7 +63,7 @@ public class MenuButtonController : MonoBehaviour
 
     public void MoveToEditField(Information information)
     {
-        this.editRatingField.gameObject.SetActive(false);
+        editRatingField.gameObject.SetActive(false);
         this.information = information;
         // Establece el contenido del campo de entrada de texto
         editInformationField.text = information.defaultInfo;
