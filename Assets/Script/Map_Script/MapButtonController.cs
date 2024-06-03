@@ -38,8 +38,6 @@ public class MapButtonController : MonoBehaviour
         // Obtener el rol del usuario logueado
         string userJson = PlayerPrefs.GetString("AuthenticatedUser");
         loggedUser = JsonUtility.FromJson<User>(userJson);
-
-
     }
 
     // Función para abrir el menú emergente

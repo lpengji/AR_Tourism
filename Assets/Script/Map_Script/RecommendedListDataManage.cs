@@ -85,9 +85,6 @@ public class RecommendedListDataManage : MonoBehaviour
             // Deserialize JSON to a list of RecommendedLocationList objects
             allRecommendedLists = JsonUtility.FromJson<RecommendedLocationWrapper>(jsonData).recommendedLocationLists;
             dataLoaded = true;
-
-            // Log the data for debugging purposes
-            Debug.Log("Loaded data: " + JsonUtility.ToJson(new RecommendedLocationWrapper(allRecommendedLists), true));
         }
         catch (Exception ex)
         {

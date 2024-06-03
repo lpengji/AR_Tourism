@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44402242, g: 0.49316543, b: 0.5722324, a: 1}
+  m_IndirectSpecularColor: {r: 0.3708985, g: 0.3783704, b: 0.35722548, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5287,7 +5287,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!108 &1140069279
 Light:
   m_ObjectHideFlags: 0
@@ -6852,7 +6852,6 @@ MonoBehaviour:
   getInformationFromDDBB: {fileID: 1459510527}
   DeleteWarning: {fileID: 1505141503}
   AceptDeleteButton: {fileID: 297911163}
-  ARButton: {fileID: 0}
   userAuthentication: {fileID: 551359262}
 --- !u!4 &1561322756
 Transform:
