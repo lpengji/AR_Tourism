@@ -55,7 +55,7 @@ public class InformationLoading : MonoBehaviour
         {
             addInformationButton.gameObject.SetActive(false);
         }
-        else if (loggedUser.rol == "admin")
+        else if (loggedUser.rol == "admin" || loggedUser.createdLocations.Contains(information.id))
         {
             addInformationButton.gameObject.SetActive(true);
         }
@@ -242,10 +242,9 @@ public class InformationLoading : MonoBehaviour
 
             // Asignar el ID de la información al objeto creado
             infoObject.name = information.id.ToString();
-            if (loggedUser.rol == "admin")
-            {
-                GenerateEditDeleteButton(infoObject, information);
-            }
+
+            GenerateEditDeleteButton(infoObject, information);
+
         }
         else
         {
@@ -261,15 +260,26 @@ public class InformationLoading : MonoBehaviour
         // Iterar sobre los botones y asignarles sus métodos respectivos
         foreach (Button button in buttons)
         {
-            if (button.name == "editButton") // Nombre del botón de editar
+            if (loggedUser.rol == "admin" || loggedUser.createdLocations.Contains(information.id))
             {
-                // Agregar el listener de clic para editar
-                button.onClick.AddListener(() => menuButtonController.MoveToEditField(information));
+                if (button.name == "editButton") // Nombre del botón de editar
+                {
+                    // Agregar el listener de clic para editar
+                    button.onClick.AddListener(() => menuButtonController.MoveToEditField(information));
+                }
+                if (button.name == "deleteButton")
+                {
+                    button.onClick.AddListener(() => menuButtonController.DeleteInformation());
+                }
             }
-            if (button.name == "deleteButton")
+            else
             {
-                button.onClick.AddListener(() => menuButtonController.DeleteInformation());
+                foreach (Button singleButton in buttons)
+                {
+                    singleButton.gameObject.SetActive(false);
+                }
             }
+
         }
     }
 
