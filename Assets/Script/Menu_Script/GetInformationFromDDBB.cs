@@ -25,8 +25,8 @@ public class GetInformationFromDDBB : MonoBehaviour
         string filePath;
 
 #if UNITY_ANDROID && !UNITY_EDITOR
-    // Si es Android, usar la ruta persistente en el sistema de archivos específica de Android
-    filePath = Path.Combine(Application.persistentDataPath, locationInformationPersistenceFileName);
+        // Si es Android, usar la ruta persistente en el sistema de archivos específica de Android
+        filePath = Path.Combine(Application.persistentDataPath, locationInformationPersistenceFileName);
 #else
         // Si no es Android, usar la ruta en la carpeta de streamingAssets
         filePath = Path.Combine(Application.streamingAssetsPath, locationInformationPersistenceFileName);
@@ -34,26 +34,25 @@ public class GetInformationFromDDBB : MonoBehaviour
 
         Debug.Log("File path: " + filePath);
 
-        // Verificar si la plataforma es Android y si el archivo existe
-        if (Application.platform == RuntimePlatform.Android && File.Exists(filePath))
+        // Verificar si el archivo existe y cargar el archivo
+        if (File.Exists(filePath))
         {
-            // Si es Android y el archivo existe, cargar el archivo directamente desde el sistema de archivos
             LoadFile(filePath);
         }
         else if (Application.platform == RuntimePlatform.Android)
         {
             // Si es Android y el archivo no existe en persistentDataPath, intentar cargar desde streamingAssets
-            StartCoroutine(LoadFileFromStreamingAssets(filePath));
+            StartCoroutine(LoadFileFromStreamingAssets(locationInformationPersistenceFileName));
         }
         else
         {
-            // Si no es Android, cargar el archivo directamente desde el sistema de archivos
-            LoadFile(filePath);
+            Debug.LogError("File does not exist: " + filePath);
         }
     }
 
-    IEnumerator LoadFileFromStreamingAssets(string filePath)
+    IEnumerator LoadFileFromStreamingAssets(string fileName)
     {
+        string filePath = Path.Combine(Application.streamingAssetsPath, fileName);
         UnityWebRequest www = UnityWebRequest.Get(filePath);
         yield return www.SendWebRequest();
 
@@ -70,8 +69,15 @@ public class GetInformationFromDDBB : MonoBehaviour
 
     void LoadFile(string filePath)
     {
-        string locationInformation = File.ReadAllText(filePath);
-        ProcessInformation(locationInformation);
+        try
+        {
+            string locationInformation = File.ReadAllText(filePath);
+            ProcessInformation(locationInformation);
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError("Error al leer el archivo: " + ex.Message);
+        }
     }
 
     void ProcessInformation(string locationInformation)
@@ -82,11 +88,18 @@ public class GetInformationFromDDBB : MonoBehaviour
         // Buscar la información con el ID correspondiente
         information = allInformationList.Find(info => info.id == informationId);
 
-        informationLoaded = true;
+        if (information != null)
+        {
+            informationLoaded = true;
 
-        // Actualizar la vista después de cargar la información
-        informationLoading.GenerateCommentField(information);
-        informationLoading.SetAverageRating(information);
+            // Actualizar la vista después de cargar la información
+            informationLoading.GenerateCommentField(information);
+            informationLoading.SetAverageRating(information);
+        }
+        else
+        {
+            Debug.LogError("No se encontró la información con el ID: " + informationId);
+        }
     }
 
     public void editComment(Comment editedComment)
