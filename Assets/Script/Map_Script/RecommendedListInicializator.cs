@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,6 +16,7 @@ public class RecommendedListInicializator : MonoBehaviour
     private List<RecommendedLocationList> allRecommendedLists;
     [SerializeField]
     private MapButtonController mapButtonController;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,32 +26,29 @@ public class RecommendedListInicializator : MonoBehaviour
 
     IEnumerator WaitForInformationLoad()
     {
-        // Esperar hasta que la información se haya cargado completamente
+        // Wait until the data has been completely loaded
         while (!recommendedListDataManage.dataLoaded)
         {
             yield return null;
         }
 
-        // Una vez que la información se ha cargado completamente, generar los TextMeshPro
+        // Once the data is fully loaded, generate the TextMeshPro
         GenerateTextMeshPro();
     }
 
     void GenerateTextMeshPro()
     {
         this.allRecommendedLists = recommendedListDataManage.allRecommendedLists;
-        foreach (var recommendedLocation in allRecommendedLists)
-        {
-            Debug.Log("!!!recommendedLocation.listName" + recommendedLocation.listName);
-        }
+
         if (allRecommendedLists != null && allRecommendedLists.Count > 0)
         {
-            // Limpiar el contenido existente
+            // Clear existing content
             foreach (Transform child in recommendedLocationInformationContentBox.transform)
             {
                 Destroy(child.gameObject);
             }
 
-            // Generar campos de texto para cada elemento en la lista recomendada
+            // Generate text fields for each item in the recommended list
             foreach (var recommendedLocation in allRecommendedLists)
             {
                 GenerateRecommendedTextField(recommendedLocation);
@@ -65,12 +62,21 @@ public class RecommendedListInicializator : MonoBehaviour
 
     private void GenerateRecommendedTextField(RecommendedLocationList recommendedLocation)
     {
+        // Create and set up the TextMeshPro object
         GameObject commentObject = CreateTextMeshPro(recommendedLocation, recommendedLocationInformationContentBox.transform);
 
-        // Asignar el ID del comentario al objeto creado
-        commentObject.name = recommendedLocation.ListID.ToString();
-        commentObject.SetActive(true);
-        GenerateFollowButton(commentObject, recommendedLocation);
+        // Check if the commentObject was successfully created
+        if (commentObject != null)
+        {
+            // Assign the ID to the name of the commentObject
+            commentObject.name = recommendedLocation.ListID.ToString();
+
+            // Ensure the commentObject is active
+            commentObject.SetActive(true);
+
+            // Generate the follow button functionality
+            GenerateFollowButton(commentObject, recommendedLocation);
+        }
     }
 
     private void GenerateFollowButton(GameObject commentObject, RecommendedLocationList recommendedLocation)
@@ -81,22 +87,26 @@ public class RecommendedListInicializator : MonoBehaviour
 
     private GameObject CreateTextMeshPro(RecommendedLocationList recommendedLocation, Transform parent)
     {
-        // Instanciar el prefab
-        GameObject textObject = Instantiate(recommendedLocationInformationPrefab.gameObject, parent);
+        // Instantiate the prefab
+        GameObject textObject = Instantiate(recommendedLocationInformationPrefab, parent);
 
-        // Obtener el componente TextMeshProUGUI del objeto instanciado
+        // Obtain the TextMeshProUGUI component
         TextMeshProUGUI textMeshPro = textObject.GetComponentInChildren<TextMeshProUGUI>();
 
-        // Verificar si la instancia fue exitosa
+        // Check if the TextMeshProUGUI component was found
         if (textMeshPro == null)
         {
             Debug.LogError("Error al obtener el componente TextMeshProUGUI en el objeto duplicado.");
-            return null; // Devolver null si la instancia falló
+            return null; // Return null if the component wasn't found
         }
 
-        // Establecer el texto
-        textMeshPro.text = "ID: " + recommendedLocation.ListID + "\n"
-                         + recommendedLocation.ListName;
+        // Set the text
+        textMeshPro.text = "ID: " + recommendedLocation.ListID + "\n" + recommendedLocation.ListName;
+
+        // Ensure the RectTransform is correctly set
+        RectTransform rectTransform = textObject.GetComponent<RectTransform>();
+        rectTransform.anchoredPosition3D = Vector3.zero; // Reset position
+        rectTransform.localScale = Vector3.one; // Reset scale
 
         return textObject;
     }
