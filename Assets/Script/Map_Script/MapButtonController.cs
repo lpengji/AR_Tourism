@@ -61,7 +61,6 @@ public class MapButtonController : MonoBehaviour
 
     public void OpenRecommendedListPopup()
     {
-        recommendedListPopUp.SetActive(true);
         if (loggedUser.rol == "normal")
         {
             normalUserMenuPopUp.SetActive(false);
