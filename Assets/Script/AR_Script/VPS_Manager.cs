@@ -112,9 +112,6 @@ public class VPS_Manager : MonoBehaviour
                 var objAnchor = ARAnchorManagerExtensions.AddAnchor(arAnchorManager,
                     geospatialPose.Latitude, geospatialPose.Longitude, geospatialPose.Altitude + 1, Quaternion.identity);
 
-                Debug.Log("#objAnchor: " + objAnchor);
-
-
                 if (objAnchor != null)
                 {
                     var instantiatedObject = Instantiate(obj.ObjectPrefab, objAnchor.transform);
