@@ -4,4 +4,9 @@ using System.Collections.Generic;
 public class ARLocationInformationWrapper
 {
     public List<ARLocationInformation> arlocationinformation;
+
+    public ARLocationInformationWrapper(List<ARLocationInformation> arlocationinformation)
+    {
+        this.arlocationinformation = arlocationinformation;
+    }
 }

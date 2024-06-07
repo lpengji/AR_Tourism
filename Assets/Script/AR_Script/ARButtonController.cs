@@ -38,6 +38,10 @@ public class ARButtonController : MonoBehaviour
     private Button closeARInformationButton;
     [SerializeField]
     private GameObject displayARInformationCanvas;
+    [SerializeField]
+    private ARInforDDBBManagement aRInforDDBBManagement;
+
+    private int aRInformationId;
 
     void Start()
     {
@@ -98,28 +102,38 @@ public class ARButtonController : MonoBehaviour
     {
         editInformationField.text = information;
         editARInformationCanvas.SetActive(true);
+        this.aRInformationId = id;
     }
-    public void AceptEdit(string information, int id)
+    public void AceptEdit()
     {
+        if (editInformationField.text != "")
+        {
+            if (aRInformationId != 0)
+            {
+                aRInforDDBBManagement.UpdateARInformation(aRInformationId, editInformationField.text);
+            }
+            else
+            {
+                aRInforDDBBManagement.AddNewARInformation(editInformationField.text);
+            }
+        }
 
+        editARInformationCanvas.SetActive(false);
+        editInformationField.text = "";
+        this.CloseMenuPopup();
     }
     // este método tiene que ser craedo por método cuando se crea el OpenARInformationCanvas, para 
     // poder pasarle el id y la informacion 
     public void DeleteARInformation(int id)
     {
-
+        // Eliminar la información en la base de datos o sistema correspondiente
+        aRInforDDBBManagement.DeleteARInformation(id);
+        displayARInformationCanvas.SetActive(false);
     }
     public void ExitARInformationCanvas()
     {
         displayARInformationCanvas.SetActive(false);
     }
-
-    // asignar a los arPrefabs en el VPS_Manager cuando se crea
-    public void OpenARInformationCanvas()
-    {
-
-    }
-
     // fijar en cómo se ha hecho en le menú del menu xd
 
 }

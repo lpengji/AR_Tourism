@@ -184,6 +184,8 @@ GameObject:
   - component: {fileID: 2285897326457645441}
   - component: {fileID: 2128640814986853106}
   - component: {fileID: 6468283618295662326}
+  - component: {fileID: 35361335444876477}
+  - component: {fileID: -1162675303173238678}
   m_Layer: 0
   m_Name: ARPrefab
   m_TagString: Untagged
@@ -270,3 +272,34 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &35361335444876477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4806076172463839941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b858fa324be4a9c46b6c71e84bc65a55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 0
+  latitud: 0
+  longitud: 0
+  altitud: 0
+  information: 
+--- !u!114 &-1162675303173238678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4806076172463839941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 112d40bd729a95841b971f184ff67844, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  displayARInformationCanvas: {fileID: 0}
+  aRButtonController: {fileID: 0}

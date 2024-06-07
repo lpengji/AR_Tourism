@@ -51,12 +51,6 @@ public class InformationLoading : MonoBehaviour
 
     void Update()
     {
-        if (information == null)
-        {
-            Debug.LogWarning("Information is not yet loaded.");
-            return;
-        }
-
         if (information.defaultInfo != "")
         {
             addInformationButton.gameObject.SetActive(false);

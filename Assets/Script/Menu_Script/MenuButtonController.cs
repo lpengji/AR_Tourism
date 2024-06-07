@@ -33,6 +33,8 @@ public class MenuButtonController : MonoBehaviour
 
     [SerializeField]
     private UserAuthentication userAuthentication;
+    // [SerializeField]
+    // private ARInforDDBBManagement arInforDDBBManagement;
 
 
     // Start is called before the first frame update
@@ -188,7 +190,11 @@ public class MenuButtonController : MonoBehaviour
 
     public void NavigateToARScene()
     {
+        string idsString = PlayerPrefs.GetString("arInformationIds", "");
         SceneManager.LoadScene("AR_Scene");
+        // arInforDDBBManagement.LoadARLocationInformations(idsString);
+
+
     }
 
 }

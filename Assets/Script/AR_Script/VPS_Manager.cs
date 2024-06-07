@@ -11,37 +11,34 @@ public class VPS_Manager : MonoBehaviour
 {
     [SerializeField]
     private AREarthManager earthManager;
-
-    [Serializable]
-    public struct GeospatialObject
-    {
-        public GameObject ObjectPrefab;
-        public EarthPosition EarthPosition;
-    }
-
-    [Serializable]
-    public struct EarthPosition
-    {
-        public double Latitude;
-        public double Longitude;
-        public double Altitude;
-    }
+    [SerializeField]
+    private GameObject loadingAnimation;
 
     [SerializeField]
     private ARAnchorManager arAnchorManager;
 
     [SerializeField]
-    private List<GeospatialObject> geospatialObjects;
+    private GameObject geospatialObjectsPrefab;
+    private bool hasStarted = false;
+
+    public GeospatialPose geospatialPose;
+    private List<ARLocationInformation> aRLocationInformations;
+    [SerializeField]
+    private ARInforDDBBManagement aRInforDDBBManagement;
 
     void Start()
     {
-        if (earthManager == null)
+        loadingAnimation.SetActive(true);
+        if (hasStarted)
         {
-            earthManager = GetComponent<AREarthManager>();
+            return;
         }
-
+        earthManager = GetComponent<AREarthManager>();
+        aRLocationInformations = aRInforDDBBManagement.arLocationInformations;
         // Ensure location permissions are granted
         StartCoroutine(CheckLocationPermission());
+
+        hasStarted = true;
     }
 
     private IEnumerator CheckLocationPermission()
@@ -89,11 +86,13 @@ public class VPS_Manager : MonoBehaviour
         }
 
         Debug.Log("AR session is ready");
-        PlaceObjects();
+        PlaceObjects(aRLocationInformations);
     }
 
-    private void PlaceObjects()
+    public void PlaceObjects(List<ARLocationInformation> arLocationInformations)
     {
+        this.aRLocationInformations = arLocationInformations;
+
         Debug.Log("Attempting to place objects.");
 
         if (earthManager.EarthTrackingState == TrackingState.Tracking)
@@ -101,30 +100,11 @@ public class VPS_Manager : MonoBehaviour
             Debug.Log("Earth tracking is active. Placing objects...");
 
             // Camera's geospatial pose en WGS84 
-            var geospatialPose = earthManager.CameraGeospatialPose;
+            this.geospatialPose = earthManager.CameraGeospatialPose;
             Debug.Log($"Camera Pose: Lat: {geospatialPose.Latitude}, Lon: {geospatialPose.Longitude}, Alt: {geospatialPose.Altitude}");
 
-            foreach (var obj in geospatialObjects)
-            {
-                var earthPosition = obj.EarthPosition;
-                // Debug.Log($"Creating anchor at Lat: {earthPosition.Latitude}, Lon: {earthPosition.Longitude}, Alt: {earthPosition.Altitude}");
-
-                var objAnchor = ARAnchorManagerExtensions.AddAnchor(arAnchorManager,
-                    geospatialPose.Latitude, geospatialPose.Longitude, geospatialPose.Altitude + 1, Quaternion.identity);
-
-                if (objAnchor != null)
-                {
-                    var instantiatedObject = Instantiate(obj.ObjectPrefab, objAnchor.transform);
-                    Debug.Log("Instantiated object at: " + objAnchor.transform.position + " with local position: " + instantiatedObject.transform.localPosition);
-
-                    instantiatedObject.SetActive(true);
-                }
-                else
-                {
-                    Debug.LogError("Failed to create anchor for object at " +
-                        $"Lat: {earthPosition.Latitude}, Lon: {earthPosition.Longitude}, Alt: {earthPosition.Altitude}");
-                }
-            }
+            StartCoroutine(PlaceObjectsCoroutine(arLocationInformations));
+            Debug.Log("Coroutine started");
         }
         else
         {
@@ -132,4 +112,56 @@ public class VPS_Manager : MonoBehaviour
             Invoke("PlaceObjects", 5.0f);
         }
     }
+
+
+
+    private IEnumerator PlaceObjectsCoroutine(List<ARLocationInformation> arLocationInformations)
+    {
+        Debug.Log("Starting PlaceObjectsCoroutine...");
+
+        foreach (var info in arLocationInformations)
+        {
+            // Usar altitud de geospatialPose si info.Altitud es 0
+            double altitudeToUse = info.Altitud != 0 ? info.Altitud : geospatialPose.Altitude;
+
+            var objAnchor = ARAnchorManagerExtensions.AddAnchor(arAnchorManager,
+                info.Latitud, info.Longitud, altitudeToUse, Quaternion.identity);
+
+            if (objAnchor != null)
+            {
+                var instantiatedObject = Instantiate(geospatialObjectsPrefab, objAnchor.transform);
+                var arLocationInformationObj = instantiatedObject.GetComponent<ARLocationInformationObj>();
+
+                if (arLocationInformationObj != null)
+                {
+                    arLocationInformationObj.Id = info.Id;
+                    arLocationInformationObj.Latitud = info.Latitud;
+                    arLocationInformationObj.Longitud = info.Longitud;
+                    arLocationInformationObj.Altitud = info.Altitud;
+                    arLocationInformationObj.Information = info.Information;
+                    Debug.Log("OBJECTO AR CREADO CORRECTAMENTE");
+                }
+                else
+                {
+                    Debug.LogError("ARLocationInformationObj script is missing on the AR GameObject.");
+                }
+
+                Debug.Log("Instantiated object at: " + objAnchor.transform.position + " with local position: " + instantiatedObject.transform.localPosition);
+
+                instantiatedObject.SetActive(true);
+            }
+            else
+            {
+                Debug.LogError("Failed to create anchor for object at " +
+                    $"Lat: {info.Latitud}, Lon: {info.Longitud}, Alt: {info.Altitud}");
+            }
+
+            yield return null;
+        }
+
+        Debug.Log("PlaceObjectsCoroutine completed.");
+        // Después de completar la colocación de objetos, desactivar la animación de carga
+        loadingAnimation.SetActive(false);
+    }
+
 }
