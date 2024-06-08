@@ -65,6 +65,7 @@ public class ARInforDDBBManagement : MonoBehaviour
         }
         else
         {
+            Debug.Log("##### pasando por ProcessARLocationInformations #####");
             string arLocationInformationsText = www.downloadHandler.text;
             ProcessARLocationInformations(arLocationInformationsText);
         }
@@ -74,6 +75,7 @@ public class ARInforDDBBManagement : MonoBehaviour
     {
         string arLocationInformationsText = File.ReadAllText(filePath);
         ProcessARLocationInformations(arLocationInformationsText);
+        Debug.Log("##### pasando por LoadFile #####");
     }
 
     void ProcessARLocationInformations(string arLocationInformationsText)
@@ -91,15 +93,8 @@ public class ARInforDDBBManagement : MonoBehaviour
 
         // Filtrar arLocationInformations según los IDs extraídos de PlayerPrefs
         arLocationInformations = arLocationInformations.Where(info => targetIds.Contains(info.id)).ToList();
-
-        foreach (var info in arLocationInformations)
-        {
-            Debug.Log("ID: " + info.Id +
-                      ", Latitud: " + info.Latitud +
-                      ", Longitud: " + info.Longitud +
-                      ", Altitud: " + info.Altitud +
-                      ", Información: " + info.Information);
-        }
+        Debug.Log("##### pasando por ProcessARLocationInformations #####");
+        vpsManager.Instantiate();
     }
 
     List<int> GetTargetIdsFromPlayerPrefs()
@@ -124,7 +119,7 @@ public class ARInforDDBBManagement : MonoBehaviour
         // Guardar la información actualizada en el archivo
         SaveInformationToFile();
 
-        vpsManager.PlaceObjects(arLocationInformations);
+        vpsManager.Instantiate();
     }
 
     // Método para generar un ID único
@@ -151,7 +146,7 @@ public class ARInforDDBBManagement : MonoBehaviour
         {
             arLocationInformations[index].Information = newInformation;
             SaveInformationToFile();
-            vpsManager.PlaceObjects(arLocationInformations);
+            vpsManager.Instantiate();
         }
         else
         {
@@ -166,7 +161,7 @@ public class ARInforDDBBManagement : MonoBehaviour
         {
             arLocationInformations.RemoveAt(index);
             SaveInformationToFile();
-            vpsManager.PlaceObjects(arLocationInformations);
+            vpsManager.Instantiate();
         }
         else
         {

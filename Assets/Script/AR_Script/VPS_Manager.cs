@@ -1,3 +1,4 @@
+using System.Xml.Schema;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,7 @@ using UnityEngine.XR.ARSubsystems;
 using Google.XR.ARCoreExtensions;
 using System;
 using UnityEngine.Android;
+using Unity.VisualScripting;
 
 public class VPS_Manager : MonoBehaviour
 {
@@ -26,19 +28,21 @@ public class VPS_Manager : MonoBehaviour
     [SerializeField]
     private ARInforDDBBManagement aRInforDDBBManagement;
 
-    void Start()
+    public void Instantiate()
     {
         loadingAnimation.SetActive(true);
+        aRLocationInformations = aRInforDDBBManagement.arLocationInformations;
         if (hasStarted)
         {
-            return;
+            this.PlaceObjects();
         }
-        earthManager = GetComponent<AREarthManager>();
-        aRLocationInformations = aRInforDDBBManagement.arLocationInformations;
-        // Ensure location permissions are granted
-        StartCoroutine(CheckLocationPermission());
-
-        hasStarted = true;
+        else
+        {
+            earthManager = GetComponent<AREarthManager>();
+            hasStarted = true;
+            // Ensure location permissions are granted
+            StartCoroutine(CheckLocationPermission());
+        }
     }
 
     private IEnumerator CheckLocationPermission()
@@ -86,13 +90,11 @@ public class VPS_Manager : MonoBehaviour
         }
 
         Debug.Log("AR session is ready");
-        PlaceObjects(aRLocationInformations);
+        PlaceObjects();
     }
 
-    public void PlaceObjects(List<ARLocationInformation> arLocationInformations)
+    public void PlaceObjects()
     {
-        this.aRLocationInformations = arLocationInformations;
-
         Debug.Log("Attempting to place objects.");
 
         if (earthManager.EarthTrackingState == TrackingState.Tracking)
@@ -103,7 +105,7 @@ public class VPS_Manager : MonoBehaviour
             this.geospatialPose = earthManager.CameraGeospatialPose;
             Debug.Log($"Camera Pose: Lat: {geospatialPose.Latitude}, Lon: {geospatialPose.Longitude}, Alt: {geospatialPose.Altitude}");
 
-            StartCoroutine(PlaceObjectsCoroutine(arLocationInformations));
+            StartCoroutine(PlaceObjectsCoroutine(aRInforDDBBManagement.arLocationInformations));
             Debug.Log("Coroutine started");
         }
         else
@@ -112,8 +114,6 @@ public class VPS_Manager : MonoBehaviour
             Invoke("PlaceObjects", 5.0f);
         }
     }
-
-
 
     private IEnumerator PlaceObjectsCoroutine(List<ARLocationInformation> arLocationInformations)
     {
@@ -126,6 +126,12 @@ public class VPS_Manager : MonoBehaviour
 
             var objAnchor = ARAnchorManagerExtensions.AddAnchor(arAnchorManager,
                 info.Latitud, info.Longitud, altitudeToUse, Quaternion.identity);
+
+            Debug.Log("## INFORMACION DEL OBJETO PLACED: " + "\nID: " + info.Id +
+                      ", Latitud: " + info.Latitud +
+                      ", Longitud: " + info.Longitud +
+                      ", Altitud: " + info.Altitud +
+                      ", Información: " + info.Information);
 
             if (objAnchor != null)
             {
