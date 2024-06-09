@@ -10,7 +10,6 @@ public class ARInforDDBBManagement : MonoBehaviour
 {
     private string arLocationInformationFileName = "arlocationinforamtionDDBB.json";
     public List<ARLocationInformation> arLocationInformations;
-
     [SerializeField]
     private VPS_Manager vpsManager;
 
@@ -18,8 +17,7 @@ public class ARInforDDBBManagement : MonoBehaviour
     {
         string idsString = PlayerPrefs.GetString("arInformationIds", "");
         Debug.Log("#idsString: " + idsString);
-
-        this.LoadARLocationInformations(idsString);
+        LoadARLocationInformations(idsString);
     }
 
     public void LoadARLocationInformations(string idsString)
@@ -74,13 +72,13 @@ public class ARInforDDBBManagement : MonoBehaviour
     void LoadFile(string filePath)
     {
         string arLocationInformationsText = File.ReadAllText(filePath);
+        Debug.Log($"File Content: {arLocationInformationsText}");
         ProcessARLocationInformations(arLocationInformationsText);
         Debug.Log("##### pasando por LoadFile #####");
     }
 
     void ProcessARLocationInformations(string arLocationInformationsText)
     {
-        // Obtener los IDs desde PlayerPrefs
         List<int> targetIds = GetTargetIdsFromPlayerPrefs();
 
         if (targetIds.Count == 0)
@@ -90,58 +88,55 @@ public class ARInforDDBBManagement : MonoBehaviour
         }
 
         arLocationInformations = JsonUtility.FromJson<ARLocationInformationWrapper>(arLocationInformationsText).arlocationinformation;
+        arLocationInformations = arLocationInformations.Where(info => targetIds.Contains(info.Id)).ToList();
 
-        // Filtrar arLocationInformations según los IDs extraídos de PlayerPrefs
-        arLocationInformations = arLocationInformations.Where(info => targetIds.Contains(info.id)).ToList();
-        Debug.Log("##### pasando por ProcessARLocationInformations #####");
+        Debug.Log($"Found {arLocationInformations.Count} AR locations to place.");
+        foreach (var info in arLocationInformations)
+        {
+            Debug.Log($"AR Location: ID={info.Id}, Lat={info.Latitud}, Lon={info.Longitud}, Alt={info.Altitud}, Info={info.Information}");
+        }
+
         vpsManager.Instantiate();
     }
+
+
+
 
     List<int> GetTargetIdsFromPlayerPrefs()
     {
         string idsString = PlayerPrefs.GetString("arInformationIds", "");
+        if (string.IsNullOrEmpty(idsString))
+        {
+            Debug.LogWarning("idsString is empty in PlayerPrefs.");
+            return new List<int>();
+        }
         List<int> ids = idsString.Split(',')
                                  .Where(id => !string.IsNullOrEmpty(id))
                                  .Select(int.Parse)
                                  .ToList();
+        Debug.Log($"Retrieved targetIds from PlayerPrefs: {string.Join(", ", ids)}");
         return ids;
     }
 
+
     public void AddNewARInformation(string newInformation)
     {
-        // Crear una nueva instancia de ARLocationInformation con un ID único
         int newId = GenerateUniqueID();
         ARLocationInformation newInfo = new ARLocationInformation(newId, vpsManager.geospatialPose.Altitude, vpsManager.geospatialPose.Latitude, vpsManager.geospatialPose.Altitude, newInformation);
-
-        // Agregar la nueva información a la lista
         arLocationInformations.Add(newInfo);
-
-        // Guardar la información actualizada en el archivo
         SaveInformationToFile();
-
         vpsManager.Instantiate();
     }
 
-    // Método para generar un ID único
     private int GenerateUniqueID()
     {
-        // Obtener el último ID existente
-        int lastId = 0;
-        foreach (var info in arLocationInformations)
-        {
-            if (info.id > lastId)
-            {
-                lastId = info.id;
-            }
-        }
-
+        int lastId = arLocationInformations.Max(info => info.Id);
         return lastId + 1;
     }
 
-    // Métodos para actualizar y eliminar la información AR
     public void UpdateARInformation(int id, string newInformation)
     {
-        int index = arLocationInformations.FindIndex(info => info.id == id);
+        int index = arLocationInformations.FindIndex(info => info.Id == id);
         if (index != -1)
         {
             arLocationInformations[index].Information = newInformation;
@@ -156,7 +151,7 @@ public class ARInforDDBBManagement : MonoBehaviour
 
     public void DeleteARInformation(int id)
     {
-        int index = arLocationInformations.FindIndex(info => info.id == id);
+        int index = arLocationInformations.FindIndex(info => info.Id == id);
         if (index != -1)
         {
             arLocationInformations.RemoveAt(index);
