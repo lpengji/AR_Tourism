@@ -22,6 +22,8 @@ public class VPS_Manager : MonoBehaviour
     [SerializeField]
     private ARInforDDBBManagement aRInforDDBBManagement;
 
+    private List<GameObject> instantiatedObjects = new List<GameObject>();  // Lista para mantener los objetos instanciados
+
     public void Instantiate()
     {
         loadingAnimation.SetActive(true);
@@ -105,6 +107,13 @@ public class VPS_Manager : MonoBehaviour
 
     private IEnumerator PlaceObjectsCoroutine(List<ARLocationInformation> arLocationInformations)
     {
+        // Destruir los objetos antiguos
+        foreach (var obj in instantiatedObjects)
+        {
+            Destroy(obj);
+        }
+        instantiatedObjects.Clear();
+
         foreach (var info in arLocationInformations)
         {
             Debug.Log($"Processing AR location with ID: {info.Id}");
@@ -134,6 +143,7 @@ public class VPS_Manager : MonoBehaviour
                     Debug.LogError("ARLocationInformationObj script is missing on the AR GameObject.");
                 }
 
+                instantiatedObjects.Add(instantiatedObject);  // Agregar el objeto instanciado a la lista
                 instantiatedObject.SetActive(true);
             }
             else
@@ -146,7 +156,4 @@ public class VPS_Manager : MonoBehaviour
 
         loadingAnimation.SetActive(false);
     }
-
-
-
 }
