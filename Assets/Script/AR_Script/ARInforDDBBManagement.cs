@@ -122,7 +122,7 @@ public class ARInforDDBBManagement : MonoBehaviour
     public void AddNewARInformation(string newInformation)
     {
         int newId = GenerateUniqueID();
-        ARLocationInformation newInfo = new ARLocationInformation(newId, vpsManager.geospatialPose.Altitude, vpsManager.geospatialPose.Latitude, vpsManager.geospatialPose.Altitude, newInformation);
+        ARLocationInformation newInfo = new ARLocationInformation(newId, vpsManager.geospatialPose.Latitude, vpsManager.geospatialPose.Longitude, vpsManager.geospatialPose.Altitude, newInformation);
         arLocationInformations.Add(newInfo);
         SaveInformationToFile();
         vpsManager.Instantiate();
@@ -130,9 +130,14 @@ public class ARInforDDBBManagement : MonoBehaviour
 
     private int GenerateUniqueID()
     {
+        if (arLocationInformations.Count == 0)
+        {
+            return 1;
+        }
         int lastId = arLocationInformations.Max(info => info.Id);
         return lastId + 1;
     }
+
 
     public void UpdateARInformation(int id, string newInformation)
     {

@@ -120,6 +120,7 @@ public class ARButtonController : MonoBehaviour
 
         editARInformationCanvas.SetActive(false);
         editInformationField.text = "";
+        aRInformationId = 0;
         this.CloseMenuPopup();
     }
     // este método tiene que ser craedo por método cuando se crea el OpenARInformationCanvas, para 
