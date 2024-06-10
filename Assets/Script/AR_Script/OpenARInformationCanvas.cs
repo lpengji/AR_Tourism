@@ -20,77 +20,59 @@ public class OpenARInformationCanvas : MonoBehaviour
         aRLocationInformationObj = GetComponent<ARLocationInformationObj>();
         aRButtonController = GetComponent<ARButtonController>();
 
-        if (displayARInformationCanvas != null && !displayARInformationCanvas.activeSelf)
+        // Buscar el CanvasController en la escena
+        CanvasController canvasController = FindObjectOfType<CanvasController>();
+        if (canvasController != null)
         {
-            displayARInformationCanvas.SetActive(true);
-        }
-
-        // Buscar el GameObject "DisplayARInformationCanvas" en la escena
-        if (displayARInformationCanvas == null)
-        {
-            displayARInformationCanvas = GameObject.Find("DisplayARInformationCanvas");
-            displayARInformationCanvas.SetActive(false);
+            displayARInformationCanvas = canvasController.displayARInformationCanvas;
+            defaultRecommendedBoxText = canvasController.defaultRecommendedBoxText;
+            deleteButton = canvasController.deleteButton;
+            editButton = canvasController.editButton;
+            aRButtonController = canvasController.aRButtonController;
         }
 
         if (displayARInformationCanvas == null)
         {
             Debug.LogError("DisplayARInformationCanvas no encontrado en la escena. Por favor asegúrate de que existe.");
+            return;
+        }
+
+        // Proceder con la inicialización
+        InitializeCanvas();
+    }
+
+    private void InitializeCanvas()
+    {
+        if (!displayARInformationCanvas.activeSelf)
+        {
+            displayARInformationCanvas.SetActive(true);
+        }
+
+        if (defaultRecommendedBoxText == null)
+        {
+            Debug.LogError("El componente DefaultRecommendedBox no tiene un componente TextMeshProUGUI.");
+        }
+
+        if (deleteButton != null)
+        {
+            deleteButton.onClick.AddListener(() => aRButtonController.DeleteARInformation(aRLocationInformationObj.Id));
         }
         else
         {
-            // Buscar el componente de texto "DefaultRecommendedBox" dentro de DisplayARInformationCanvas
-            Transform defaultRecommendedBoxTransform = displayARInformationCanvas.transform.Find("DefaultRecommendedBox");
-            if (defaultRecommendedBoxTransform != null)
-            {
-                defaultRecommendedBoxText = defaultRecommendedBoxTransform.GetComponent<TextMeshProUGUI>();
-                if (defaultRecommendedBoxText == null)
-                {
-                    Debug.LogError("El componente DefaultRecommendedBox no tiene un componente TextMeshProUGUI.");
-                }
-            }
-            else
-            {
-                Debug.LogError("No se encontró el GameObject DefaultRecommendedBox dentro de DisplayARInformationCanvas.");
-            }
-
-            // Buscar el botón "DeleteButton" dentro de DisplayARInformationCanvas
-            Transform deleteButtonTransform = displayARInformationCanvas.transform.Find("DeleteButton");
-            if (deleteButtonTransform != null)
-            {
-                deleteButton = deleteButtonTransform.GetComponent<Button>();
-                if (deleteButton == null)
-                {
-                    Debug.LogError("El componente DeleteButton no tiene un componente Button.");
-                }
-                else
-                {
-                    deleteButton.onClick.AddListener(() => aRButtonController.DeleteARInformation(aRLocationInformationObj.Id));
-                }
-            }
-            else
-            {
-                Debug.LogError("No se encontró el GameObject DeleteButton dentro de DisplayARInformationCanvas.");
-            }
-
-            // Buscar el botón "EditButton" dentro de DisplayARInformationCanvas
-            Transform editButtonTransform = displayARInformationCanvas.transform.Find("EditButton");
-            if (editButtonTransform != null)
-            {
-                editButton = editButtonTransform.GetComponent<Button>();
-                if (editButton == null)
-                {
-                    Debug.LogError("El componente EditButton no tiene un componente Button.");
-                }
-                else
-                {
-                    editButton.onClick.AddListener(() => aRButtonController.MoveToEdit(aRLocationInformationObj.Information, aRLocationInformationObj.Id));
-                }
-            }
-            else
-            {
-                Debug.LogError("No se encontró el GameObject EditButton dentro de DisplayARInformationCanvas.");
-            }
+            Debug.LogError("El componente DeleteButton no tiene un componente Button.");
         }
+
+        if (editButton != null)
+        {
+            editButton.onClick.AddListener(() => aRButtonController.MoveToEdit(aRLocationInformationObj.Information, aRLocationInformationObj.Id));
+        }
+        else
+        {
+            Debug.LogError("El componente EditButton no tiene un componente Button.");
+        }
+
+        // Volver a desactivar el canvas para su uso posterior
+        displayARInformationCanvas.SetActive(false);
     }
 
     private void OnMouseDown()
