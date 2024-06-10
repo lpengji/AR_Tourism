@@ -5048,6 +5048,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2033364547}
   - component: {fileID: 2033364546}
+  - component: {fileID: 2033364548}
   m_Layer: 0
   m_Name: ArDatabaseManager
   m_TagString: Untagged
@@ -5069,6 +5070,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   arLocationInformations: []
   vpsManager: {fileID: 155331739}
+  databaseManager: {fileID: 2033364548}
 --- !u!4 &2033364547
 Transform:
   m_ObjectHideFlags: 0
@@ -5084,6 +5086,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2033364548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2033364545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b02d4121dadc6ca42b0ce70849825b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2095442064
 GameObject:
   m_ObjectHideFlags: 0

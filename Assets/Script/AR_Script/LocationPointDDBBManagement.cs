@@ -8,18 +8,12 @@ using System.IO;
 using System;
 using Mapbox.Utils;
 
-public class databaseManager : MonoBehaviour
+public class LocationPointDDBBManagement : MonoBehaviour
 {
-    [SerializeField]
-    private SpawnOnMap spawnOnMap;
+
     private string locationPointsPersistenceFileName = "locationPointDDBB.json";
     private List<LocationPoint> locationPoints;
     private User loggedUser;
-    [SerializeField]
-    private LocationPointInformationDataManagement locationPointInformationDataManagement;
-    [SerializeField]
-    private UserAuthentication userAuthentication;
-    public bool locationPointsLoaded = false;
 
     void Start()
     {
@@ -91,109 +85,6 @@ public class databaseManager : MonoBehaviour
     {
         // Deserializar el JSON a una lista de objetos LocationPoint
         locationPoints = JsonUtility.FromJson<LocationPointsWrapper>(locationPointsInformation).locationPoints;
-
-        // Filtrar los puntos no creados por el usuario
-        var nonCreatedLocationPoints = locationPoints.Where(point => !point.isCreated);
-        var createdLocationPoints = locationPoints.Where(point => point.isCreated);
-
-        // Iterar sobre los puntos no creados y crear objetos en el mapa
-        foreach (var point in nonCreatedLocationPoints)
-        {
-            if (loggedUser.likedLocations.Contains(point.Id))
-            {
-                spawnOnMap.InstantiateLikedLocationPointOnMap(point);
-            }
-            else
-            {
-                spawnOnMap.InstantiateNormalLocationPointOnMap(point);
-            }
-        }
-
-        // Iterar sobre los puntos creados y crear objetos en el mapa
-        foreach (var point in createdLocationPoints)
-        {
-            if (loggedUser.createdLocations.Contains(point.Id))
-            {
-                Debug.Log("estoy pasando por created loccation ");
-                spawnOnMap.InstantiateMyLocationPointOnMap(point);
-            }
-        }
-
-        locationPointsLoaded = true;
-    }
-
-    public void AddNewLocationPoint(float latitud, float longitud, float altitud, int createdByUserID, bool isCreated)
-    {
-        if (locationPoints == null)
-        {
-            locationPoints = new List<LocationPoint>();
-        }
-
-        // Generar IDs únicos para el nuevo punto de ubicación
-        int newId = GenerateUniqueId();
-        int newInformationId = newId;
-
-        int[] emptyIdList = new int[0];
-
-        // Crear un nuevo punto de ubicación con los parámetros proporcionados
-        LocationPoint newPoint = new LocationPoint(newId, latitud, longitud, createdByUserID, newInformationId, emptyIdList, isCreated);
-
-        // Agregar el nuevo punto a la lista de puntos de ubicación
-        locationPoints.Add(newPoint);
-        locationPointInformationDataManagement.AddNewInformation(newInformationId);
-
-        this.loggedUser.CreatedLocations.Add(newId);
-        this.userAuthentication.UpdateUser(loggedUser);
-        string userJson = JsonUtility.ToJson(loggedUser);
-        PlayerPrefs.SetString("AuthenticatedUser", userJson);
-        PlayerPrefs.Save();
-
-        // Guardar los cambios en el archivo JSON
-        SaveLocationPointsToFile();
-        this.LoadLocationPoints();
-    }
-
-    private int GenerateUniqueId()
-    {
-        int lastId = 0;
-        foreach (LocationPoint point in locationPoints)
-        {
-            if (point.Id > lastId)
-            {
-                lastId = point.Id;
-            }
-        }
-        return lastId + 1;
-    }
-
-    public void EditLocationPoint(LocationPoint editedPoint)
-    {
-        // Buscar el punto de ubicación a editar
-        int index = locationPoints.FindIndex(point => point.Id == editedPoint.Id);
-        if (index != -1)
-        {
-            locationPoints[index] = editedPoint;
-            SaveLocationPointsToFile();
-        }
-        else
-        {
-            Debug.LogError("No se pudo encontrar el punto de ubicación a editar.");
-        }
-    }
-
-    public void DeleteLocationPoint(int pointId)
-    {
-        // Buscar el punto de ubicación a eliminar
-        LocationPoint pointToDelete = locationPoints.Find(point => point.Id == pointId);
-        if (pointToDelete != null)
-        {
-            locationPoints.Remove(pointToDelete);
-            SaveLocationPointsToFile();
-        }
-        else
-        {
-            Debug.LogError("No se pudo encontrar el punto de ubicación a eliminar.");
-        }
     }
 
     public void AddARInformation(int locationPointId, int arInformationId)
@@ -266,4 +157,3 @@ public class databaseManager : MonoBehaviour
         }
     }
 }
-

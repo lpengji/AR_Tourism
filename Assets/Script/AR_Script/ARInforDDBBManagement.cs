@@ -12,10 +12,14 @@ public class ARInforDDBBManagement : MonoBehaviour
     public List<ARLocationInformation> arLocationInformations;
     [SerializeField]
     private VPS_Manager vpsManager;
+    [SerializeField]
+    private LocationPointDDBBManagement databaseManager;
+    private int currentLocationPointId;
 
     void Start()
     {
         string idsString = PlayerPrefs.GetString("arInformationIds", "");
+        currentLocationPointId = PlayerPrefs.GetInt("locationInfo");
         Debug.Log("#idsString: " + idsString);
         LoadARLocationInformations(idsString);
     }
@@ -124,6 +128,8 @@ public class ARInforDDBBManagement : MonoBehaviour
         int newId = GenerateUniqueID();
         ARLocationInformation newInfo = new ARLocationInformation(newId, vpsManager.geospatialPose.Latitude, vpsManager.geospatialPose.Longitude, vpsManager.geospatialPose.Altitude, newInformation);
         arLocationInformations.Add(newInfo);
+        databaseManager.AddARInformation(currentLocationPointId, newId);
+
         SaveInformationToFile();
         vpsManager.Instantiate();
     }
@@ -160,6 +166,8 @@ public class ARInforDDBBManagement : MonoBehaviour
         if (index != -1)
         {
             arLocationInformations.RemoveAt(index);
+            databaseManager.RemoveARInformation(currentLocationPointId, id);
+
             SaveInformationToFile();
             vpsManager.Instantiate();
         }
