@@ -5,6 +5,7 @@ using UnityEngine.Networking;
 using System.Linq;
 using System.IO;
 using System;
+using TMPro;
 
 public class ARInforDDBBManagement : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class ARInforDDBBManagement : MonoBehaviour
     [SerializeField]
     private LocationPointDDBBManagement databaseManager;
     private int currentLocationPointId;
+    [SerializeField]
+    private TextMeshProUGUI aRPrefabAvaiableText;
 
     void Start()
     {
@@ -29,6 +32,7 @@ public class ARInforDDBBManagement : MonoBehaviour
         if (string.IsNullOrEmpty(idsString))
         {
             Debug.LogWarning("No IDs provided for AR location information.");
+            UpdateARPrefabAvaiableText();
             return;
         }
 
@@ -88,6 +92,7 @@ public class ARInforDDBBManagement : MonoBehaviour
         if (targetIds.Count == 0)
         {
             Debug.LogWarning("No valid IDs found in PlayerPrefs.");
+            UpdateARPrefabAvaiableText();
             return;
         }
 
@@ -100,9 +105,21 @@ public class ARInforDDBBManagement : MonoBehaviour
             Debug.Log($"AR Location: ID={info.Id}, Lat={info.Latitud}, Lon={info.Longitud}, Alt={info.Altitud}, Info={info.Information}");
         }
 
+        UpdateARPrefabAvaiableText();
         vpsManager.Instantiate();
     }
 
+    void UpdateARPrefabAvaiableText()
+    {
+        if (arLocationInformations == null || arLocationInformations.Count == 0)
+        {
+            aRPrefabAvaiableText.text = "NO HAY INFORMACIÓN DISPONIBLE";
+        }
+        else
+        {
+            aRPrefabAvaiableText.text = $"INFORMACIÓN DISPONIBLE: \n{arLocationInformations.Count}";
+        }
+    }
 
 
 
@@ -131,6 +148,7 @@ public class ARInforDDBBManagement : MonoBehaviour
         databaseManager.AddARInformation(currentLocationPointId, newId);
 
         SaveInformationToFile();
+        UpdateARPrefabAvaiableText();
         vpsManager.Instantiate();
     }
 
@@ -152,6 +170,7 @@ public class ARInforDDBBManagement : MonoBehaviour
         {
             arLocationInformations[index].Information = newInformation;
             SaveInformationToFile();
+            UpdateARPrefabAvaiableText();
             vpsManager.Instantiate();
         }
         else
@@ -169,6 +188,7 @@ public class ARInforDDBBManagement : MonoBehaviour
             databaseManager.RemoveARInformation(currentLocationPointId, id);
 
             SaveInformationToFile();
+            UpdateARPrefabAvaiableText();
             vpsManager.Instantiate();
         }
         else
