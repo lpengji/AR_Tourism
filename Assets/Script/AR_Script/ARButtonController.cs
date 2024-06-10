@@ -40,7 +40,7 @@ public class ARButtonController : MonoBehaviour
     private GameObject displayARInformationCanvas;
     [SerializeField]
     private ARInforDDBBManagement aRInforDDBBManagement;
-
+    private int currentLocationPointId;
     private int aRInformationId;
 
     void Start()
@@ -48,6 +48,7 @@ public class ARButtonController : MonoBehaviour
         // Obtener el rol del usuario logueado
         string userJson = PlayerPrefs.GetString("AuthenticatedUser");
         loggedUser = JsonUtility.FromJson<User>(userJson);
+        this.currentLocationPointId = PlayerPrefs.GetInt("locationInfo");
     }
 
     public void OpenMenuPopup()
@@ -55,7 +56,7 @@ public class ARButtonController : MonoBehaviour
         arMenuButton.gameObject.SetActive(false);
         closeArMenuButton.gameObject.SetActive(true);
 
-        if (loggedUser.rol == "admin")
+        if (loggedUser.rol == "admin" || loggedUser.createdLocations.Contains(currentLocationPointId))
         {
             createARInfoButton.gameObject.SetActive(true);
         }

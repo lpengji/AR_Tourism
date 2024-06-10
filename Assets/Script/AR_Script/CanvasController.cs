@@ -9,7 +9,8 @@ public class CanvasController : MonoBehaviour
     public Button deleteButton;
     public Button editButton;
     public ARButtonController aRButtonController;
-
+    private User loggedUser;
+    private int currentLocationPointId;
     void Awake()
     {
         if (displayARInformationCanvas == null)
@@ -31,6 +32,19 @@ public class CanvasController : MonoBehaviour
         if (aRButtonController == null)
         {
             Debug.LogError("aRButtonController no está asignado en el CanvasController.");
+        }
+    }
+
+    void Start()
+    {
+        string userJson = PlayerPrefs.GetString("AuthenticatedUser");
+        this.loggedUser = JsonUtility.FromJson<User>(userJson);
+        this.currentLocationPointId = PlayerPrefs.GetInt("locationInfo");
+
+        if (loggedUser.rol != "admin" || !loggedUser.createdLocations.Contains(currentLocationPointId))
+        {
+            deleteButton.gameObject.SetActive(false);
+            editButton.gameObject.SetActive(false);
         }
     }
 }
