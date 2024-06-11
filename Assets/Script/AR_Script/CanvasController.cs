@@ -41,7 +41,12 @@ public class CanvasController : MonoBehaviour
         this.loggedUser = JsonUtility.FromJson<User>(userJson);
         this.currentLocationPointId = PlayerPrefs.GetInt("locationInfo");
 
-        if (loggedUser.rol != "admin" || !loggedUser.createdLocations.Contains(currentLocationPointId))
+        if (loggedUser.rol == "admin" || loggedUser.createdLocations.Contains(currentLocationPointId))
+        {
+            deleteButton.gameObject.SetActive(true);
+            editButton.gameObject.SetActive(true);
+        }
+        else
         {
             deleteButton.gameObject.SetActive(false);
             editButton.gameObject.SetActive(false);
