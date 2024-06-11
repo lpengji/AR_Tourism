@@ -36,7 +36,6 @@ public class OpenARInformationCanvas : MonoBehaviour
             return;
         }
 
-        // Proceder con la inicialización
         InitializeCanvas();
     }
 
@@ -45,36 +44,6 @@ public class OpenARInformationCanvas : MonoBehaviour
         if (defaultRecommendedBoxText == null)
         {
             Debug.LogError("El componente DefaultRecommendedBox no tiene un componente TextMeshProUGUI.");
-        }
-
-        if (deleteButton != null)
-        {
-            // Asegurarse de que no haya múltiples suscripciones
-            deleteButton.onClick.RemoveAllListeners();
-            deleteButton.onClick.AddListener(() =>
-            {
-                Debug.Log($"Intentando eliminar: {aRLocationInformationObj.Id}");
-                aRButtonController.DeleteARInformation(aRLocationInformationObj.Id);
-            });
-        }
-        else
-        {
-            Debug.LogError("El componente DeleteButton no tiene un componente Button.");
-        }
-
-        if (editButton != null)
-        {
-            // Asegurarse de que no haya múltiples suscripciones
-            editButton.onClick.RemoveAllListeners();
-            editButton.onClick.AddListener(() =>
-            {
-                Debug.Log($"Intentando editar: {aRLocationInformationObj.Id} con información: {aRLocationInformationObj.Information}");
-                aRButtonController.MoveToEdit(aRLocationInformationObj.Information, aRLocationInformationObj.Id);
-            });
-        }
-        else
-        {
-            Debug.LogError("El componente EditButton no tiene un componente Button.");
         }
     }
 
@@ -88,6 +57,28 @@ public class OpenARInformationCanvas : MonoBehaviour
                 defaultRecommendedBoxText.text = aRLocationInformationObj.Information;
             }
             displayARInformationCanvas.SetActive(true);
+
+            if (deleteButton != null)
+            {
+                // Asegurarse de que no haya múltiples suscripciones
+                deleteButton.onClick.RemoveAllListeners();
+                deleteButton.onClick.AddListener(() =>
+                {
+                    Debug.Log($"Intentando eliminar: {aRLocationInformationObj.Id}");
+                    aRButtonController.DeleteARInformation(aRLocationInformationObj.Id);
+                });
+            }
+
+            if (editButton != null)
+            {
+                // Asegurarse de que no haya múltiples suscripciones
+                editButton.onClick.RemoveAllListeners();
+                editButton.onClick.AddListener(() =>
+                {
+                    Debug.Log($"Intentando editar: {aRLocationInformationObj.Id} con información: {aRLocationInformationObj.Information}");
+                    aRButtonController.MoveToEdit(aRLocationInformationObj.Information, aRLocationInformationObj.Id);
+                });
+            }
         }
         else
         {

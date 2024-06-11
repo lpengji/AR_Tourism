@@ -118,6 +118,7 @@ public class ARButtonController : MonoBehaviour
         }
 
         editARInformationCanvas.SetActive(false);
+        displayARInformationCanvas.SetActive(false);
         editInformationField.text = "";
         aRInformationId = 0;
         CloseMenuPopup();
