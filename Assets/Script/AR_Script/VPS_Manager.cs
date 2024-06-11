@@ -5,6 +5,7 @@ using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 using Google.XR.ARCoreExtensions;
 using UnityEngine.Android;
+using TMPro;
 
 public class VPS_Manager : MonoBehaviour
 {
@@ -107,7 +108,7 @@ public class VPS_Manager : MonoBehaviour
 
     private IEnumerator PlaceObjectsCoroutine(List<ARLocationInformation> arLocationInformations)
     {
-        // Destruir los objetos antiguos
+        // Destroy previous objects
         foreach (var obj in instantiatedObjects)
         {
             Destroy(obj);
@@ -137,13 +138,26 @@ public class VPS_Manager : MonoBehaviour
                     arLocationInformationObj.Altitud = info.Altitud;
                     arLocationInformationObj.Information = info.Information;
                     Debug.Log("AR object created successfully.");
+
+                    // Find the TMP_Text component by name
+                    var textTMP = FindTextComponentByName(instantiatedObject.transform, "Text (TMP)");
+                    if (textTMP != null)
+                    {
+                        textTMP.text = info.Information;
+                        Debug.Log("TMP_Text component updated successfully.");
+                    }
+                    else
+                    {
+                        Debug.LogError("TMP_Text component is missing on the AR GameObject.");
+                        PrintHierarchy(instantiatedObject.transform); // Print hierarchy for debugging
+                    }
                 }
                 else
                 {
                     Debug.LogError("ARLocationInformationObj script is missing on the AR GameObject.");
                 }
 
-                instantiatedObjects.Add(instantiatedObject);  // Agregar el objeto instanciado a la lista
+                instantiatedObjects.Add(instantiatedObject);  // Add the instantiated object to the list
                 instantiatedObject.SetActive(true);
             }
             else
@@ -156,4 +170,47 @@ public class VPS_Manager : MonoBehaviour
 
         loadingAnimation.SetActive(false);
     }
+
+
+    // Función recursiva para encontrar el componente TextMeshProUGUI por nombre
+    private TMP_Text FindTextComponentByName(Transform parent, string name)
+    {
+        foreach (Transform child in parent)
+        {
+            if (child.name == name)
+            {
+                // Check for both TMP_Text and TextMeshProUGUI
+                var tmpTextComponent = child.GetComponent<TMP_Text>();
+                if (tmpTextComponent != null)
+                {
+                    Debug.Log($"Found TMP_Text component on GameObject: {child.name}");
+                    return tmpTextComponent;
+                }
+                else
+                {
+                    Debug.LogError($"TMP_Text component not found on GameObject: {child.name}");
+                }
+            }
+            var result = FindTextComponentByName(child, name);
+            if (result != null)
+            {
+                return result;
+            }
+        }
+        return null;
+    }
+
+
+
+    // Función para imprimir la jerarquía del objeto instanciado
+    private void PrintHierarchy(Transform parent, string indent = "")
+    {
+        Debug.Log($"{indent}{parent.name} ({parent.GetType()})");
+        foreach (Transform child in parent)
+        {
+            PrintHierarchy(child, indent + "  ");
+        }
+    }
+
+
 }
