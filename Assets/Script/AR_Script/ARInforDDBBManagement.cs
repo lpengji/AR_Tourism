@@ -121,8 +121,6 @@ public class ARInforDDBBManagement : MonoBehaviour
         }
     }
 
-
-
     List<int> GetTargetIdsFromPlayerPrefs()
     {
         string idsString = PlayerPrefs.GetString("arInformationIds", "");
@@ -138,7 +136,6 @@ public class ARInforDDBBManagement : MonoBehaviour
         Debug.Log($"Retrieved targetIds from PlayerPrefs: {string.Join(", ", ids)}");
         return ids;
     }
-
 
     public void AddNewARInformation(string newInformation)
     {
@@ -161,7 +158,6 @@ public class ARInforDDBBManagement : MonoBehaviour
         int lastId = arLocationInformations.Max(info => info.Id);
         return lastId + 1;
     }
-
 
     public void UpdateARInformation(int id, string newInformation)
     {
