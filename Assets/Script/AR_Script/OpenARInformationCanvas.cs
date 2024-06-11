@@ -18,7 +18,6 @@ public class OpenARInformationCanvas : MonoBehaviour
     void Start()
     {
         aRLocationInformationObj = GetComponent<ARLocationInformationObj>();
-        aRButtonController = GetComponent<ARButtonController>();
 
         // Buscar el CanvasController en la escena
         CanvasController canvasController = FindObjectOfType<CanvasController>();
@@ -43,11 +42,6 @@ public class OpenARInformationCanvas : MonoBehaviour
 
     private void InitializeCanvas()
     {
-        if (!displayARInformationCanvas.activeSelf)
-        {
-            displayARInformationCanvas.SetActive(true);
-        }
-
         if (defaultRecommendedBoxText == null)
         {
             Debug.LogError("El componente DefaultRecommendedBox no tiene un componente TextMeshProUGUI.");
@@ -55,7 +49,13 @@ public class OpenARInformationCanvas : MonoBehaviour
 
         if (deleteButton != null)
         {
-            deleteButton.onClick.AddListener(() => aRButtonController.DeleteARInformation(aRLocationInformationObj.Id));
+            // Asegurarse de que no haya múltiples suscripciones
+            deleteButton.onClick.RemoveAllListeners();
+            deleteButton.onClick.AddListener(() =>
+            {
+                Debug.Log($"Intentando eliminar: {aRLocationInformationObj.Id}");
+                aRButtonController.DeleteARInformation(aRLocationInformationObj.Id);
+            });
         }
         else
         {
@@ -64,15 +64,18 @@ public class OpenARInformationCanvas : MonoBehaviour
 
         if (editButton != null)
         {
-            editButton.onClick.AddListener(() => aRButtonController.MoveToEdit(aRLocationInformationObj.Information, aRLocationInformationObj.Id));
+            // Asegurarse de que no haya múltiples suscripciones
+            editButton.onClick.RemoveAllListeners();
+            editButton.onClick.AddListener(() =>
+            {
+                Debug.Log($"Intentando editar: {aRLocationInformationObj.Id} con información: {aRLocationInformationObj.Information}");
+                aRButtonController.MoveToEdit(aRLocationInformationObj.Information, aRLocationInformationObj.Id);
+            });
         }
         else
         {
             Debug.LogError("El componente EditButton no tiene un componente Button.");
         }
-
-        // Volver a desactivar el canvas para su uso posterior
-        displayARInformationCanvas.SetActive(false);
     }
 
     private void OnMouseDown()
