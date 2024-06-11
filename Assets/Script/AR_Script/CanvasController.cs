@@ -11,6 +11,7 @@ public class CanvasController : MonoBehaviour
     public ARButtonController aRButtonController;
     private User loggedUser;
     private int currentLocationPointId;
+
     void Awake()
     {
         if (displayARInformationCanvas == null)
@@ -38,8 +39,8 @@ public class CanvasController : MonoBehaviour
     void Start()
     {
         string userJson = PlayerPrefs.GetString("AuthenticatedUser");
-        this.loggedUser = JsonUtility.FromJson<User>(userJson);
-        this.currentLocationPointId = PlayerPrefs.GetInt("locationInfo");
+        loggedUser = JsonUtility.FromJson<User>(userJson);
+        currentLocationPointId = PlayerPrefs.GetInt("locationInfo");
 
         if (loggedUser.rol == "admin" || loggedUser.createdLocations.Contains(currentLocationPointId))
         {

@@ -177,10 +177,16 @@ public class ARInforDDBBManagement : MonoBehaviour
 
     public void DeleteARInformation(int id)
     {
+        Debug.Log("#id del comentario a delete: " + id);
+
         int index = arLocationInformations.FindIndex(info => info.Id == id);
+        Debug.Log("#index: " + index);
+
         if (index != -1)
         {
             arLocationInformations.RemoveAt(index);
+            Debug.Log("#length de la lista de arprefab despues del delete: " + arLocationInformations.Count);
+
             databaseManager.RemoveARInformation(currentLocationPointId, id);
 
             SaveInformationToFile();

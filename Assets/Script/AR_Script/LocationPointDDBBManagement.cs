@@ -101,7 +101,10 @@ public class LocationPointDDBBManagement : MonoBehaviour
         {
             List<int> arInformationIds = new List<int>(locationPoint.ArInformationId);
             arInformationIds.Remove(arInformationId);
+            Debug.Log("longitud de la nueva lista creada en LOCATIONDDBB: " + arInformationIds.Count);
             locationPoint.ArInformationId = arInformationIds.ToArray();
+            Debug.Log("#longitud de la lista original: " + locationPoint.ArInformationId.Length);
+
             SaveLocationPointsToFile();
         }
         else

@@ -51,7 +51,26 @@ public class InformationLoading : MonoBehaviour
 
     void Update()
     {
-        if (information.defaultInfo != "")
+        // Verificaciones adicionales para evitar NullReferenceException
+        if (information == null)
+        {
+            Debug.LogWarning("information is null in Update.");
+            return;
+        }
+
+        if (addInformationButton == null)
+        {
+            Debug.LogWarning("addInformationButton is not assigned.");
+            return;
+        }
+
+        if (loggedUser == null)
+        {
+            Debug.LogWarning("loggedUser is null in Update.");
+            return;
+        }
+
+        if (!string.IsNullOrEmpty(information.defaultInfo))
         {
             addInformationButton.gameObject.SetActive(false);
         }
