@@ -120,6 +120,7 @@ public class VPS_Manager : MonoBehaviour
             Debug.Log($"Processing AR location with ID: {info.Id}");
 
             double altitudeToUse = info.Altitud != 0 ? info.Altitud : geospatialPose.Altitude;
+            altitudeToUse += 0.5;
 
             var objAnchor = ARAnchorManagerExtensions.AddAnchor(arAnchorManager,
                 info.Latitud, info.Longitud, altitudeToUse, Quaternion.identity);

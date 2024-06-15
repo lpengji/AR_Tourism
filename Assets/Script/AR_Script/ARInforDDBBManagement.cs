@@ -144,6 +144,12 @@ public class ARInforDDBBManagement : MonoBehaviour
         arLocationInformations.Add(newInfo);
         databaseManager.AddARInformation(currentLocationPointId, newId);
 
+        // Añadir el nuevo ID a PlayerPrefs
+        List<int> ids = GetTargetIdsFromPlayerPrefs();
+        ids.Add(newId);
+        PlayerPrefs.SetString("arInformationIds", string.Join(",", ids));
+        PlayerPrefs.Save();
+
         SaveInformationToFile();
         UpdateARPrefabAvaiableText();
         vpsManager.Instantiate();
@@ -188,6 +194,12 @@ public class ARInforDDBBManagement : MonoBehaviour
             Debug.Log("#length de la lista de arprefab despues del delete: " + arLocationInformations.Count);
 
             databaseManager.RemoveARInformation(currentLocationPointId, id);
+
+            // Eliminar el ID de PlayerPrefs
+            List<int> ids = GetTargetIdsFromPlayerPrefs();
+            ids.Remove(id);
+            PlayerPrefs.SetString("arInformationIds", string.Join(",", ids));
+            PlayerPrefs.Save();
 
             SaveInformationToFile();
             UpdateARPrefabAvaiableText();
