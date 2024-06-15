@@ -70,6 +70,7 @@ public class MenuButtonController : MonoBehaviour
         // Establece el contenido del campo de entrada de texto
         editInformationField.text = information.defaultInfo;
 
+        editRatingSprite.SetActive(false);
         editSceneObject.SetActive(true);
         menuSceneObject.SetActive(false);
     }
@@ -104,6 +105,7 @@ public class MenuButtonController : MonoBehaviour
             getInformationFromDDBB.AddNewComment(editInformationField.text, editRatingField.value + 1, loggedUser.userID, loggedUser.userName);
         }
         CleanInputFields();
+        editRatingSprite.SetActive(true);
         editSceneObject.SetActive(false);
         menuSceneObject.SetActive(true);
     }
@@ -123,6 +125,7 @@ public class MenuButtonController : MonoBehaviour
         {
             newComment = false;
         }
+        editRatingSprite.SetActive(true);
         editSceneObject.SetActive(false);
         menuSceneObject.SetActive(true);
     }
