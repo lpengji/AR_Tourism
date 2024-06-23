@@ -142,11 +142,14 @@ public class databaseManager : MonoBehaviour
         locationPoints.Add(newPoint);
         locationPointInformationDataManagement.AddNewInformation(newInformationId);
 
-        this.loggedUser.CreatedLocations.Add(newId);
-        this.userAuthentication.UpdateUser(loggedUser);
-        string userJson = JsonUtility.ToJson(loggedUser);
-        PlayerPrefs.SetString("AuthenticatedUser", userJson);
-        PlayerPrefs.Save();
+        if (isCreated)
+        {
+            this.loggedUser.CreatedLocations.Add(newId);
+            this.userAuthentication.UpdateUser(loggedUser);
+            string userJson = JsonUtility.ToJson(loggedUser);
+            PlayerPrefs.SetString("AuthenticatedUser", userJson);
+            PlayerPrefs.Save();
+        }
 
         // Guardar los cambios en el archivo JSON
         SaveLocationPointsToFile();
