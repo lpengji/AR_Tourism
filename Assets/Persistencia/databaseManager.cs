@@ -245,6 +245,11 @@ public class databaseManager : MonoBehaviour
 
     void SaveLocationPointsToFile()
     {
+        if (locationPoints == null || locationPoints.Count == 0)
+        {
+            return;
+        }
+
         // Convertir la lista de puntos de ubicación a JSON
         string json = JsonUtility.ToJson(new LocationPointsWrapper(locationPoints));
 

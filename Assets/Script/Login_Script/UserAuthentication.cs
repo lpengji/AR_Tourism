@@ -154,6 +154,11 @@ public class UserAuthentication : MonoBehaviour
 
     void SaveUsersToFile()
     {
+        if (allUsersList == null || allUsersList.Count == 0)
+        {
+            return;
+        }
+
         // Convert the updated user list to JSON
         string json = JsonUtility.ToJson(new UserWrapper(allUsersList));
 
