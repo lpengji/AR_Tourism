@@ -17,6 +17,19 @@ public class UserAuthentication : MonoBehaviour
         LoadUsers();
     }
 
+    void OnApplicationPause(bool pauseStatus)
+    {
+        if (pauseStatus)
+        {
+            SaveUsersToFile();
+        }
+    }
+
+    void OnApplicationQuit()
+    {
+        SaveUsersToFile();
+    }
+
     public void LoadUsers()
     {
         // Get the file path for the user JSON file
@@ -33,7 +46,11 @@ public class UserAuthentication : MonoBehaviour
         Debug.Log("File path: " + filePath);
 
         // Check if the platform is Android and if the file exists
-        if (Application.platform == RuntimePlatform.Android)
+        if (File.Exists(filePath))
+        {
+            LoadFile(filePath);
+        }
+        else if (Application.platform == RuntimePlatform.Android)
         {
             StartCoroutine(LoadFileFromStreamingAssets(filePath));
         }
@@ -110,17 +127,30 @@ public class UserAuthentication : MonoBehaviour
             return;
         }
 
-        int index = allUsersList.FindIndex(u => u.userName == updatedUser.userName);
+        int index = allUsersList.FindIndex(u => u.userID == updatedUser.userID);
         if (index != -1)
         {
+            // Log del estado actual antes de la actualización
+            Debug.Log($"Before update - UserID: {allUsersList[index].userID}, \nLikedLocations: {String.Join(", ", allUsersList[index].likedLocations)}, \nCreatedLocations: {String.Join(", ", allUsersList[index].createdLocations)}");
+
+            // Log del estado que se desea actualizar
+            Debug.Log($"Updating to - UserID: {updatedUser.userID}, \nLikedLocations: {String.Join(", ", updatedUser.likedLocations)}, \nCreatedLocations: {String.Join(", ", updatedUser.createdLocations)}");
+
+            // Actualización del usuario en la lista
             allUsersList[index] = updatedUser;
+
+            // Guardar los cambios en el archivo JSON
             SaveUsersToFile();
+
+            // Log del estado después de la actualización
+            Debug.Log($"After update - UserID: {allUsersList[index].userID}, \nLikedLocations: {String.Join(", ", allUsersList[index].likedLocations)}, \nCreatedLocations: {String.Join(", ", allUsersList[index].createdLocations)}");
         }
         else
         {
             Debug.LogError("User not found, cannot update.");
         }
     }
+
 
     void SaveUsersToFile()
     {

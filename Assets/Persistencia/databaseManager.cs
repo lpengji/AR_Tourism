@@ -32,6 +32,17 @@ public class databaseManager : MonoBehaviour
         LoadLocationPoints();
     }
 
+    void OnApplicationPause(bool pauseStatus)
+    {
+        if (pauseStatus)
+            SaveLocationPointsToFile();
+    }
+
+    void OnApplicationQuit()
+    {
+        SaveLocationPointsToFile();
+    }
+
     public void LoadLocationPoints()
     {
         // Construir la ruta completa al archivo JSON en StreamingAssets
@@ -48,7 +59,7 @@ public class databaseManager : MonoBehaviour
         Debug.Log("File path: " + filePath);
 
         // Verificar si la plataforma es Android y si el archivo existe
-        if (Application.platform == RuntimePlatform.Android && File.Exists(filePath))
+        if (File.Exists(filePath))
         {
             // Si es Android y el archivo existe, cargar el archivo directamente desde el sistema de archivos
             LoadFile(filePath);
@@ -144,8 +155,8 @@ public class databaseManager : MonoBehaviour
 
         if (isCreated)
         {
-            this.loggedUser.CreatedLocations.Add(newId);
-            this.userAuthentication.UpdateUser(loggedUser);
+            this.loggedUser.createdLocations.Add(newId);
+            this.userAuthentication.UpdateUser(this.loggedUser);
             string userJson = JsonUtility.ToJson(loggedUser);
             PlayerPrefs.SetString("AuthenticatedUser", userJson);
             PlayerPrefs.Save();
@@ -241,10 +252,8 @@ public class databaseManager : MonoBehaviour
         string filePath;
 
 #if UNITY_ANDROID && !UNITY_EDITOR
-        // Si es Android, usar la ruta persistente en el sistema de archivos específica de Android
-        filePath = Path.Combine(Application.persistentDataPath, locationPointsPersistenceFileName);
+    filePath = Path.Combine(Application.persistentDataPath, locationPointsPersistenceFileName);
 #else
-        // Si no es Android, usar la ruta en la carpeta de streamingAssets
         filePath = Path.Combine(Application.streamingAssetsPath, locationPointsPersistenceFileName);
 #endif
 
@@ -261,7 +270,8 @@ public class databaseManager : MonoBehaviour
 
             // Escribir el JSON en el archivo
             File.WriteAllText(filePath, json);
-            Debug.Log("Puntos de ubicación actualizados guardados en el archivo JSON.");
+            FileInfo fileInfo = new FileInfo(filePath);
+            Debug.Log("Archivo guardado en: " + filePath + ", tamaño: " + fileInfo.Length);
         }
         catch (Exception ex)
         {
