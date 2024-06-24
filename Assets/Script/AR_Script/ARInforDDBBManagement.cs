@@ -21,6 +21,7 @@ public class ARInforDDBBManagement : MonoBehaviour
 
     void Start()
     {
+        arLocationInformations = new List<ARLocationInformation>();
         string idsString = PlayerPrefs.GetString("arInformationIds", "");
         currentLocationPointId = PlayerPrefs.GetInt("locationInfo");
         Debug.Log("#idsString: " + idsString);
@@ -32,8 +33,9 @@ public class ARInforDDBBManagement : MonoBehaviour
         if (string.IsNullOrEmpty(idsString))
         {
             Debug.LogWarning("No IDs provided for AR location information.");
-            UpdateARPrefabAvaiableText();
-            return;
+            CreateDefaultWelcomeInformation();
+            // UpdateARPrefabAvaiableText();
+            // return;
         }
 
         string arLocationInformationsURL = Path.Combine(Application.streamingAssetsPath, arLocationInformationFileName);
@@ -111,13 +113,13 @@ public class ARInforDDBBManagement : MonoBehaviour
 
     void UpdateARPrefabAvaiableText()
     {
-        if (arLocationInformations == null || arLocationInformations.Count == 0)
+        if (arLocationInformations == null || arLocationInformations.Count - 1 == 0)
         {
             aRPrefabAvaiableText.text = "NO HAY INFORMACIÓN DISPONIBLE";
         }
         else
         {
-            aRPrefabAvaiableText.text = $"INFORMACIÓN DISPONIBLE: \n{arLocationInformations.Count}";
+            aRPrefabAvaiableText.text = $"INFORMACIÓN DISPONIBLE: \n{arLocationInformations.Count - 1}";
         }
     }
 
@@ -141,10 +143,17 @@ public class ARInforDDBBManagement : MonoBehaviour
     {
         int newId = GenerateUniqueID();
         ARLocationInformation newInfo = new ARLocationInformation(newId, vpsManager.geospatialPose.Latitude, vpsManager.geospatialPose.Longitude, vpsManager.geospatialPose.Altitude, newInformation);
+
+        if (arLocationInformations.Count == 0 || arLocationInformations == null)
+        {
+            arLocationInformations = new List<ARLocationInformation>();  // Asegura que la lista esté inicializada
+
+        }
+
         arLocationInformations.Add(newInfo);
         databaseManager.AddARInformation(currentLocationPointId, newId);
 
-        // Añadir el nuevo ID a PlayerPrefs
+        // Añadir el nuevo ID a PlayerPrefs, asegurando manejar una lista inicialmente vacía
         List<int> ids = GetTargetIdsFromPlayerPrefs();
         ids.Add(newId);
         PlayerPrefs.SetString("arInformationIds", string.Join(",", ids));
@@ -155,9 +164,33 @@ public class ARInforDDBBManagement : MonoBehaviour
         vpsManager.Instantiate();
     }
 
+    void CreateDefaultWelcomeInformation()
+    {
+        int newId = GenerateUniqueID();  // Asegúrate de generar un ID único para este mensaje de bienvenida
+        ARLocationInformation welcomeInfo = new ARLocationInformation(newId, vpsManager.geospatialPose.Latitude, vpsManager.geospatialPose.Longitude, vpsManager.geospatialPose.Altitude, "¡Bienvenido!");
+
+        // Añade la información de bienvenida a la lista
+        if (arLocationInformations == null)
+        {
+            arLocationInformations = new List<ARLocationInformation>();
+        }
+
+        arLocationInformations.Add(welcomeInfo);
+
+        List<int> ids = GetTargetIdsFromPlayerPrefs();
+        ids.Add(newId);
+        PlayerPrefs.SetString("arInformationIds", string.Join(",", ids));
+        PlayerPrefs.Save();
+
+        // Guarda la información después de crearla
+        SaveInformationToFile();
+        //vpsManager.Instantiate();  // Asegúrate de actualizar cualquier visualización necesaria
+    }
+
+
     private int GenerateUniqueID()
     {
-        if (arLocationInformations.Count == 0)
+        if (arLocationInformations.Count == 0 || arLocationInformations == null)
         {
             return 1;
         }
