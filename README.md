@@ -1,5 +1,5 @@
 # AR_Tourism
-Final Degree Proyect - Geolocated Augmented Reality Application - Unity
+Final Degree Proyect - Geolocated Augmented Reality Application - Unity - Mapbox - AR Foundation - ARCore
 
 # What is AR_Tourism
 AR Tourism is an augmented reality (AR) geolocated application designed to enhance the experience of tourists as they explore cultural and tourist sites. Through its interactive interface, users can access contextual information and enriched visualizations of the places they visit, directly on their mobile device screens. Using the phone's camera, AR Tourism overlays historical data, cultural details, and virtual reconstructions over real-world images, offering an immersive and educational experience.
