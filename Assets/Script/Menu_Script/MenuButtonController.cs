@@ -91,21 +91,26 @@ public class MenuButtonController : MonoBehaviour
         {
             Debug.Log("añadiendo comentario");
             getInformationFromDDBB.AddNewComment(editInformationField.text, editRatingField.value + 1, loggedUser.userID, loggedUser.userName);
+            ResetState();
         }
+
         // Editar comentario existente
-        else if (comment != null && !string.IsNullOrEmpty(editInformationField.text))
+        if (comment != null && !string.IsNullOrEmpty(editInformationField.text))
         {
             Debug.Log("#editando comentario: ");
             this.comment.contenidoComment = editInformationField.text;
             this.comment.rating = editRatingField.value + 1;
             getInformationFromDDBB.editComment(this.comment);
+            ResetState();
         }
+
         // Editar información existente
-        else if (information != null && !string.IsNullOrEmpty(editInformationField.text))
+        if (information != null && !string.IsNullOrEmpty(editInformationField.text))
         {
             Debug.Log("#editando informacion: ");
             this.information.defaultInfo = editInformationField.text;
             getInformationFromDDBB.editInformation(this.information);
+            ResetState();
         }
 
         CleanInputFields();
@@ -113,6 +118,20 @@ public class MenuButtonController : MonoBehaviour
         editSceneObject.SetActive(false);
         menuSceneObject.SetActive(true);
     }
+
+    private void ResetState()
+    {
+        // Resetear todas las variables relevantes
+        comment = null;
+        information = null;
+        newComment = false;
+
+        CleanInputFields();
+        editRatingSprite.SetActive(true);
+        editSceneObject.SetActive(false);
+        menuSceneObject.SetActive(true);
+    }
+
 
     public void CancelEdit()
     {
