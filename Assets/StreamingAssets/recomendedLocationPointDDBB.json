@@ -2,39 +2,81 @@
   "recommendedLocationLists": [
     {
       "listID": 1,
-      "listName": "Recomendación A",
+      "listName": "Parada de Buses",
       "locations": [
         {
-          "id": 1,
-          "latitud": 40.29243971169187,
-          "longitud": -3.7832160517160225,
-          "altitud": 10,
+          "id": 5,
+          "latitud": 40.38853454589844,
+          "longitud": -3.627004384994507,
           "createdByUserID": 3,
-          "informationId": 1,
+          "informationId": 5,
+          "arInformationId": [],
           "isCreated": false
         },
         {
-          "id": 2,
-          "latitud": 40.29411729994367,
-          "longitud": -3.785404734235257,
-          "altitud": 20,
+          "id": 7,
+          "latitud": 40.388065338134769,
+          "longitud": -3.627772808074951,
           "createdByUserID": 3,
-          "informationId": 2,
+          "informationId": 7,
+          "arInformationId": [],
           "isCreated": false
         }
       ]
     },
     {
       "listID": 2,
-      "listName": "Recomendación B",
+      "listName": "ETSISI",
       "locations": [
         {
-          "id": 3,
-          "latitud": 40.29461714141148,
-          "longitud": -3.7835261657180683,
-          "altitud": 15,
+          "id": 10,
+          "latitud": 40.38984298706055,
+          "longitud": -3.627688407897949,
           "createdByUserID": 3,
-          "informationId": 3,
+          "informationId": 10,
+          "arInformationId": [],
+          "isCreated": false
+        },
+        {
+          "id": 9,
+          "latitud": 40.390464782714847,
+          "longitud": -3.628957986831665,
+          "createdByUserID": 3,
+          "informationId": 9,
+          "arInformationId": [],
+          "isCreated": false
+        },
+        {
+          "id": 8,
+          "latitud": 40.390323638916019,
+          "longitud": -3.62717342376709,
+          "createdByUserID": 3,
+          "informationId": 8,
+          "arInformationId": [],
+          "isCreated": false
+        }
+      ]
+    },
+    {
+      "listID": 3,
+      "listName": "Polideportivo",
+      "locations": [
+        {
+          "id": 11,
+          "latitud": 40.38766860961914,
+          "longitud": -3.627512216567993,
+          "createdByUserID": 3,
+          "informationId": 11,
+          "arInformationId": [],
+          "isCreated": false
+        },
+        {
+          "id": 6,
+          "latitud": 40.388145446777347,
+          "longitud": -3.627074956893921,
+          "createdByUserID": 3,
+          "informationId": 6,
+          "arInformationId": [],
           "isCreated": false
         }
       ]
